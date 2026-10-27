@@ -7,7 +7,8 @@
 # from user themes. OhMyMac rebuilds that bundle: the stock stylesheets are
 # kept (renamed *-stock.css) and new ones @import them before adding the
 # OhMyMac rules, exactly like the user theme does. The original bundle is
-# backed up and restored by `uninstall.sh --gdm`.
+# backed up and restored by `uninstall.sh --gdm`. The bundle also carries
+# the blurred wallpaper the login screen is drawn on, like macOS.
 #
 # Distribution updates of gnome-shell replace the bundle; re-run
 # `install.sh --gdm` afterwards.
@@ -41,6 +42,18 @@ _gdm_source_resource() {
   fi
 }
 
+# Only the greeter gets the picture: in a user session the lock screen
+# already shows the user's own wallpaper, blurred by the Shell.
+_gdm_background_css() {
+  cat <<'EOF'
+
+#lockDialogGroup {
+  background: #061a52 url("resource:///org/gnome/shell/theme/ohmymac-login.jpg");
+  background-size: cover;
+}
+EOF
+}
+
 # _gdm_build <source.gresource> <out.gresource>
 _gdm_build() {
   local src="$1" out="$2" work="${OHM_TMP}/gdm" prefix="/org/gnome/shell/theme" file rel variant css
@@ -52,6 +65,7 @@ _gdm_build() {
     mkdir -p "${work}/$(dirname "${rel}")"
     gresource extract "${src}" "${file}" >"${work}/${rel}"
   done < <(gresource list "${src}")
+  cp -f "${OHM_SRC}/gdm/login-background.jpg" "${work}/ohmymac-login.jpg"
 
   for variant in light dark; do
     css="gnome-shell-${variant}.css"
@@ -62,6 +76,7 @@ _gdm_build() {
       printf '/* OhMyMac %s — login screen */\n' "${OHM_VERSION}"
       printf '@import url("resource://%s/gnome-shell-%s-stock.css");\n\n' "${prefix}" "${variant}"
       cat "${OHM_BUILD}/OhMyMac-${variant^}/gnome-shell/gnome-shell.css"
+      _gdm_background_css
     } >"${work}/${css}"
   done
 
@@ -71,6 +86,7 @@ _gdm_build() {
     {
       printf '@import url("resource://%s/gnome-shell-stock.css");\n\n' "${prefix}"
       cat "${OHM_BUILD}/OhMyMac-Dark/gnome-shell/gnome-shell.css"
+      _gdm_background_css
     } >"${work}/gnome-shell.css"
   fi
 

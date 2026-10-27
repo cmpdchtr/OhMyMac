@@ -21,3 +21,5 @@ set -Eeuo pipefail
 . "${OHM_ROOT}/lib/settings.sh"
 # shellcheck source=lib/mactahoe.sh
 . "${OHM_ROOT}/lib/mactahoe.sh"
+# shellcheck source=lib/gdm.sh
+. "${OHM_ROOT}/lib/gdm.sh"

@@ -83,7 +83,7 @@ check "libadwaita css"           test -s "${OHM_BUILD}/libadwaita/gtk.css"
 check "gtk3 imports Adwaita"     grep -q 'gtk-contained.css' "${OHM_BUILD}/OhMyMac-Light/gtk-3.0/gtk.css"
 check "gtk3 dark imports dark"   grep -q 'gtk-contained-dark.css' "${OHM_BUILD}/OhMyMac-Dark/gtk-3.0/gtk.css"
 check "gtk4 has dark tokens"     grep -q 'prefers-color-scheme: dark' "${OHM_BUILD}/libadwaita/gtk.css"
-check "gtk4 sets accent palette" grep -q -- '--accent-blue: #007aff' "${OHM_BUILD}/libadwaita/gtk.css"
+check "gtk4 sets accent palette" grep -qE -- '--accent-blue: +#007aff' "${OHM_BUILD}/libadwaita/gtk.css"
 no_match() { ! grep -rqE "$1" "$2"; }
 check "no sass leftovers"         no_match '\$[a-z-]+|#\{' "${OHM_BUILD}"
 check "no color keywords in vars" no_match ':[[:space:]]*(white|black);' "${OHM_BUILD}/libadwaita/gtk.css"
@@ -103,7 +103,8 @@ echo "== shell finalize"
 cp -a "${OHM_BUILD}/OhMyMac-Dark" "${WORK}/shell-test"
 OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=51 shell_finalize "${WORK}/shell-test" Dark
 check "modern base import" grep -q 'gnome-shell-dark.css' "${WORK}/shell-test/gnome-shell/gnome-shell.css"
-first_rule() { grep -v '^/\*' "$1" | head -n1 | grep -q '^@import'; }
+# No pipe: under pipefail `grep | head` dies of SIGPIPE on big sheets.
+first_rule() { awk '!/^\/\*/ { exit !/^@import/ }' "$1"; }
 check "import is first rule" first_rule "${WORK}/shell-test/gnome-shell/gnome-shell.css"
 cp -a "${OHM_BUILD}/OhMyMac-Dark" "${WORK}/shell-old"
 OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=46 shell_finalize "${WORK}/shell-old" Dark
@@ -119,6 +120,18 @@ printf '<gresources><gresource prefix="/org/gnome/shell/theme"><file>gnome-shell
 if has glib-compile-resources && has gresource &&
    glib-compile-resources --sourcedir="${fake_gresource_dir}/src" --target="${fake_gresource_dir}/t.gresource" "${fake_gresource_dir}/t.xml"; then
   check "missing light stylesheet falls back to dark" eq "$(OHM_SHELL_GRESOURCE="${fake_gresource_dir}/t.gresource" shell_base_resource Light)" "resource:///org/gnome/shell/theme/gnome-shell-dark.css"
+fi
+
+echo "== login screen bundle"
+if [[ -f "${fake_gresource_dir}/t.gresource" ]]; then
+  OHM_TMP="${WORK}" _gdm_build "${fake_gresource_dir}/t.gresource" "${WORK}/gdm.gresource"
+  gdm_files="$(gresource list "${WORK}/gdm.gresource")"
+  check "stock stylesheet kept"       has_line /org/gnome/shell/theme/gnome-shell-dark-stock.css "${gdm_files}"
+  check "background embedded"        has_line /org/gnome/shell/theme/ohmymac-login.jpg "${gdm_files}"
+  gdm_css="$(gresource extract "${WORK}/gdm.gresource" /org/gnome/shell/theme/gnome-shell-dark.css)"
+  check "imports the stock sheet"     grep -q 'gnome-shell-dark-stock.css' <<<"${gdm_css}"
+  check "draws the blurred wallpaper" grep -q 'ohmymac-login.jpg' <<<"${gdm_css}"
+  check "recognised as ours"          _gdm_is_ours "${WORK}/gdm.gresource"
 fi
 
 echo "== set -e safety (regression: failing enable aborted the installer)"

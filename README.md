@@ -133,6 +133,19 @@ The app grid floats over your blurred wallpaper, opened from the Dock or the
 Launchpad icon.
 </td>
 </tr>
+<tr>
+<td valign="top">
+<img alt="Login screen: avatar, name and a glass password field over the blurred wallpaper" src="docs/media/login.webp">
+<h3>Login screen</h3>
+With <code>--gdm</code>: the wallpaper, blurred, behind a centred avatar and a
+frosted-glass password pill.
+</td>
+<td valign="top">
+<img alt="Lock screen with a large clock and the date" src="docs/media/lock.webp">
+<h3>Lock screen</h3>
+A big rounded clock over your own wallpaper, blurred by GNOME Shell.
+</td>
+</tr>
 </table>
 
 <br>
@@ -214,7 +227,7 @@ sudo ./install.sh --system --themes-only    # themes for every user
 | `--no-extensions` | No extensions (User Themes is still added for the Shell theme) |
 | `--no-settings` | Leave every GNOME setting alone |
 | `--no-flatpak` | Skip Flatpak integration |
-| `--gdm` | Style the login screen too (needs root) |
+| `--gdm` | Style the login screen like macOS too: blurred wallpaper, glass password field (needs root) |
 | `--system` | Install themes and icons for all users |
 | `--dest DIR` | Stage files under `DIR` for packaging |
 | `--no-deps` | Never call the package manager |
@@ -347,6 +360,7 @@ lib/                        installer modules
   gdm.sh                      login screen bundle
 extensions/                 the OhMyMac Shell extension (menu bar)
 src/sass/                   OhMyMac's own theme and the Tahoe layer
+src/gdm/                    blurred login screen background
 data/                       extension profiles, settings presets
 bin/ohmymac-sync            light/dark switching for GTK 3 and the Shell
 packaging/                  PKGBUILD (Arch) · RPM spec (Fedora)

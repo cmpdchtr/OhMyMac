@@ -6,6 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- macOS-style login and lock screens. `--gdm` now ships the wallpaper,
+  pre-blurred and slightly darkened (`src/gdm/login-background.jpg`, made by
+  `tools/gen-login-background.py`), inside the login screen bundle. The login
+  screen gets a centred avatar, the user's name and a narrow frosted-glass
+  password pill with round glass buttons. The lock screen gets a large
+  rounded clock near the top. Checked against a real GNOME Shell 51 greeter.
+- Test for the login screen bundle: the stock sheets are kept, the
+  background is embedded, and the bundle is recognised for uninstall.
+
+### Fixed
+- Two tests were fragile: one failed on column-aligned CSS tokens, the other
+  died of SIGPIPE on large stylesheets.
+
 ### Changed
 - New README built entirely from real GNOME 51 screenshots: before/after
   against stock GNOME, a feature tour, a "what's inside" map of every
