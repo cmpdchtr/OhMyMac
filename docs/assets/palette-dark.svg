@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="300" viewBox="0 0 1600 300" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+<rect width="1600" height="300" rx="28" fill="#1c1c1e"/>
+<text x="56" y="62" font-size="22" font-weight="700" fill="#ffffff">Accent colours</text>
+<text x="56" y="90" font-size="15" fill="rgba(255,255,255,0.55)">macOS system colours, mapped onto GNOME’s nine accents · Settings → Appearance</text>
+<rect x="56.0" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="131.6" cy="172" r="28" fill="#0a84ff"/>
+<circle cx="131.6" cy="172" r="35" fill="none" stroke="#0a84ff" stroke-width="3"/>
+<text x="131.6" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Blue</text>
+<text x="131.6" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#0A84FF</text>
+<rect x="223.1" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="298.7" cy="172" r="28" fill="#40c8e0"/>
+<text x="298.7" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Teal</text>
+<text x="298.7" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#40C8E0</text>
+<rect x="390.2" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="465.8" cy="172" r="28" fill="#32d74b"/>
+<text x="465.8" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Green</text>
+<text x="465.8" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#32D74B</text>
+<rect x="557.3" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="632.9" cy="172" r="28" fill="#ffd60a"/>
+<text x="632.9" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Yellow</text>
+<text x="632.9" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#FFD60A</text>
+<rect x="724.4" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="800.0" cy="172" r="28" fill="#ff9f0a"/>
+<text x="800.0" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Orange</text>
+<text x="800.0" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#FF9F0A</text>
+<rect x="891.6" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="967.1" cy="172" r="28" fill="#ff453a"/>
+<text x="967.1" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Red</text>
+<text x="967.1" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#FF453A</text>
+<rect x="1058.7" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="1134.2" cy="172" r="28" fill="#ff375f"/>
+<text x="1134.2" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Pink</text>
+<text x="1134.2" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#FF375F</text>
+<rect x="1225.8" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="1301.3" cy="172" r="28" fill="#bf5af2"/>
+<text x="1301.3" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Purple</text>
+<text x="1301.3" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#BF5AF2</text>
+<rect x="1392.9" y="120" width="151.1" height="140" rx="18" fill="#2c2c2e" stroke="rgba(255,255,255,0.08)"/>
+<circle cx="1468.4" cy="172" r="28" fill="#98989d"/>
+<text x="1468.4" y="228" font-size="15" font-weight="600" text-anchor="middle" fill="#ffffff">Slate</text>
+<text x="1468.4" y="248" font-size="12" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">#98989D</text>
+</svg>
