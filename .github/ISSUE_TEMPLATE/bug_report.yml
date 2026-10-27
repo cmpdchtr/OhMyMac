@@ -1,0 +1,38 @@
+name: Bug report
+description: Something looks or behaves wrong
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Screenshots help a lot.
+    validations:
+      required: true
+  - type: input
+    id: distro
+    attributes:
+      label: Distribution and version
+      placeholder: Fedora 45, Ubuntu 26.10, Arch…
+    validations:
+      required: true
+  - type: input
+    id: gnome
+    attributes:
+      label: GNOME version
+      description: Output of `gnome-shell --version`
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [GTK 4 / libadwaita app, GTK 3 app, GNOME Shell, Login screen, Installer, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Installer output
+      description: Run `./install.sh -v` and paste the relevant part.
+      render: shell

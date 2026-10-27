@@ -1,0 +1,28 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac — geometry, typography and motion tokens shared by every target.
+
+$radius-window:   14px;
+$radius-dialog:   18px;
+$radius-popover:  12px;
+$radius-card:     12px;
+$radius-control:  7px;
+$radius-small:    5px;
+$radius-pill:     999px;
+
+// Shell-only geometry
+$shell-panel-height:    30px;
+$shell-radius-menu:     14px;
+$shell-radius-qs:       24px;
+$shell-radius-tile:     16px;
+$shell-radius-dock:     22px;
+$shell-radius-osd:      22px;
+
+$titlebutton-size:      12px;
+$titlebutton-spacing:   8px;
+
+$font-weight-title:     600;
+$font-weight-emphasis:  600;
+
+$duration-fast:   120ms;
+$duration-normal: 200ms;

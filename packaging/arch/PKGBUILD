@@ -1,0 +1,25 @@
+# Maintainer: cmpdchtr <cmpdchtr@gmail.com>
+pkgname=ohmymac-theme
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="macOS-inspired GTK 3, GTK 4/libadwaita and GNOME Shell theme"
+arch=('any')
+url="https://github.com/cmpdchtr/OhMyMac"
+license=('GPL-3.0-or-later')
+makedepends=('dart-sass' 'glib2')
+optdepends=(
+  'gnome-shell-extensions: User Themes extension to load the Shell theme'
+  'inter-font: recommended UI font'
+)
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "OhMyMac-${pkgver}"
+  make build
+}
+
+package() {
+  cd "OhMyMac-${pkgver}"
+  make install DESTDIR="${pkgdir}" PREFIX=/usr
+}

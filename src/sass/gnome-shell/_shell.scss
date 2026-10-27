@@ -1,0 +1,417 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac — GNOME Shell overrides.
+//
+// The installer prepends an @import of the stock stylesheet that matches the
+// running Shell (resource:///org/gnome/shell/theme/gnome-shell-{light,dark}.css
+// on GNOME 47+, gnome-shell.css before that). Everything not restyled here
+// therefore stays upstream-correct across GNOME releases — the theme only has
+// to own the macOS look, not every Shell widget. Tuned against GNOME 51.
+
+@import "../tokens";
+
+$menu-hover-fg: #ffffff;
+
+@mixin glass($bg: $glass-bg, $radius: $shell-radius-menu) {
+  background-color: $bg;
+  border: 1px solid $glass-border;
+  border-radius: $radius;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, if($is-dark, 0.45, 0.20));
+}
+
+// --- Menu bar --------------------------------------------------------------
+#panel {
+  height: $shell-panel-height;
+  background-color: $panel-bg;
+  font-weight: $font-weight-emphasis;
+  transition-duration: 250ms;
+
+  .panel-button {
+    -natural-hpadding: 10px;
+    -minimum-hpadding: 6px;
+    margin: 3px 1px;
+    border-radius: $radius-control;
+    color: $panel-fg;
+    font-weight: $font-weight-emphasis;
+    box-shadow: none;
+    border: none;
+
+    &:hover { background-color: rgba($panel-fg, 0.12); color: $panel-fg; }
+
+    &:active,
+    &:overview,
+    &:focus,
+    &:checked {
+      background-color: rgba($panel-fg, 0.20);
+      color: $panel-fg;
+      box-shadow: none;
+    }
+
+    .system-status-icon,
+    .app-menu-icon > StIcon,
+    .popup-menu-arrow { color: $panel-fg; }
+
+    &.clock-display .clock { font-feature-settings: "tnum"; }
+  }
+
+  // Workspace indicator inside "Activities": slimmer, quieter dots.
+  #panelActivities .workspace-dot {
+    min-height: 6px;
+    min-width: 6px;
+    background-color: rgba($panel-fg, 0.9);
+  }
+
+  .screencast-indicator,
+  .screen-sharing-indicator { color: $panel-fg; }
+
+  // Overview, lock and login screens use a fully transparent bar.
+  &:overview,
+  &.unlock-screen,
+  &.login-screen {
+    background-color: transparent;
+
+    .panel-button { color: #ffffff; }
+    .panel-button .system-status-icon { color: #ffffff; }
+    .panel-button:hover { background-color: rgba(255, 255, 255, 0.14); }
+  }
+}
+
+// --- Popup menus -----------------------------------------------------------
+.popup-menu-boxpointer,
+.candidate-popup-boxpointer {
+  -arrow-rise: 6px;
+}
+
+.popup-menu {
+  min-width: 15em;
+  color: $fg;
+
+  .popup-menu-content {
+    @include glass($glass-bg-strong, $shell-radius-menu);
+    padding: 5px;
+  }
+
+  .popup-menu-item {
+    min-height: 22px;
+    padding: 4px 10px;
+    border-radius: $radius-small + 2px;
+    spacing: 8px;
+    color: $fg;
+
+    &:hover,
+    &:focus,
+    &.selected {
+      background-color: $accent;
+      color: $menu-hover-fg;
+
+      .popup-menu-icon,
+      .popup-menu-ornament { color: $menu-hover-fg; }
+    }
+
+    &:active { background-color: rgba($accent, 0.85); color: $menu-hover-fg; }
+    &:insensitive { color: $fg-dim; }
+  }
+
+  .popup-sub-menu {
+    background-color: rgba(if($is-dark, #ffffff, #000000), 0.05);
+    border-radius: $radius-control;
+  }
+
+  .popup-separator-menu-item .popup-separator-menu-item-separator {
+    height: 1px;
+    margin: 4px 6px;
+    background-color: $border;
+  }
+}
+
+// --- Quick Settings → macOS Control Center ---------------------------------
+.quick-settings {
+  padding: 14px;
+  border-radius: $shell-radius-qs;
+
+  .popup-menu-content & ,
+  &.popup-menu-content {
+    @include glass($glass-bg, $shell-radius-qs);
+  }
+}
+
+.quick-settings-grid {
+  spacing-rows: 10px;
+  spacing-columns: 10px;
+}
+
+.quick-toggle,
+.quick-menu-toggle .quick-toggle {
+  min-height: 48px;
+  border-radius: $shell-radius-tile;
+  background-color: $glass-tile;
+  color: $fg;
+  border: none;
+  box-shadow: none;
+
+  &:hover { background-color: $glass-tile-hover; }
+
+  &:checked {
+    background-color: $accent;
+    color: #ffffff;
+
+    &:hover { background-color: rgba($accent, 0.88); }
+    .quick-toggle-title, .quick-toggle-subtitle, .quick-toggle-icon { color: #ffffff; }
+  }
+
+  .quick-toggle-title { font-weight: $font-weight-emphasis; }
+  .quick-toggle-subtitle { color: $fg-dim; font-weight: normal; }
+}
+
+.quick-menu-toggle {
+  .quick-toggle-arrow {
+    border-radius: 0 $shell-radius-tile $shell-radius-tile 0;
+    background-color: $glass-tile;
+
+    &:hover { background-color: $glass-tile-hover; }
+  }
+
+  .quick-toggle:checked + .quick-toggle-arrow,
+  &:checked .quick-toggle-arrow { background-color: rgba($accent, 0.82); color: #ffffff; }
+
+  .quick-toggle:ltr { border-radius: $shell-radius-tile 0 0 $shell-radius-tile; }
+  .quick-toggle:only-child { border-radius: $shell-radius-tile; }
+}
+
+.quick-toggle-menu {
+  @include glass($glass-bg-strong, $shell-radius-tile + 4px);
+  padding: 10px;
+  margin: 6px 0;
+
+  .header .icon { border-radius: $radius-pill; background-color: $accent; color: #ffffff; }
+}
+
+.quick-slider,
+.quick-settings .quick-slider {
+  padding: 10px 14px;
+  border-radius: $shell-radius-tile;
+  background-color: $glass-tile;
+
+  .slider-bin { padding: 4px; border-radius: $radius-pill; }
+  .icon-button { border-radius: $radius-pill; }
+}
+
+.quick-settings-system-item .icon-button,
+.quick-settings .icon-button {
+  border-radius: $radius-pill;
+  background-color: $glass-tile;
+  &:hover { background-color: $glass-tile-hover; }
+}
+
+// Sliders everywhere (Quick Settings, OSD, media).
+.slider {
+  height: 22px;
+  -barlevel-height: 6px;
+  -barlevel-background-color: $trough;
+  -barlevel-active-background-color: $accent;
+  -barlevel-overdrive-color: $warning;
+  -slider-handle-radius: 10px;
+  -slider-handle-border-width: 0;
+  color: $knob;
+}
+
+// --- Date menu / Notification Center ---------------------------------------
+#calendarArea {
+  padding: 8px;
+}
+
+.datemenu-popover .popup-menu-content,
+#calendarArea.popup-menu-content {
+  @include glass($glass-bg, $shell-radius-qs);
+}
+
+.datemenu-today-button,
+.events-button,
+.world-clocks-button,
+.weather-button,
+.message-list-section .message,
+.message {
+  border-radius: $shell-radius-tile;
+}
+
+.datemenu-today-button .date-label { font-weight: 700; }
+
+.calendar {
+  border-radius: $shell-radius-tile;
+  background-color: $glass-tile;
+
+  .calendar-day { border-radius: $radius-pill; font-feature-settings: "tnum"; }
+  .calendar-today,
+  .calendar-today:selected {
+    background-color: $destructive;
+    color: #ffffff;
+    font-weight: 700;
+  }
+}
+
+.message {
+  background-color: $glass-bg-strong;
+  border: 1px solid $glass-border;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, if($is-dark, 0.35, 0.12));
+
+  &:hover { background-color: $glass-bg-strong; }
+
+  .message-title { font-weight: 700; }
+}
+
+.notification-banner {
+  border-radius: $shell-radius-tile + 2px;
+  @include glass($glass-bg-strong, $shell-radius-tile + 2px);
+}
+
+// --- Dash / Dock -----------------------------------------------------------
+#dash {
+  padding: 6px 0;
+
+  .dash-background {
+    @include glass($glass-bg, $shell-radius-dock);
+  }
+
+  .dash-separator { width: 1px; background-color: $border; margin: 0 4px; }
+}
+
+.dash-item-container .overview-tile,
+.dash-item-container .show-apps {
+  border-radius: $radius-card + 2px;
+  &:hover { background-color: rgba(if($is-dark, #ffffff, #000000), 0.10); }
+}
+
+.app-grid-running-dot,
+.app-well-app-running-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 2px;
+  background-color: $fg;
+}
+
+// Dash to Dock (when installed) reuses the same glass look.
+#dashtodockContainer {
+  .dash-background {
+    @include glass($glass-bg, $shell-radius-dock);
+  }
+
+  &.bottom #dash { margin-bottom: 6px; }
+  .app-well-app-running-dot,
+  .app-grid-running-dot { background-color: $fg; }
+}
+
+// --- Overview, search, app grid --------------------------------------------
+.search-entry {
+  border-radius: $radius-card;
+  padding: 7px 12px;
+  background-color: $glass-bg;
+  border: 1px solid $glass-border;
+  color: $fg;
+
+  &:focus { border-color: $accent; box-shadow: inset 0 0 0 1px $accent; }
+}
+
+.overview-tile,
+.app-folder,
+.grid-search-result {
+  border-radius: $radius-card + 6px;
+}
+
+.app-folder-dialog {
+  @include glass($glass-bg, 30px);
+  padding: 18px;
+}
+
+.search-section-content {
+  border-radius: $shell-radius-tile + 4px;
+  background-color: $glass-bg;
+}
+
+.workspace-thumbnail,
+.workspace-background {
+  border-radius: $radius-window;
+}
+
+.window-clone-border {
+  border-radius: $radius-window + 4px;
+  border-color: rgba($accent, 0.8);
+}
+
+// --- Switchers -------------------------------------------------------------
+.switcher-list,
+.workspace-switcher,
+.ws-switcher-box {
+  @include glass($glass-bg-strong, $shell-radius-osd);
+  padding: 12px;
+
+  .item-box { border-radius: $radius-card + 4px; }
+  .item-box:selected { background-color: rgba(if($is-dark, #ffffff, #000000), 0.12); }
+}
+
+// --- OSD -------------------------------------------------------------------
+.osd-window {
+  @include glass($glass-bg-strong, $shell-radius-osd);
+  padding: 14px 18px;
+  color: $fg;
+
+  .osd-monitor-label { font-weight: 700; }
+}
+
+// --- Modal dialogs ---------------------------------------------------------
+.modal-dialog {
+  @include glass($glass-bg-strong, $radius-dialog + 4px);
+  color: $fg;
+
+  .modal-dialog-content-box { padding: 24px 24px 12px; }
+  .message-dialog-title,
+  .headline { font-weight: 700; }
+
+  .modal-dialog-button-box {
+    padding: 0 14px 14px;
+    spacing: 10px;
+    background: none;
+    border: none;
+
+    .modal-dialog-button {
+      border-radius: $radius-control + 1px;
+      background-color: $glass-tile;
+      color: $fg;
+      &:hover { background-color: $glass-tile-hover; }
+      &:default { background-color: $accent; color: #ffffff; }
+      &:focus { box-shadow: inset 0 0 0 2px $focus-ring; }
+    }
+  }
+}
+
+// --- Lock screen -----------------------------------------------------------
+.unlock-dialog-clock {
+  .unlock-dialog-clock-time {
+    font-size: 88pt;
+    font-weight: 700;
+    font-feature-settings: "tnum";
+  }
+
+  .unlock-dialog-clock-date {
+    font-size: 18pt;
+    font-weight: 600;
+  }
+}
+
+.login-dialog,
+.unlock-dialog {
+  .user-icon { border-radius: $radius-pill; }
+
+  .login-dialog-prompt-entry,
+  StEntry {
+    border-radius: $radius-pill;
+    background-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}
+
+// --- Screenshot UI ---------------------------------------------------------
+.screenshot-ui-panel {
+  @include glass($glass-bg-strong, $radius-dialog + 10px);
+}

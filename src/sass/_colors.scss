@@ -1,0 +1,77 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac — semantic colours for the active `$variant` ("light" | "dark").
+// Entry points must set `$variant` before importing this file.
+
+@import "palette";
+
+$is-dark: $variant == "dark";
+
+@function pick($light, $dark) {
+  @if $is-dark { @return $dark; }
+  @return $light;
+}
+
+$accent:          pick($light-blue, $dark-blue);
+$accent-fg:       #ffffff;
+$accent-soft:     rgba($accent, 0.18);
+$focus-ring:      rgba($accent, 0.5);
+
+$destructive:     pick($light-red, $dark-red);
+$success:         pick($light-green, $dark-green);
+$warning:         pick($light-orange, $dark-orange);
+$error:           pick($light-red, $dark-red);
+
+$window-bg:       pick($light-window-bg, $dark-window-bg);
+$view-bg:         pick($light-view-bg, $dark-view-bg);
+$headerbar-bg:    pick($light-headerbar-bg, $dark-headerbar-bg);
+$sidebar-bg:      pick($light-sidebar-bg, $dark-sidebar-bg);
+$sidebar-bg-2:    pick($light-sidebar-bg-2, $dark-sidebar-bg-2);
+$card-bg:         pick($light-card-bg, $dark-card-bg);
+$popover-bg:      pick($light-popover-bg, $dark-popover-bg);
+$dialog-bg:       pick($light-dialog-bg, $dark-dialog-bg);
+
+$fg:              pick($light-fg, $dark-fg);
+$fg-dim:          pick($light-fg-dim, $dark-fg-dim);
+$border:          pick($light-border, $dark-border);
+$shade:           pick($light-shade, $dark-shade);
+
+// Interactive fills (buttons, rows)
+$control-bg:          pick(#ffffff, rgba(255, 255, 255, 0.14));
+$control-bg-hover:    pick(#fafafa, rgba(255, 255, 255, 0.19));
+$control-bg-active:   pick(#e4e4e4, rgba(255, 255, 255, 0.24));
+$control-border:      pick(rgba(0, 0, 0, 0.14), rgba(255, 255, 255, 0.06));
+$control-shadow:      pick(0 0.5px 1.5px rgba(0, 0, 0, 0.18), 0 0.5px 1px rgba(0, 0, 0, 0.35));
+$row-hover:           pick(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.06));
+$row-selected:        pick(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.11));
+$entry-bg:            pick(#ffffff, rgba(255, 255, 255, 0.07));
+$trough:              pick(rgba(0, 0, 0, 0.10), rgba(255, 255, 255, 0.15));
+$switch-off:          pick(rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.20));
+$knob:                pick(#ffffff, #e9e9ea);
+
+$titlebutton-backdrop: pick(#d1d0d2, #4e4e50);
+$window-shadow:        pick(
+  (0 22px 50px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.18)),
+  (0 22px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.70))
+);
+$popover-shadow:       pick(
+  (0 10px 28px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(0, 0, 0, 0.20)),
+  (0 10px 28px rgba(0, 0, 0, 0.50), 0 0 0 0.5px rgba(0, 0, 0, 0.80))
+);
+
+// Shell "glass" surfaces. The shell has no live backdrop blur by itself;
+// these are tuned to look right on their own and even better with
+// Blur my Shell.
+$glass-bg:          pick(rgba(246, 246, 248, 0.78), rgba(36, 36, 38, 0.72));
+$glass-bg-strong:   pick(rgba(250, 250, 252, 0.92), rgba(40, 40, 42, 0.90));
+$glass-border:      pick(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
+$glass-tile:        pick(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.10));
+$glass-tile-hover:  pick(rgba(0, 0, 0, 0.10), rgba(255, 255, 255, 0.16));
+$panel-bg:          pick(rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0.28));
+$panel-fg:          pick(rgba(0, 0, 0, 0.88), #ffffff);
+
+// Colours interpolated into custom properties / @define-color must be
+// stringified first, otherwise Sass may print them as keywords ("white").
+@function css($value) {
+  @return "" + $value;
+}

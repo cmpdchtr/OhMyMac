@@ -1,0 +1,12 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac for GTK 3 — light.
+// Built on the Adwaita stylesheet compiled into libgtk-3, so every widget
+// OhMyMac does not restyle keeps a correct, upstream-maintained look.
+
+@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");
+
+$variant: "light";
+@import "../tokens";
+@import "../colors";
+@import "widgets";

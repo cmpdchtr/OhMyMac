@@ -1,0 +1,64 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac — base palette.
+//
+// System colours approximate the macOS "Tahoe" dynamic colours. Every colour
+// has a light and a dark value; `_colors.scss` picks one set based on
+// `$variant`. Keep this file free of logic so it can be read like a spec.
+
+// --- Accents ---------------------------------------------------------------
+$light-blue:     #007aff;
+$dark-blue:      #0a84ff;
+$light-teal:     #30b0c7;
+$dark-teal:      #40c8e0;
+$light-green:    #28cd41;
+$dark-green:     #32d74b;
+$light-yellow:   #ffcc00;
+$dark-yellow:    #ffd60a;
+$light-orange:   #ff9500;
+$dark-orange:    #ff9f0a;
+$light-red:      #ff3b30;
+$dark-red:       #ff453a;
+$light-pink:     #ff2d55;
+$dark-pink:      #ff375f;
+$light-purple:   #af52de;
+$dark-purple:    #bf5af2;
+$light-slate:    #8e8e93;
+$dark-slate:     #98989d;
+
+// --- Traffic lights --------------------------------------------------------
+$tl-close:          #ff5f57;
+$tl-close-border:   #e0443e;
+$tl-minimize:       #febc2e;
+$tl-minimize-border:#dea123;
+$tl-maximize:       #28c840;
+$tl-maximize-border:#1aab29;
+$tl-glyph:          rgba(0, 0, 0, 0.55);
+
+// --- Surfaces: light -------------------------------------------------------
+$light-window-bg:     #ececec;
+$light-view-bg:       #ffffff;
+$light-headerbar-bg:  #f6f6f6;
+$light-sidebar-bg:    #e9e7ea;
+$light-sidebar-bg-2:  #f1f0f2;
+$light-card-bg:       #ffffff;
+$light-popover-bg:    #f6f6f6;
+$light-dialog-bg:     #f2f2f2;
+$light-fg:            rgba(0, 0, 0, 0.85);
+$light-fg-dim:        rgba(0, 0, 0, 0.50);
+$light-border:        rgba(0, 0, 0, 0.12);
+$light-shade:         rgba(0, 0, 0, 0.07);
+
+// --- Surfaces: dark --------------------------------------------------------
+$dark-window-bg:      #252527;
+$dark-view-bg:        #1e1e1e;
+$dark-headerbar-bg:   #2c2c2e;
+$dark-sidebar-bg:     #2a2a2c;
+$dark-sidebar-bg-2:   #232325;
+$dark-card-bg:        #2c2c2e;
+$dark-popover-bg:     #2f2f31;
+$dark-dialog-bg:      #2c2c2e;
+$dark-fg:             rgba(255, 255, 255, 0.88);
+$dark-fg-dim:         rgba(255, 255, 255, 0.55);
+$dark-border:         rgba(255, 255, 255, 0.10);
+$dark-shade:          rgba(0, 0, 0, 0.36);

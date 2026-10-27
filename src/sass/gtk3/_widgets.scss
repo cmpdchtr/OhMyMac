@@ -1,0 +1,360 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac — GTK 3 overrides layered on top of the Adwaita stylesheet that
+// ships inside libgtk-3 (imported by the entry point). GTK 3 has no CSS
+// variables, so this file is compiled once per variant.
+
+@import "../tokens";
+
+// Named colours for applications that read them.
+@define-color theme_bg_color #{css($window-bg)};
+@define-color theme_fg_color #{css($fg)};
+@define-color theme_base_color #{css($view-bg)};
+@define-color theme_text_color #{css($fg)};
+@define-color theme_selected_bg_color #{css($accent)};
+@define-color theme_selected_fg_color #{css($accent-fg)};
+@define-color accent_color #{css($accent)};
+@define-color accent_bg_color #{css($accent)};
+@define-color accent_fg_color #{css($accent-fg)};
+@define-color window_bg_color #{css($window-bg)};
+@define-color window_fg_color #{css($fg)};
+@define-color view_bg_color #{css($view-bg)};
+@define-color view_fg_color #{css($fg)};
+@define-color headerbar_bg_color #{css($headerbar-bg)};
+@define-color headerbar_fg_color #{css($fg)};
+@define-color popover_bg_color #{css($popover-bg)};
+@define-color popover_fg_color #{css($fg)};
+@define-color card_bg_color #{css($card-bg)};
+@define-color borders #{css($border)};
+
+// --- Surfaces --------------------------------------------------------------
+window.background,
+.background,
+dialog .dialog-vbox {
+  background-color: $window-bg;
+  color: $fg;
+}
+
+.view,
+iconview,
+textview > text,
+treeview.view,
+.sidebar.view,
+scrolledwindow > viewport.frame {
+  background-color: $view-bg;
+  color: $fg;
+}
+
+.view:selected,
+.view text:selected,
+treeview.view:selected,
+iconview:selected,
+textview text selection,
+entry selection,
+label selection,
+flowboxchild:selected {
+  background-color: $accent;
+  color: $accent-fg;
+}
+
+decoration {
+  border-radius: $radius-window $radius-window 0 0;
+  box-shadow: $window-shadow;
+}
+
+.maximized decoration,
+.tiled decoration,
+.fullscreen decoration { border-radius: 0; }
+
+// --- Header bars -----------------------------------------------------------
+headerbar,
+.titlebar:not(headerbar) {
+  min-height: 40px;
+  padding: 0 8px;
+  background: $headerbar-bg;
+  color: $fg;
+  border-color: $border;
+  box-shadow: inset 0 -1px $border;
+
+  &:backdrop { background: $headerbar-bg; color: $fg-dim; }
+
+  .title { font-weight: $font-weight-title; }
+  .subtitle { color: $fg-dim; }
+}
+
+window.csd > .titlebar,
+.csd headerbar.titlebar,
+.csd .titlebar headerbar:first-child {
+  border-radius: $radius-window $radius-window 0 0;
+}
+
+.maximized .titlebar,
+.tiled .titlebar { border-radius: 0; }
+
+// --- Traffic lights --------------------------------------------------------
+@mixin traffic-light($bg, $border) {
+  background-color: $bg;
+  box-shadow: inset 0 0 0 1px $border;
+}
+
+headerbar button.titlebutton,
+.titlebar button.titlebutton {
+  min-width: $titlebutton-size;
+  min-height: $titlebutton-size;
+  margin: 0 ($titlebutton-spacing * 0.5);
+  padding: 0;
+  border: none;
+  border-radius: $radius-pill;
+  background-image: none;
+  color: transparent;
+  -gtk-icon-shadow: none;
+
+  image { -gtk-icon-transform: scale(0.6); color: transparent; }
+
+  &.close    { @include traffic-light($tl-close, $tl-close-border); }
+  &.minimize { @include traffic-light($tl-minimize, $tl-minimize-border); }
+  &.maximize { @include traffic-light($tl-maximize, $tl-maximize-border); }
+
+  &:hover image { color: $tl-glyph; }
+
+  &:backdrop:not(:hover) {
+    background-color: $titlebutton-backdrop;
+    box-shadow: none;
+  }
+}
+
+// --- Buttons ---------------------------------------------------------------
+button:not(.titlebutton) {
+  border-radius: $radius-control;
+  min-height: 22px;
+  padding: 3px 12px;
+}
+
+button:not(.flat):not(.titlebutton):not(.suggested-action):not(.destructive-action):not(.sidebar-button) {
+  background-image: none;
+  background-color: $control-bg;
+  border-color: $control-border;
+  color: $fg;
+  box-shadow: $control-shadow;
+
+  &:hover { background-color: $control-bg-hover; }
+  &:active, &:checked { background-color: $control-bg-active; }
+  &:disabled { background-color: transparent; box-shadow: none; }
+}
+
+button.suggested-action,
+button.default {
+  background-image: none;
+  background-color: $accent;
+  border-color: transparent;
+  color: $accent-fg;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 0.5px 1.5px rgba(0, 0, 0, 0.25);
+}
+
+button.destructive-action {
+  background-image: none;
+  background-color: $destructive;
+  border-color: transparent;
+  color: #ffffff;
+}
+
+// --- Entries ---------------------------------------------------------------
+entry,
+spinbutton:not(.vertical) {
+  min-height: 24px;
+  border-radius: $radius-control;
+  background-image: none;
+  background-color: $entry-bg;
+  border-color: $control-border;
+  color: $fg;
+  box-shadow: none;
+
+  &:focus {
+    border-color: $accent;
+    box-shadow: 0 0 0 3px $focus-ring;
+  }
+}
+
+// --- Switch, check, radio, scale -------------------------------------------
+switch {
+  min-width: 36px;
+  min-height: 20px;
+  border-radius: $radius-pill;
+  border: none;
+  background-image: none;
+  background-color: $switch-off;
+  color: transparent;
+  font-size: 0;
+
+  &:checked { background-color: $accent; }
+
+  slider {
+    min-width: 20px;
+    min-height: 20px;
+    border: none;
+    border-radius: $radius-pill;
+    background-image: none;
+    background-color: $knob;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+}
+
+check,
+radio {
+  min-width: 14px;
+  min-height: 14px;
+  border: 1px solid $control-border;
+  background-image: none;
+  background-color: $control-bg;
+  box-shadow: $control-shadow;
+
+  &:checked,
+  &:indeterminate {
+    border-color: transparent;
+    background-color: $accent;
+    color: $accent-fg;
+  }
+}
+
+check { border-radius: 4px; }
+radio { border-radius: $radius-pill; }
+
+scale {
+  trough {
+    min-height: 4px;
+    min-width: 4px;
+    border: none;
+    border-radius: $radius-pill;
+    background-color: $trough;
+  }
+
+  highlight {
+    border: none;
+    border-radius: $radius-pill;
+    background-image: none;
+    background-color: $accent;
+  }
+
+  slider {
+    min-width: 20px;
+    min-height: 20px;
+    margin: -9px;
+    border: none;
+    border-radius: $radius-pill;
+    background-image: none;
+    background-color: $knob;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+  }
+}
+
+progressbar trough,
+levelbar trough {
+  border: none;
+  border-radius: $radius-pill;
+  background-color: $trough;
+}
+
+progressbar progress,
+levelbar block.filled {
+  border: none;
+  border-radius: $radius-pill;
+  background-image: none;
+  background-color: $accent;
+}
+
+// --- Menus, popovers, tooltips ---------------------------------------------
+menu,
+.menu,
+.context-menu,
+popover.background {
+  border-radius: $radius-popover;
+  padding: 5px;
+  background-color: $popover-bg;
+  color: $fg;
+  border: 1px solid $border;
+}
+
+menu menuitem,
+.menu menuitem,
+popover modelbutton {
+  min-height: 22px;
+  padding: 2px 10px;
+  border-radius: $radius-small;
+
+  &:hover {
+    background-color: $accent;
+    color: $accent-fg;
+  }
+}
+
+window.popup { background-color: transparent; }
+
+tooltip.background,
+tooltip {
+  border-radius: $radius-small;
+  background-color: $popover-bg;
+  color: $fg;
+  border: 1px solid $border;
+  box-shadow: none;
+
+  * { color: $fg; }
+}
+
+// --- Sidebars --------------------------------------------------------------
+.sidebar,
+placessidebar,
+stacksidebar {
+  background-color: $sidebar-bg;
+  border-color: $border;
+
+  list { background-color: transparent; }
+
+  row {
+    margin: 1px 8px;
+    border-radius: $radius-control;
+    min-height: 28px;
+
+    &:hover { background-color: $row-hover; }
+    &:selected { background-color: $row-selected; color: $fg; }
+    &:selected label, &:selected image { color: $fg; }
+  }
+}
+
+// --- Scrollbars ------------------------------------------------------------
+scrollbar {
+  background: none;
+  border: none;
+
+  slider {
+    min-width: 7px;
+    min-height: 7px;
+    border: none;
+    border-radius: $radius-pill;
+    background-color: rgba(pick(#000000, #ffffff), 0.38);
+  }
+
+  &.overlay-indicator:not(.dragging):not(.hovering) slider {
+    min-width: 4px;
+    min-height: 4px;
+  }
+}
+
+// --- Notebooks -------------------------------------------------------------
+notebook > header {
+  background-color: $window-bg;
+  border-color: $border;
+
+  tab {
+    border-radius: $radius-control;
+    margin: 4px 2px;
+    min-height: 24px;
+
+    &:checked { background-color: $control-bg; box-shadow: $control-shadow; }
+  }
+
+  &.top > tabs > tab:checked,
+  &.bottom > tabs > tab:checked { box-shadow: $control-shadow; }
+}
+
+// --- Misc ------------------------------------------------------------------
+*:link, button:link { color: $accent; }

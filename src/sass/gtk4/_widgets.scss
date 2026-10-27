@@ -1,0 +1,350 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac — GTK 4 / libadwaita widget overrides.
+//
+// Only `var(--…)` references live here, so a single stylesheet serves light
+// and dark: tokens are swapped with `prefers-color-scheme` (GTK >= 4.16).
+
+@import "../tokens";
+
+// --- Windows ---------------------------------------------------------------
+window.csd:not(.maximized):not(.fullscreen):not(.tiled):not(.tiled-top):not(.tiled-bottom):not(.tiled-left):not(.tiled-right) {
+  border-radius: $radius-window;
+}
+
+window.csd > .titlebar,
+window.csd > headerbar {
+  border-top-left-radius: $radius-window;
+  border-top-right-radius: $radius-window;
+}
+
+// --- Header bars -----------------------------------------------------------
+headerbar {
+  min-height: 42px;
+  padding: 0 8px;
+  box-shadow: inset 0 -1px var(--ohm-border);
+
+  .title,
+  windowtitle .title {
+    font-weight: $font-weight-title;
+  }
+
+  windowtitle .subtitle {
+    color: var(--ohm-fg-dim);
+  }
+
+  &.flat,
+  .toolbar-view & {
+    box-shadow: none;
+  }
+}
+
+toolbarview > .top-bar.raised headerbar,
+toolbarview > .top-bar.raised {
+  box-shadow: 0 1px var(--ohm-border);
+}
+
+// --- Window controls: traffic lights ---------------------------------------
+@mixin traffic-light($bg, $border) {
+  background-color: $bg;
+  box-shadow: inset 0 0 0 0.5px $border;
+}
+
+windowcontrols {
+  margin: 0 2px;
+
+  > button {
+    min-width: $titlebutton-size;
+    min-height: $titlebutton-size;
+    padding: 0;
+    margin: 0 ($titlebutton-spacing * 0.5);
+    border-radius: $radius-pill;
+    background-image: none;
+    color: transparent;
+    transition: background-color $duration-fast ease-out;
+
+    > image {
+      padding: 0;
+      -gtk-icon-size: 8px;
+      color: transparent;
+      transition: color $duration-fast ease-out;
+    }
+
+    &.close    { @include traffic-light($tl-close, $tl-close-border); }
+    &.minimize { @include traffic-light($tl-minimize, $tl-minimize-border); }
+    &.maximize { @include traffic-light($tl-maximize, $tl-maximize-border); }
+
+    &:active { filter: brightness(0.82); }
+  }
+
+  &:hover > button > image { color: $tl-glyph; }
+
+  &:backdrop:not(:hover) > button {
+    background-color: var(--ohm-titlebutton-backdrop);
+    box-shadow: none;
+  }
+}
+
+// --- Buttons ---------------------------------------------------------------
+button {
+  border-radius: $radius-control;
+  min-height: 24px;
+  padding: 3px 12px;
+  font-weight: normal;
+
+  &.pill { border-radius: $radius-pill; padding: 7px 28px; }
+  &.circular { border-radius: $radius-pill; }
+
+  &.suggested-action {
+    font-weight: 500;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.20), 0 0.5px 1.5px rgba(0, 0, 0, 0.25);
+  }
+
+  &.destructive-action {
+    font-weight: 500;
+  }
+}
+
+.linked:not(.vertical) > button:not(:first-child),
+.linked:not(.vertical) > menubutton:not(:first-child) > button {
+  border-left: 1px solid var(--ohm-border);
+}
+
+// Popover / menu buttons in header bars stay flat like macOS toolbars.
+headerbar button:not(.suggested-action):not(.destructive-action) {
+  border-radius: $radius-control;
+}
+
+// --- Entries ---------------------------------------------------------------
+entry,
+spinbutton,
+passwordentry,
+searchbar > revealer > box entry {
+  border-radius: $radius-control;
+  min-height: 26px;
+  background-color: var(--ohm-entry-bg);
+  box-shadow: inset 0 0 0 1px var(--ohm-control-border);
+
+  &:focus-within {
+    box-shadow: inset 0 0 0 1px var(--accent-bg-color);
+    outline: 3px solid color-mix(in srgb, var(--accent-bg-color) 45%, transparent);
+    outline-offset: 0;
+  }
+}
+
+// --- Switches --------------------------------------------------------------
+switch {
+  min-width: 38px;
+  min-height: 22px;
+  padding: 1px;
+  border-radius: $radius-pill;
+  background-color: var(--ohm-switch-off);
+
+  &:checked { background-color: var(--accent-bg-color); }
+
+  > slider {
+    min-width: 20px;
+    min-height: 20px;
+    border-radius: $radius-pill;
+    background-color: var(--ohm-knob);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+  }
+}
+
+// --- Check & radio ---------------------------------------------------------
+check,
+radio {
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0 2px;
+  padding: 1px;
+  background-color: var(--ohm-control-bg);
+  box-shadow: inset 0 0 0 1px var(--ohm-control-border), var(--ohm-control-shadow);
+
+  &:checked,
+  &:indeterminate {
+    background-color: var(--accent-bg-color);
+    color: var(--accent-fg-color);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.15);
+  }
+}
+
+check { border-radius: 4px; }
+radio { border-radius: $radius-pill; }
+
+// --- Scales ----------------------------------------------------------------
+scale {
+  > trough {
+    min-height: 4px;
+    border-radius: $radius-pill;
+    background-color: var(--ohm-trough);
+
+    > highlight { border-radius: $radius-pill; }
+
+    > slider {
+      min-width: 20px;
+      min-height: 20px;
+      margin: -9px;
+      border-radius: $radius-pill;
+      background-color: var(--ohm-knob);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28), 0 0 0 0.5px rgba(0, 0, 0, 0.10);
+    }
+  }
+}
+
+// --- Progress & level bars -------------------------------------------------
+progressbar > trough,
+levelbar > trough {
+  border-radius: $radius-pill;
+  background-color: var(--ohm-trough);
+}
+
+progressbar > trough > progress {
+  border-radius: $radius-pill;
+}
+
+// --- Popovers & menus ------------------------------------------------------
+popover > contents,
+popover.background > contents {
+  border-radius: $radius-popover;
+  padding: 5px;
+  box-shadow: var(--ohm-popover-shadow);
+}
+
+popover.menu {
+  > contents { padding: 5px; }
+
+  modelbutton,
+  menuitem {
+    min-height: 24px;
+    padding: 2px 10px;
+    border-radius: $radius-small;
+
+    &:hover,
+    &:focus-visible,
+    &:selected {
+      background-color: var(--accent-bg-color);
+      color: var(--accent-fg-color);
+
+      accelerator { color: color-mix(in srgb, var(--accent-fg-color) 75%, transparent); }
+    }
+  }
+
+  separator { margin: 5px 10px; }
+}
+
+tooltip {
+  border-radius: $radius-small;
+  padding: 4px 8px;
+
+  &.background { background-color: var(--popover-bg-color); color: var(--popover-fg-color); }
+  > box { border-spacing: 6px; }
+}
+
+// --- Lists & sidebars ------------------------------------------------------
+.navigation-sidebar,
+placessidebar list {
+  padding: 6px 10px;
+  background: none;
+
+  > row {
+    min-height: 28px;
+    margin: 1px 0;
+    padding: 0 8px;
+    border-radius: $radius-control;
+
+    &:hover { background-color: var(--ohm-row-hover); }
+    &:selected { background-color: var(--ohm-row-selected); color: inherit; }
+    &:selected:focus-within { background-color: color-mix(in srgb, var(--accent-bg-color) 22%, transparent); }
+  }
+}
+
+.sidebar-pane,
+.navigation-sidebar,
+.sidebar {
+  font-weight: 500;
+}
+
+list.boxed-list,
+.boxed-list,
+.card {
+  border-radius: $radius-card;
+}
+
+list.boxed-list > row:first-child { border-top-left-radius: $radius-card; border-top-right-radius: $radius-card; }
+list.boxed-list > row:last-child  { border-bottom-left-radius: $radius-card; border-bottom-right-radius: $radius-card; }
+
+list:not(.navigation-sidebar) > row:selected:not(.activatable) {
+  background-color: color-mix(in srgb, var(--accent-bg-color) 20%, transparent);
+}
+
+columnview > listview > row:selected,
+gridview > child:selected {
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+  border-radius: $radius-small;
+}
+
+// --- Scrollbars: thin, overlay, macOS-like ---------------------------------
+scrollbar {
+  > range > trough { background: none; }
+
+  > range > trough > slider {
+    min-width: 7px;
+    min-height: 7px;
+    border-radius: $radius-pill;
+    background-color: color-mix(in srgb, var(--window-fg-color) 40%, transparent);
+  }
+
+  &:hover > range > trough > slider { min-width: 9px; min-height: 9px; }
+}
+
+// --- Tabs ------------------------------------------------------------------
+tabbar .box { padding: 4px; }
+
+tabbar tab {
+  border-radius: $radius-control;
+  min-height: 26px;
+
+  &:selected { background-color: var(--ohm-control-bg); box-shadow: var(--ohm-control-shadow); }
+}
+
+// --- Dialogs ---------------------------------------------------------------
+floating-sheet > sheet,
+dialog.floating sheet,
+window.dialog.message,
+window.messagedialog {
+  border-radius: $radius-dialog;
+}
+
+dialog.alert,
+window.messagedialog {
+  .message-area .title,
+  .heading { font-weight: 700; }
+
+  .response-area > button {
+    border-radius: $radius-control;
+    margin: 0 4px 4px;
+  }
+}
+
+// --- Toasts, banners, OSD --------------------------------------------------
+toast {
+  border-radius: $radius-card;
+  padding: 6px 10px;
+  box-shadow: var(--ohm-popover-shadow);
+}
+
+.osd.toolbar,
+.app-notification {
+  border-radius: $radius-card;
+}
+
+// --- Misc ------------------------------------------------------------------
+.title-1, .title-2, .title-3, .title-4 { font-weight: 700; }
+
+selection {
+  background-color: color-mix(in srgb, var(--accent-bg-color) 32%, transparent);
+}
+
+link, .link { color: var(--accent-color); }

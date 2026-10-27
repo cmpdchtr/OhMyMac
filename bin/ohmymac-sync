@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# ohmymac-sync — keeps GTK 3, the Shell theme and icons in step with
+# GNOME's light/dark switch (Settings → Appearance, Quick Settings).
+# libadwaita and GTK 4 follow the switch natively; GTK 3 and user Shell
+# themes do not, so this small watcher flips them.
+#
+# Usage: ohmymac-sync [--once]
+
+set -uo pipefail
+
+: "${XDG_DATA_HOME:=${HOME}/.local/share}"
+
+schemadir_for() {
+  local schema="$1" dir
+  if gsettings list-schemas 2>/dev/null | grep -qxF "${schema}"; then return 0; fi
+  for dir in "${XDG_DATA_HOME}"/gnome-shell/extensions/*/schemas /usr/share/gnome-shell/extensions/*/schemas; do
+    [[ -f "${dir}/gschemas.compiled" ]] || continue
+    if gsettings --schemadir "${dir}" list-schemas 2>/dev/null | grep -qxF "${schema}"; then
+      echo "${dir}"
+      return 0
+    fi
+  done
+  return 1
+}
+
+icon_theme_exists() {
+  local name="$1" dir
+  for dir in "${XDG_DATA_HOME}/icons" "${HOME}/.icons" /usr/share/icons /usr/local/share/icons; do
+    [[ -f "${dir}/${name}/index.theme" ]] && return 0
+  done
+  return 1
+}
+
+apply() {
+  local scheme variant current icons dir
+  scheme="$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)"
+  if [[ "${scheme}" == "'prefer-dark'" ]]; then variant=Dark; else variant=Light; fi
+
+  current="$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"
+  # Only manage the theme while the user is on OhMyMac.
+  [[ "${current}" == "'OhMyMac-"* ]] || return 0
+
+  [[ "${current}" == "'OhMyMac-${variant}'" ]] ||
+    gsettings set org.gnome.desktop.interface gtk-theme "OhMyMac-${variant}"
+
+  if dir="$(schemadir_for org.gnome.shell.extensions.user-theme)"; then
+    if [[ -n "${dir}" ]]; then
+      gsettings --schemadir "${dir}" set org.gnome.shell.extensions.user-theme name "OhMyMac-${variant}"
+    else
+      gsettings set org.gnome.shell.extensions.user-theme name "OhMyMac-${variant}"
+    fi
+  fi
+
+  icons="$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null)"
+  if [[ "${icons}" == "'MacTahoe"* ]]; then
+    local want="MacTahoe-light"
+    [[ "${variant}" == Dark ]] && want="MacTahoe-dark"
+    if icon_theme_exists "${want}" && [[ "${icons}" != "'${want}'" ]]; then
+      gsettings set org.gnome.desktop.interface icon-theme "${want}"
+    fi
+  fi
+}
+
+# Distribution packages ship the libadwaita stylesheet system-wide; link it
+# into the user's GTK 4 config unless the user already has their own.
+link_libadwaita_css() {
+  local shared user="${XDG_CONFIG_HOME:-${HOME}/.config}/gtk-4.0/gtk.css"
+  for shared in /usr/share/ohmymac/libadwaita/gtk.css /usr/local/share/ohmymac/libadwaita/gtk.css; do
+    if [[ -f "${shared}" && ! -e "${user}" && ! -L "${user}" ]]; then
+      mkdir -p "$(dirname "${user}")" && ln -s "${shared}" "${user}"
+      return
+    fi
+  done
+}
+
+link_libadwaita_css
+apply
+[[ "${1:-}" == "--once" ]] && exit 0
+
+gsettings monitor org.gnome.desktop.interface color-scheme | while read -r _; do
+  apply
+done

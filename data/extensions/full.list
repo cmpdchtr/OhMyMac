@@ -1,0 +1,6 @@
+# OhMyMac — full profile: everything, including heavier tweaks.
+@include recommended
+kiwi@kemma                                                 # macOS window controls & behaviours
+just-perfection-desktop@just-perfection                    # Fine-grained Shell tweaks
+rounded-window-corners@fxgn                                # Rounded corners for every window
+top-bar-organizer@julian.gse.jsts.xyz                      # Reorder menu bar items

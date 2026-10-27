@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<wallpapers>
+  <wallpaper deleted="false">
+    <name>OhMyMac Lake</name>
+    <filename>@DIR@/ohmymac-light.svg</filename>
+    <filename-dark>@DIR@/ohmymac-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#cfe3ff</pcolor>
+    <scolor>#0b1226</scolor>
+  </wallpaper>
+</wallpapers>

@@ -1,0 +1,79 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// Emits libadwaita's public CSS variables (libadwaita >= 1.6) plus OhMyMac's
+// own `--ohm-*` variables for the colour set currently loaded by
+// `_colors.scss`. Called once for light and once for dark.
+
+@mixin gtk4-tokens {
+  // macOS accent palette — libadwaita resolves the user's accent
+  // (Settings → Appearance) through these.
+  --accent-blue:   #{css(pick($light-blue, $dark-blue))};
+  --accent-teal:   #{css(pick($light-teal, $dark-teal))};
+  --accent-green:  #{css(pick($light-green, $dark-green))};
+  --accent-yellow: #{css(pick($light-yellow, $dark-yellow))};
+  --accent-orange: #{css(pick($light-orange, $dark-orange))};
+  --accent-red:    #{css(pick($light-red, $dark-red))};
+  --accent-pink:   #{css(pick($light-pink, $dark-pink))};
+  --accent-purple: #{css(pick($light-purple, $dark-purple))};
+  --accent-slate:  #{css(pick($light-slate, $dark-slate))};
+
+  --destructive-bg-color: #{css($destructive)};
+  --success-bg-color:     #{css($success)};
+  --warning-bg-color:     #{css($warning)};
+  --error-bg-color:       #{css($error)};
+
+  --window-bg-color:   #{css($window-bg)};
+  --window-fg-color:   #{css($fg)};
+  --view-bg-color:     #{css($view-bg)};
+  --view-fg-color:     #{css($fg)};
+
+  --headerbar-bg-color:       #{css($headerbar-bg)};
+  --headerbar-fg-color:       #{css($fg)};
+  --headerbar-backdrop-color: #{css($headerbar-bg)};
+  --headerbar-border-color:   #{css($fg)};
+  --headerbar-shade-color:    #{css($border)};
+  --headerbar-darker-shade-color: #{css($border)};
+
+  --sidebar-bg-color:       #{css($sidebar-bg)};
+  --sidebar-fg-color:       #{css($fg)};
+  --sidebar-backdrop-color: #{css($sidebar-bg-2)};
+  --sidebar-border-color:   #{css($border)};
+  --sidebar-shade-color:    #{css($border)};
+  --secondary-sidebar-bg-color:       #{css($sidebar-bg-2)};
+  --secondary-sidebar-fg-color:       #{css($fg)};
+  --secondary-sidebar-backdrop-color: #{css($sidebar-bg-2)};
+  --secondary-sidebar-border-color:   #{css($border)};
+  --secondary-sidebar-shade-color:    #{css($border)};
+
+  --card-bg-color:      #{css($card-bg)};
+  --card-fg-color:      #{css($fg)};
+  --card-shade-color:   #{css($border)};
+  --dialog-bg-color:    #{css($dialog-bg)};
+  --dialog-fg-color:    #{css($fg)};
+  --popover-bg-color:   #{css($popover-bg)};
+  --popover-fg-color:   #{css($fg)};
+  --popover-shade-color:#{css($shade)};
+  --thumbnail-bg-color: #{css($card-bg)};
+  --thumbnail-fg-color: #{css($fg)};
+  --shade-color:        #{css($shade)};
+
+  --window-radius: #{css($radius-window)};
+
+  // OhMyMac private tokens
+  --ohm-fg-dim:            #{css($fg-dim)};
+  --ohm-border:            #{css($border)};
+  --ohm-control-bg:        #{css($control-bg)};
+  --ohm-control-bg-hover:  #{css($control-bg-hover)};
+  --ohm-control-bg-active: #{css($control-bg-active)};
+  --ohm-control-border:    #{css($control-border)};
+  --ohm-control-shadow:    #{css($control-shadow)};
+  --ohm-row-hover:         #{css($row-hover)};
+  --ohm-row-selected:      #{css($row-selected)};
+  --ohm-entry-bg:          #{css($entry-bg)};
+  --ohm-trough:            #{css($trough)};
+  --ohm-switch-off:        #{css($switch-off)};
+  --ohm-knob:              #{css($knob)};
+  --ohm-titlebutton-backdrop: #{css($titlebutton-backdrop)};
+  --ohm-popover-shadow:    #{css($popover-shadow)};
+  --ohm-window-shadow:     #{css($window-shadow)};
+}

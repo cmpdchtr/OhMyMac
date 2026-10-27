@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// OhMyMac for GTK 4 / libadwaita.
+// Installed as ~/.config/gtk-4.0/gtk.css (loaded by every GTK 4 app) and as
+// the gtk-4.0 part of the OhMyMac-* theme directories.
+// Requires GTK >= 4.16 and libadwaita >= 1.6 (GNOME 47+); tuned for GNOME 51.
+
+@import "../tokens";
+
+$variant: "light";
+@import "../colors";
+@import "tokens";
+
+:root { @include gtk4-tokens; }
+
+$variant: "dark";
+@import "../colors";
+
+@media (prefers-color-scheme: dark) {
+  :root { @include gtk4-tokens; }
+}
+
+@import "widgets";

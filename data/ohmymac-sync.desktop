@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=OhMyMac Appearance Sync
+Comment=Keeps GTK 3 and the Shell theme in step with the light/dark setting
+Exec=@BINDIR@/ohmymac-sync
+OnlyShowIn=GNOME;
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Phase=Applications

@@ -1,0 +1,7 @@
+# OhMyMac — recommended profile: the macOS look and feel.
+@include minimal
+dash-to-dock@micxgx.gmail.com                              # Dock
+blur-my-shell@aunetx                                       # Vibrancy: blurred menu bar, dock, overview
+appindicatorsupport@rgcjonas.gmail.com                     # Menu bar extras (tray icons)
+logomenu@aryan_k                                           # Logo menu in the top-left corner
+compiz-alike-magic-lamp-effect@hermes83.github.com         # Genie minimize effect
