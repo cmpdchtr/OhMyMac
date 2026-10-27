@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- New README built entirely from real GNOME 51 screenshots: before/after
+  against stock GNOME, a feature tour, a "what's inside" map of every
+  component and where it comes from. The illustrated banner is gone.
+
 ## [1.3.0] — 2026-10-27
 
 Head-to-head with MacTahoe on GNOME 51 showed its GTK 3 and Shell work is more

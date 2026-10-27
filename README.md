@@ -1,15 +1,10 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
-    <img alt="OhMyMac — a macOS look for GNOME 51" src="docs/assets/banner-light.svg" width="100%">
-  </picture>
-</p>
-
-<h3 align="center">Your GNOME desktop, dressed as macOS Tahoe.</h3>
+<h1 align="center">
+  OhMyMac
+</h1>
 
 <p align="center">
-  GTK 3 &nbsp;·&nbsp; GTK 4 / libadwaita &nbsp;·&nbsp; GNOME Shell &nbsp;·&nbsp; Login screen &nbsp;·&nbsp; Flatpak<br>
-  <sub>One command. Nine distro families. Fully reversible.</sub>
+  <b>Turn GNOME 51 into macOS Tahoe — Liquid Glass and all.</b><br>
+  <sub>One command · any distribution · fully reversible</sub>
 </p>
 
 <p align="center">
@@ -20,145 +15,133 @@
 </p>
 
 <p align="center">
-  <a href="#-quick-start"><b>Quick start</b></a> &nbsp;•&nbsp;
-  <a href="#-features"><b>Features</b></a> &nbsp;•&nbsp;
-  <a href="#-supported-distributions"><b>Distros</b></a> &nbsp;•&nbsp;
-  <a href="#%EF%B8%8F-options"><b>Options</b></a> &nbsp;•&nbsp;
-  <a href="#-how-it-works"><b>How it works</b></a> &nbsp;•&nbsp;
-  <a href="#-faq"><b>FAQ</b></a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/media/hero-dark.webp">
+    <img alt="OhMyMac on GNOME 51: Finder-style Files with a floating sidebar, a glass Dock in macOS order and a transparent menu bar" src="docs/media/hero-light.webp" width="100%">
+  </picture>
 </p>
 
-<br>
-
-## ⚡ Quick start
+<p align="center">
+  <sub>A real, unedited screenshot of GNOME Shell 51.0 on Fedora 45 — every image on this page is.</sub>
+</p>
 
 ```bash
 git clone https://github.com/cmpdchtr/OhMyMac.git && cd OhMyMac && ./install.sh
 ```
 
-Then **log out and back in**. That's it.
-
-> [!TIP]
-> Not sure yet? `./install.sh --dry-run` prints every step without touching your system,
-> and `./uninstall.sh` puts everything back exactly how it was.
-
-<br>
-
-## 📸 Screenshots
-
-<sub>Real screenshots of GNOME Shell 51.0 on Fedora 45 with the default install (MacTahoe base + OhMyMac layer) — no mock-ups.</sub>
-
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.jpg">
-    <img alt="OhMyMac on GNOME 51 — Files and Calculator with a floating sidebar, glass toolbar capsules and a Liquid Glass dock" src="docs/screenshots/desktop-light.jpg" width="100%">
-  </picture>
+  <a href="#-before--after"><b>Before / after</b></a> &nbsp;·&nbsp;
+  <a href="#-the-tour"><b>Tour</b></a> &nbsp;·&nbsp;
+  <a href="#-whats-inside"><b>What's inside</b></a> &nbsp;·&nbsp;
+  <a href="#-install"><b>Install</b></a> &nbsp;·&nbsp;
+  <a href="#-supported-systems"><b>Distros</b></a> &nbsp;·&nbsp;
+  <a href="#-faq"><b>FAQ</b></a>
 </p>
 
+<br>
+
+## 🔁 Before / after
+
+Same machine, same windows, same GNOME 51. One `./install.sh` apart.
+
 <table>
 <tr>
-<td width="50%"><img alt="Notification Center made of Liquid Glass" src="docs/screenshots/notification-center.jpg"></td>
-<td width="50%"><img alt="Launchpad over the blurred wallpaper" src="docs/screenshots/launchpad.jpg"></td>
+<td width="50%" align="center"><b>Stock GNOME 51</b></td>
+<td width="50%" align="center"><b>With OhMyMac</b></td>
 </tr>
 <tr>
-<td align="center"><sub><b>Notification Center</b> — real refraction, not a flat blur</sub></td>
-<td align="center"><sub><b>Launchpad</b> — app grid over the blurred wallpaper</sub></td>
-</tr>
-<tr>
-<td colspan="2"><img alt="Spotlight on Super+Space" src="docs/screenshots/spotlight.jpg"></td>
-</tr>
-<tr>
-<td colspan="2" align="center"><sub><b>Spotlight</b> on <kbd>Super</kbd>+<kbd>Space</kbd> — apps, settings, files and maths, on glass</sub></td>
+<td><img alt="Stock GNOME 51 with Files and Calculator" src="docs/media/before-stock.webp"></td>
+<td><img alt="The same windows with OhMyMac" src="docs/media/after-ohmymac.webp"></td>
 </tr>
 </table>
 
 <br>
 
-## ✨ Features
+## 🧭 The tour
 
 <table>
 <tr>
-<td colspan="2" valign="top">
-
-### 🎨 The best macOS theme, finished
-The default **hybrid** install builds on [MacTahoe](https://github.com/vinceliuice/MacTahoe-gtk-theme)
-by vinceliuice — the most faithful macOS rendition for GNOME — and adds what
-it lacks: one libadwaita stylesheet that **follows light/dark automatically**,
-the floating Tahoe sidebar, macOS shadows and the rest of OhMyMac.
-
-</td>
-</tr>
-<tr>
 <td width="50%" valign="top">
-
-### 🚦 Windows that feel like Tahoe
-Traffic lights with glyphs on hover, a unified toolbar of **glass capsule**
-buttons, a **floating sidebar**, 20&nbsp;px concentric corners, capsule switches
-and slider knobs — in **every** GTK&nbsp;3 and GTK&nbsp;4 app.
-
+<img alt="Menu bar with the Apple-style logo, the bold app name and its menu" src="docs/media/menubar.webp">
+<h3>A real Mac menu bar</h3>
+Logo on the left, the focused app's name in bold with <i>New Window · Hide · Quit</i>,
+status icons and the clock on the right. Transparent, with dark text in light mode.
 </td>
 <td width="50%" valign="top">
-
-### 💧 Real Liquid Glass
-The Dock, menus, Control Center, Notification Center and OSDs are rendered by
-[Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) shaders — blur,
-refraction and edge lighting — over a fully transparent, Tahoe-style menu bar.
-
+<img alt="Control Center made of Liquid Glass" src="docs/media/control-center.webp">
+<h3>Control Center</h3>
+Quick Settings rebuilt as macOS tiles on real <b>Liquid Glass</b> — refraction,
+edge light and blur from GPU shaders, not a flat translucent box.
 </td>
 </tr>
 <tr>
 <td valign="top">
-
-### 🌗 Light & dark, automatically
-One libadwaita stylesheet for both schemes. `ohmymac-sync` flips GTK&nbsp;3, the
-Shell theme and icons together with the system switch — no manual theme hopping.
-
+<img alt="Notification Center over the desktop" src="docs/media/notification-center.webp">
+<h3>Notification Center</h3>
+Calendar and notifications on one sheet of glass. Banners slide in at the
+<b>top right</b>, exactly where your eyes expect them.
 </td>
 <td valign="top">
-
-### 🍎 A real Mac menu bar
-The bundled **OhMyMac** extension puts the focused app's name in bold next to
-the logo (with New Window, Hide and Quit), moves the clock to the right edge,
-slides notifications in at the top right and drops the workspace pill.
-<kbd>Super</kbd>+<kbd>Space</kbd> opens Spotlight; layouts move to <kbd>Ctrl</kbd>+<kbd>Space</kbd>.
-
+<img alt="Spotlight search field on glass" src="docs/media/spotlight.webp">
+<h3>Spotlight on <kbd>Super</kbd>+<kbd>Space</kbd></h3>
+Apps, settings, files and quick maths from one glass field. Keyboard layouts
+move to <kbd>Ctrl</kbd>+<kbd>Space</kbd> — just like on a Mac.
+<br><br>
+<img alt="Notification banner in the top-right corner" src="docs/media/banner.webp">
 </td>
 </tr>
 <tr>
 <td valign="top">
-
-### 🧩 Extensions that actually load
-Dock, glass, tray icons, logo menu and the genie effect are fetched for **your
-exact GNOME version** (extensions.gnome.org, or a pinned upstream commit).
-Anything incompatible is skipped instead of breaking your session.
-
+<img alt="Dock with Launchpad, Finder, Safari, Maps, Photos, Calendar, Music, Weather, Notes, App Store, Terminal and System Settings" src="docs/media/dock.webp">
+<h3>The Dock, in macOS order</h3>
+Launchpad, Finder, Safari, Maps, Photos, Calendar, Music, Weather, Notes,
+App Store, Terminal, System Settings — filled from the apps <i>you</i> have,
+on any distro. Genie minimise included.
 </td>
 <td valign="top">
-
-### 🛡️ Survives GNOME updates
-OhMyMac never ships a frozen copy of GNOME's CSS. It layers on top of the stock
-stylesheet that is *on your system*, so upgrades keep working.
-
+<img alt="App switcher on Super+Tab" src="docs/media/switcher.webp">
+<h3>App switcher</h3>
+<kbd>Super</kbd>+<kbd>Tab</kbd> brings up the familiar glass switcher with
+big MacTahoe icons.
 </td>
 </tr>
 <tr>
 <td valign="top">
-
-### ↩️ Fully reversible
-Every file goes into a manifest and every setting is backed up before it
-changes. `./uninstall.sh` restores your previous desktop — fonts, dock, all of it.
-
+<img alt="Finder-style Files in dark mode" src="docs/media/finder-dark.webp">
+<h3>Finder-style windows</h3>
+Traffic lights, a floating Tahoe sidebar with accent-tinted symbols,
+glass toolbar capsules and big, soft macOS shadows.
 </td>
 <td valign="top">
-
-### 🐧 Any distribution
-apt, dnf, pacman, zypper, xbps, apk, emerge and eopkg — plus Silverblue-style
-immutable systems and NixOS. Tested on real GNOME 51 (Fedora 45) before every
-release.
-
+<img alt="macOS-style popover menu" src="docs/media/menus.webp">
+<h3>Menus that feel native</h3>
+Rounded popovers, blue highlight, shortcuts on the right — in every GTK 4 and
+libadwaita app.
+</td>
+</tr>
+<tr>
+<td valign="top">
+<img alt="GTK 3 widgets in the macOS style" src="docs/media/gtk3.webp">
+<h3>Older apps too</h3>
+GTK 3 apps get macOS pop-up buttons (<code>⌃⌄</code>), capsule switches and
+sliders, segmented tabs and the same traffic lights.
+</td>
+<td valign="top">
+<img alt="Launchpad over the blurred wallpaper" src="docs/media/launchpad.webp">
+<h3>Launchpad</h3>
+The app grid floats over your blurred wallpaper, opened from the Dock or the
+Launchpad icon.
 </td>
 </tr>
 </table>
+
+<br>
+
+### 🌗 Light and dark, automatically
+
+Flip the switch in Quick Settings and **everything** follows — libadwaita apps,
+GTK 3 apps, the Shell, the icons and the menu bar text. No log-out, no theme
+hopping.
 
 <p align="center">
   <picture>
@@ -169,78 +152,69 @@ release.
 
 <br>
 
-## 🐧 Supported distributions
+## 🧩 What's inside
 
-<p align="center">
-  <img alt="Ubuntu" src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
-  <img alt="Debian" src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white">
-  <img alt="Linux Mint" src="https://img.shields.io/badge/Mint-87CF3E?style=for-the-badge&logo=linuxmint&logoColor=white">
-  <img alt="Pop!_OS" src="https://img.shields.io/badge/Pop!__OS-48B9C7?style=for-the-badge&logo=popos&logoColor=white">
-  <img alt="Fedora" src="https://img.shields.io/badge/Fedora-51A2DA?style=for-the-badge&logo=fedora&logoColor=white">
-  <img alt="Arch" src="https://img.shields.io/badge/Arch-1793D1?style=for-the-badge&logo=archlinux&logoColor=white">
-  <img alt="EndeavourOS" src="https://img.shields.io/badge/EndeavourOS-7F3FBF?style=for-the-badge&logo=endeavouros&logoColor=white">
-  <img alt="Manjaro" src="https://img.shields.io/badge/Manjaro-35BF5C?style=for-the-badge&logo=manjaro&logoColor=white">
-  <img alt="CachyOS" src="https://img.shields.io/badge/CachyOS-1DC7B5?style=for-the-badge&logo=archlinux&logoColor=white">
-  <img alt="openSUSE" src="https://img.shields.io/badge/openSUSE-73BA25?style=for-the-badge&logo=opensuse&logoColor=white">
-  <img alt="Void" src="https://img.shields.io/badge/Void-478061?style=for-the-badge&logo=voidlinux&logoColor=white">
-  <img alt="Alpine" src="https://img.shields.io/badge/Alpine-0D597F?style=for-the-badge&logo=alpinelinux&logoColor=white">
-  <img alt="Gentoo" src="https://img.shields.io/badge/Gentoo-54487A?style=for-the-badge&logo=gentoo&logoColor=white">
-  <img alt="Solus" src="https://img.shields.io/badge/Solus-5294E2?style=for-the-badge&logo=solus&logoColor=white">
-  <img alt="Silverblue" src="https://img.shields.io/badge/Silverblue-3C6EB4?style=for-the-badge&logo=fedora&logoColor=white">
-  <img alt="NixOS" src="https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white">
-</p>
+OhMyMac doesn't reinvent what others already do brilliantly. It picks the best
+pieces, pins them, fixes the gaps between them and installs the lot in one go.
 
-| Family | Package manager | Notes |
+| Layer | What | Source |
 | :-- | :-- | :-- |
-| Debian · Ubuntu · Mint · Pop!\_OS · Zorin · elementary | `apt` | Ubuntu Dock is swapped for Dash to Dock automatically |
-| Fedora · Nobara · RHEL-likes | `dnf` | |
-| Arch · EndeavourOS · Manjaro · CachyOS · Garuda | `pacman` | Uses Dart Sass from `extra` |
-| openSUSE Tumbleweed · Leap · Slowroll | `zypper` | |
-| Void · Alpine / postmarketOS · Gentoo · Solus | `xbps` · `apk` · `emerge` · `eopkg` | |
-| Silverblue · Bluefin · Aurora · Aeon · Vanilla OS | — | Immutable: everything installs into `$HOME` |
-| NixOS | — | Prints what to add to `configuration.nix` |
+| **Base theme** | GTK 3, GTK 4 / libadwaita and Shell styling | [MacTahoe](https://github.com/vinceliuice/MacTahoe-gtk-theme) by vinceliuice — release archive at a pinned commit, SHA-256 verified |
+| **Tahoe layer** | Floating sidebar, accent sidebar symbols, macOS shadows, one stylesheet for light *and* dark | OhMyMac ([`src/sass`](src/sass), [`lib/cssmerge.awk`](lib/cssmerge.awk)) |
+| **Glass** | Dock, menus, Control Center, Notification Center, OSDs, Spotlight | [Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) — pinned commit |
+| **Menu bar** | App name & menu, clock on the right, banners top-right | OhMyMac extension ([`extensions/`](extensions)) |
+| **Dock** | macOS order, Launchpad, genie effect | Dash to Dock · Magic Lamp — extensions.gnome.org |
+| **Icons & cursors** | MacTahoe icons, macOS cursors | [vinceliuice](https://github.com/vinceliuice/MacTahoe-icon-theme) · [ful1e5](https://github.com/ful1e5/apple_cursor) |
+| **Look & feel** | Inter (or your SF Pro), wallpapers, gestures, shortcuts | OhMyMac ([`data/settings`](data/settings)) |
 
-**GNOME 51** is the target; **47–51** are supported. GNOME 50+ is Wayland-only, and so is OhMyMac.
+Prefer a fully self-contained theme? `./install.sh --theme ohmymac` uses
+OhMyMac's own GTK/Shell theme instead of MacTahoe.
 
 <br>
 
-## 🚀 Installation
-
-The installer detects your distribution, GNOME version and session, then asks
-what you want. Root is only requested for dependency packages and the optional
-login screen, via `sudo`, `doas` or `run0`.
-
-> [!IMPORTANT]
-> Run `./install.sh` as **your user**, not with `sudo`. On Wayland the Shell can't
-> restart, so **log out and back in** afterwards to load the new extensions.
+## 🚀 Install
 
 ```bash
-./install.sh                              # interactive, recommended set
-./install.sh --all -y                     # everything, no questions (incl. login screen)
-./install.sh --themes-only                # just the themes
-./install.sh --variant dark --accent purple
-sudo ./install.sh --system --themes-only  # themes for every user on the machine
+git clone https://github.com/cmpdchtr/OhMyMac.git
+cd OhMyMac
+./install.sh
 ```
 
-### ⚙️ Options
+The installer shows what it found (distribution, GNOME version, session) and
+asks what you want. It needs root only for packages and the optional login
+screen, and asks for it itself via `sudo`, `doas` or `run0`.
+
+> [!IMPORTANT]
+> Run it as **your user**, not with `sudo`, and **log out and back in** when it
+> finishes — on Wayland, GNOME loads new extensions at login.
+
+> [!TIP]
+> `./install.sh --dry-run` shows every step without changing anything.
+
+```bash
+./install.sh --all -y                       # everything, incl. the login screen
+./install.sh --variant dark --accent purple # pick the look up front
+./install.sh --themes-only                  # just the themes, nothing else
+sudo ./install.sh --system --themes-only    # themes for every user
+```
 
 <details>
-<summary><b>Show all installer options</b></summary>
+<summary><b>All options</b></summary>
 <br>
 
 | Option | What it does |
 | :-- | :-- |
 | `--all` | Everything, including the full extension set and the login screen |
 | `--themes-only` | GTK 3 / GTK 4 / libadwaita / Shell themes only |
+| `--theme hybrid\|ohmymac` | `hybrid` *(default)*: MacTahoe base + OhMyMac layer · `ohmymac`: OhMyMac's own theme |
+| `--variant auto\|light\|dark` | Colour scheme — `auto` follows the system |
+| `--accent blue\|teal\|green\|yellow\|orange\|red\|pink\|purple\|slate` | Accent colour |
+| `--extensions minimal\|recommended\|full` | Extension profile |
 | `--no-icons` `--no-cursors` `--no-fonts` `--no-wallpaper` | Skip a component |
-| `--extensions minimal\|recommended\|full` | Pick an extension profile |
 | `--no-extensions` | No extensions (User Themes is still added for the Shell theme) |
 | `--no-settings` | Leave every GNOME setting alone |
 | `--no-flatpak` | Skip Flatpak integration |
 | `--gdm` | Style the login screen too (needs root) |
-| `--theme hybrid\|ohmymac` | `hybrid` (default): MacTahoe base + OhMyMac layer; `ohmymac`: OhMyMac's own theme only |
-| `--variant auto\|light\|dark` | Colour scheme — `auto` follows the system |
-| `--accent blue\|teal\|green\|yellow\|orange\|red\|pink\|purple\|slate` | Accent colour |
 | `--system` | Install themes and icons for all users |
 | `--dest DIR` | Stage files under `DIR` for packaging |
 | `--no-deps` | Never call the package manager |
@@ -254,15 +228,15 @@ sudo ./install.sh --system --themes-only  # themes for every user on the machine
 <summary><b>Extension profiles</b></summary>
 <br>
 
-| Profile | Adds |
+| Profile | Extensions |
 | :-- | :-- |
 | `minimal` | User Themes |
-| `recommended` *(default)* | Dash to Dock · **Liquid Glass** · Blur my Shell (Launchpad only) · AppIndicator · Logo Menu · Magic Lamp |
-| `full` | Kiwi · Just Perfection · Rounded Window Corners · Top Bar Organizer |
+| `recommended` *(default)* | + OhMyMac · Dash to Dock · Liquid Glass · Blur my Shell (Launchpad only) · AppIndicator · Logo Menu · Magic Lamp |
+| `full` | + Kiwi · Just Perfection · Rounded Window Corners · Top Bar Organizer |
 
-Profiles are plain lists in [`data/extensions/`](data/extensions) — edit them to taste.
-Liquid Glass isn't on extensions.gnome.org yet, so it is fetched from its GitHub
-repository at a **pinned, reviewed commit** (MIT licence).
+Each extension is installed for **your exact GNOME version**; anything that
+isn't compatible yet is skipped instead of breaking your session. Lists live in
+[`data/extensions/`](data/extensions).
 
 </details>
 
@@ -270,75 +244,113 @@ repository at a **pinned, reviewed commit** (MIT licence).
 <summary><b>Everything OhMyMac writes</b></summary>
 <br>
 
-All paths are recorded in `~/.local/state/ohmymac/manifest`.
+Every path goes into `~/.local/state/ohmymac/manifest`, and every GNOME setting
+is saved to `~/.local/state/ohmymac/gsettings.backup` before it is first changed.
 
 | Path | Contents |
 | :-- | :-- |
-| `~/.local/share/themes/OhMyMac-{Light,Dark}` | GTK 3, GTK 4 and Shell themes |
-| `~/.themes/OhMyMac-*` | Symlinks so Flatpak apps find the themes |
-| `~/.config/gtk-4.0/gtk.css` | libadwaita styling — your previous file is backed up |
-| `~/.local/share/gnome-shell/extensions/…` | Extensions from extensions.gnome.org |
-| `~/.local/share/icons/{MacTahoe*,macOS*}` | Icons and cursors from upstream |
+| `~/.local/share/themes/{MacTahoe,OhMyMac}-{Light,Dark}` | GTK 3, GTK 4 and Shell themes |
+| `~/.themes/…` | Symlinks so Flatpak apps find the themes |
+| `~/.config/gtk-4.0/gtk.css` | libadwaita styling (your previous file is backed up) |
+| `~/.local/share/gnome-shell/extensions/…` | Extensions |
+| `~/.local/share/icons/{MacTahoe*,macOS*}` | Icons and cursors |
 | `~/.local/share/fonts/Inter` | Inter, if your distro has no package |
-| `~/.local/share/backgrounds/ohmymac` | Original light/dark wallpaper pair |
-| `~/.local/bin/ohmymac-sync` + autostart entry | Light/dark sync |
-
-GNOME settings live in [`data/settings/`](data/settings) as readable
-`schema key value` lines. Each key's old value is saved to
-`~/.local/state/ohmymac/gsettings.backup` before the first change.
+| `~/.local/share/backgrounds/ohmymac` | Wallpapers |
+| `~/.local/bin/ohmymac-sync` + autostart entry | Light/dark switching for GTK 3 and the Shell |
 
 </details>
 
 ### 🧹 Uninstall
 
 ```bash
-./uninstall.sh                  # remove everything, restore your settings and files
+./uninstall.sh                  # remove everything and restore your previous desktop
 ./uninstall.sh --gdm            # …and the stock login screen
-./uninstall.sh --keep-settings  # remove files, keep current settings
+./uninstall.sh --keep-settings  # remove files, keep the current settings
 ```
+
+Verified on GNOME 51: after `uninstall.sh` the desktop is back to stock, and the
+login screen bundle is restored byte for byte.
+
+<br>
+
+## 🐧 Supported systems
+
+<p align="center">
+  <img alt="Ubuntu" src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
+  <img alt="Debian" src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white">
+  <img alt="Fedora" src="https://img.shields.io/badge/Fedora-51A2DA?style=for-the-badge&logo=fedora&logoColor=white">
+  <img alt="Arch" src="https://img.shields.io/badge/Arch-1793D1?style=for-the-badge&logo=archlinux&logoColor=white">
+  <img alt="openSUSE" src="https://img.shields.io/badge/openSUSE-73BA25?style=for-the-badge&logo=opensuse&logoColor=white">
+  <img alt="Linux Mint" src="https://img.shields.io/badge/Mint-87CF3E?style=for-the-badge&logo=linuxmint&logoColor=white">
+  <img alt="Pop!_OS" src="https://img.shields.io/badge/Pop!__OS-48B9C7?style=for-the-badge&logo=popos&logoColor=white">
+  <img alt="Manjaro" src="https://img.shields.io/badge/Manjaro-35BF5C?style=for-the-badge&logo=manjaro&logoColor=white">
+  <img alt="EndeavourOS" src="https://img.shields.io/badge/EndeavourOS-7F3FBF?style=for-the-badge&logo=endeavouros&logoColor=white">
+  <img alt="Void" src="https://img.shields.io/badge/Void-478061?style=for-the-badge&logo=voidlinux&logoColor=white">
+  <img alt="Alpine" src="https://img.shields.io/badge/Alpine-0D597F?style=for-the-badge&logo=alpinelinux&logoColor=white">
+  <img alt="Gentoo" src="https://img.shields.io/badge/Gentoo-54487A?style=for-the-badge&logo=gentoo&logoColor=white">
+  <img alt="Solus" src="https://img.shields.io/badge/Solus-5294E2?style=for-the-badge&logo=solus&logoColor=white">
+  <img alt="Silverblue" src="https://img.shields.io/badge/Silverblue-3C6EB4?style=for-the-badge&logo=fedora&logoColor=white">
+  <img alt="NixOS" src="https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white">
+</p>
+
+| Family | Package manager | Notes |
+| :-- | :-- | :-- |
+| Debian · Ubuntu · Mint · Pop!\_OS · Zorin · elementary | `apt` | Ubuntu Dock is swapped for Dash to Dock automatically |
+| Fedora · Nobara · RHEL-likes | `dnf` | Reference platform — every screenshot here is Fedora 45 |
+| Arch · EndeavourOS · Manjaro · CachyOS · Garuda | `pacman` | |
+| openSUSE Tumbleweed · Leap · Slowroll | `zypper` | |
+| Void · Alpine / postmarketOS · Gentoo · Solus | `xbps` · `apk` · `emerge` · `eopkg` | |
+| Silverblue · Bluefin · Aurora · Aeon · Vanilla OS | — | Immutable: everything installs into `$HOME` |
+| NixOS | — | Prints what to add to `configuration.nix` |
+
+**GNOME 51** is the target, **47–51** are supported, Wayland only (as GNOME 50+ itself).
 
 <br>
 
 ## 🔬 How it works
 
-Most macOS themes ship a full, frozen copy of GNOME's stylesheets — and break
-on the next GNOME release. OhMyMac **layers** instead:
-
 ```mermaid
 flowchart LR
-    S["src/sass<br/><sub>palette · tokens · widgets</sub>"] --> B{{"sassc / Dart Sass"}}
-    B --> G3["GTK 3 theme"]
-    B --> G4["libadwaita CSS"]
-    B --> SH["Shell theme"]
-    A3[("Adwaita<br/><sub>inside libgtk-3</sub>")] -. "@import" .-> G3
-    AV[("libadwaita<br/><sub>CSS variables</sub>")] -. "var(--…)" .-> G4
-    ST[("Stock Shell CSS<br/><sub>on your system</sub>")] -. "@import at install" .-> SH
+    MT[("MacTahoe release<br/><sub>pinned · SHA-256</sub>")] --> L
+    OS["OhMyMac Sass<br/><sub>Tahoe layer</sub>"] --> L
+    L{{"cssmerge.awk<br/><sub>light + dark → one sheet</sub>"}} --> G4["libadwaita<br/><sub>~/.config/gtk-4.0/gtk.css</sub>"]
+    MT --> G3["GTK 3 + Shell themes"]
+    LG[("Liquid Glass<br/><sub>pinned commit</sub>")] --> SH["GNOME Shell"]
+    EXT["OhMyMac extension<br/><sub>menu bar</sub>"] --> SH
+    G3 --> SH
 ```
 
-- **GTK 3** imports the Adwaita stylesheet compiled into libgtk-3 and restyles only what makes it look like a Mac.
-- **GTK 4 / libadwaita** is themed through libadwaita's public CSS variables, with `prefers-color-scheme` for dark mode.
-- **GNOME Shell** gets an `@import` of the stock stylesheet *found on your machine* at install time — `gnome-shell-{light,dark}.css` on GNOME 47–51, `gnome-shell.css` before.
-- **Glass** comes from Liquid Glass shaders in the compositor; OhMyMac's Shell theme keeps those surfaces transparent and supplies geometry and typography.
+- **No upstream script ever runs.** MacTahoe comes from its prebuilt release
+  archives, checked against SHA-256; Liquid Glass and the icon theme are fetched
+  at pinned commits.
+- **One stylesheet, both modes.** libadwaita ignores `gtk-dark.css`, so the
+  installer folds MacTahoe's dark sheet into `@media (prefers-color-scheme: dark)`
+  with [`lib/cssmerge.awk`](lib/cssmerge.awk) — apps switch live with the system.
+- **Settings are data.** Everything OhMyMac changes is a readable line in
+  [`data/settings/`](data/settings), skipped automatically when a key doesn't
+  exist on your GNOME.
 
 <details>
 <summary><b>Repository layout</b></summary>
 <br>
 
 ```
-src/sass/            SCSS: palette, tokens, GTK 3, GTK 4, Shell
-src/wallpapers/      original light/dark wallpaper pair
-lib/                 installer modules
-  distro.sh            distro, GNOME version, immutable-system detection
-  packages.sh          dependency → package names for 8 package managers
-  build.sh             Sass build + Shell base detection
-  themes.sh            themes, libadwaita, Flatpak, fonts, icons, cursors
-  extensions.sh        extensions.gnome.org, version matching, conflicts
-  settings.sh          GSettings presets with backup/restore
-  gdm.sh               login screen GResource rebuild
-data/                extension profiles, settings presets
-bin/ohmymac-sync     light/dark sync helper
-packaging/           PKGBUILD (Arch) · RPM spec (Fedora)
-tests/               unit tests, build checks, install round-trip
+install.sh · uninstall.sh   entry points
+lib/                        installer modules
+  distro.sh                   distro, GNOME version, immutable systems
+  packages.sh                 dependencies for 8 package managers
+  mactahoe.sh                 MacTahoe base: download, verify, merge
+  cssmerge.awk                fold a dark sheet into prefers-color-scheme
+  themes.sh                   themes, libadwaita, Flatpak, fonts, icons, cursors
+  extensions.sh               extensions.gnome.org, pinned git and bundled sources
+  settings.sh                 GSettings with backup/restore, the Dock
+  gdm.sh                      login screen bundle
+extensions/                 the OhMyMac Shell extension (menu bar)
+src/sass/                   OhMyMac's own theme and the Tahoe layer
+data/                       extension profiles, settings presets
+bin/ohmymac-sync            light/dark switching for GTK 3 and the Shell
+packaging/                  PKGBUILD (Arch) · RPM spec (Fedora)
+tests/                      unit tests, Sass build, install round-trip
 ```
 
 </details>
@@ -348,15 +360,14 @@ tests/               unit tests, build checks, install round-trip
 ## 🛠️ Development
 
 ```bash
-make build   # compile CSS into build/
+make build   # compile the Sass sources into build/
 make test    # shellcheck + Sass + unit tests + isolated install/uninstall round-trip
-make dist    # release tarball with prebuilt CSS (installs without Sass)
+make dist    # release tarball with prebuilt CSS
 ```
 
-Every push runs shellcheck, builds with **sassc** and **Dart Sass**, parses the
-output with real **GTK 3** and **GTK 4**, and runs the installer on **Ubuntu,
-Debian, Fedora, Arch, openSUSE, Alpine and Void**. Packaging recipes for Arch and
-Fedora live in [`packaging/`](packaging). Contributions welcome — see
+CI runs shellcheck, builds with sassc and Dart Sass, parses the CSS with real
+GTK 3 and GTK 4, checks the extension, and runs the installer on Ubuntu,
+Debian, Fedora, Arch, openSUSE, Alpine and Void. See
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <br>
@@ -367,50 +378,58 @@ Fedora live in [`packaging/`](packaging). Contributions welcome — see
 <summary><b>Where are SF Pro and the Apple wallpapers?</b></summary>
 <br>
 Apple's licences forbid redistributing them, so OhMyMac uses <a href="https://rsms.me/inter/">Inter</a>
-and ships its own wallpapers. If you own SF Pro, drop it into <code>~/.local/share/fonts</code>
-and re-run the installer — it will be picked automatically.
+and ships original wallpapers. If you own SF Pro, put it in <code>~/.local/share/fonts</code> and
+re-run the installer — it's picked up automatically.
 </details>
 
 <details>
-<summary><b>The Shell theme didn't change.</b></summary>
+<summary><b>Nothing changed in the Shell after installing.</b></summary>
 <br>
-Log out and back in — on Wayland new extensions (including User Themes) only load at login.
-Then check that <i>User Themes</i> is enabled in the Extensions app.
+Log out and back in. On Wayland GNOME only loads new extensions at login.
+</details>
+
+<details>
+<summary><b>Can apps themselves be see-through like on macOS?</b></summary>
+<br>
+GTK can't blur what is behind a window, so sidebars use a vibrancy-like tint
+instead. Liquid Glass can put glass behind whole windows
+(<i>Extensions → Liquid Glass → Effects → Application windows</i>), but it is
+GPU-heavy, so it is off by default.
+</details>
+
+<details>
+<summary><b>Is there a global menu (File · Edit · View)?</b></summary>
+<br>
+Not for GTK 4 apps — they don't export their menus to the Shell. The menu bar
+shows the app name with <i>New Window · Hide · Quit</i> instead.
 </details>
 
 <details>
 <summary><b>A GNOME update reset my login screen.</b></summary>
 <br>
-Distribution updates replace the login screen bundle. Run <code>./install.sh --gdm --themes-only</code> again.
+Distribution updates replace the login screen bundle. Run
+<code>./install.sh --gdm --themes-only</code> again.
 </details>
 
 <details>
-<summary><b>Can I use it on KDE, XFCE or Cinnamon?</b></summary>
+<summary><b>Does it work on KDE, XFCE or Cinnamon?</b></summary>
 <br>
-The GTK 3 and GTK 4 themes work anywhere (<code>--themes-only</code>). The Shell theme, extensions and
-settings are GNOME-only.
-</details>
-
-<details>
-<summary><b>Is this affiliated with Apple?</b></summary>
-<br>
-No. macOS is a trademark of Apple Inc. OhMyMac is an independent project.
+The GTK themes work anywhere with <code>--themes-only</code>. The Shell theme,
+extensions and settings are GNOME-only.
 </details>
 
 <br>
 
 ## 💜 Credits
 
-Inspired by **[w1nyear/macW1Y](https://github.com/w1nyear/macW1Y-GTK-Theme)**.
-Built on the shoulders of
+Inspired by **[w1nyear/macW1Y](https://github.com/w1nyear/macW1Y-GTK-Theme)**. Built on
 [MacTahoe GTK theme](https://github.com/vinceliuice/MacTahoe-gtk-theme) and
+[icons](https://github.com/vinceliuice/MacTahoe-icon-theme) by vinceliuice,
 [Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) by Ryosuke Watanabe,
-[MacTahoe icons](https://github.com/vinceliuice/MacTahoe-icon-theme) by vinceliuice,
 [apple_cursor](https://github.com/ful1e5/apple_cursor) by ful1e5,
-[Inter](https://github.com/rsms/inter) by Rasmus Andersson,
-and the authors of Dash to Dock, Blur my Shell, Kiwi and every other extension used here.
+[Inter](https://github.com/rsms/inter) by Rasmus Andersson, and the authors of
+Dash to Dock, Blur my Shell, Logo Menu, AppIndicator and Magic Lamp.
 
 <p align="center">
-  <sub>Released under <a href="LICENSE">GPL-3.0-or-later</a> · Artwork under CC BY-SA 4.0</sub><br>
-  <sub>Made for people who love GNOME <i>and</i> miss their Mac.</sub>
+  <sub>GPL-3.0-or-later · wallpapers CC BY-SA 4.0 · macOS is a trademark of Apple Inc.; OhMyMac is not affiliated with Apple.</sub>
 </p>
