@@ -46,7 +46,7 @@ Then **log out and back in**. That's it.
 
 ## 📸 Screenshots
 
-<sub>Real screenshots of GNOME Shell 51.0 on Fedora 45 with the recommended profile — no mock-ups.</sub>
+<sub>Real screenshots of GNOME Shell 51.0 on Fedora 45 with the default install (MacTahoe base + OhMyMac layer) — no mock-ups.</sub>
 
 <p align="center">
   <picture>
@@ -77,6 +77,17 @@ Then **log out and back in**. That's it.
 ## ✨ Features
 
 <table>
+<tr>
+<td colspan="2" valign="top">
+
+### 🎨 The best macOS theme, finished
+The default **hybrid** install builds on [MacTahoe](https://github.com/vinceliuice/MacTahoe-gtk-theme)
+by vinceliuice — the most faithful macOS rendition for GNOME — and adds what
+it lacks: one libadwaita stylesheet that **follows light/dark automatically**,
+the floating Tahoe sidebar, macOS shadows and the rest of OhMyMac.
+
+</td>
+</tr>
 <tr>
 <td width="50%" valign="top">
 
@@ -227,6 +238,7 @@ sudo ./install.sh --system --themes-only  # themes for every user on the machine
 | `--no-settings` | Leave every GNOME setting alone |
 | `--no-flatpak` | Skip Flatpak integration |
 | `--gdm` | Style the login screen too (needs root) |
+| `--theme hybrid\|ohmymac` | `hybrid` (default): MacTahoe base + OhMyMac layer; `ohmymac`: OhMyMac's own theme only |
 | `--variant auto\|light\|dark` | Colour scheme — `auto` follows the system |
 | `--accent blue\|teal\|green\|yellow\|orange\|red\|pink\|purple\|slate` | Accent colour |
 | `--system` | Install themes and icons for all users |
@@ -391,6 +403,7 @@ No. macOS is a trademark of Apple Inc. OhMyMac is an independent project.
 
 Inspired by **[w1nyear/macW1Y](https://github.com/w1nyear/macW1Y-GTK-Theme)**.
 Built on the shoulders of
+[MacTahoe GTK theme](https://github.com/vinceliuice/MacTahoe-gtk-theme) and
 [Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) by Ryosuke Watanabe,
 [MacTahoe icons](https://github.com/vinceliuice/MacTahoe-icon-theme) by vinceliuice,
 [apple_cursor](https://github.com/ful1e5/apple_cursor) by ful1e5,

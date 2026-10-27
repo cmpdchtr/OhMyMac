@@ -5,6 +5,12 @@
 // `_colors.scss`. Called once for light and once for dark.
 
 @mixin gtk4-tokens {
+  @include gtk4-adw-tokens;
+  @include gtk4-ohm-tokens;
+}
+
+// libadwaita's own palette — only used when OhMyMac is the base theme.
+@mixin gtk4-adw-tokens {
   // macOS accent palette — libadwaita resolves the user's accent
   // (Settings → Appearance) through these.
   --accent-blue:   #{css(pick($light-blue, $dark-blue))};
@@ -58,8 +64,10 @@
   --shade-color:        #{css($shade)};
 
   --window-radius: #{css($radius-window)};
+}
 
-  // OhMyMac private tokens
+// OhMyMac private tokens — also used by the layer over MacTahoe.
+@mixin gtk4-ohm-tokens {
   --ohm-fg-dim:            #{css($fg-dim)};
   --ohm-border:            #{css($border)};
   --ohm-control-bg:        #{css($control-bg)};

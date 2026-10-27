@@ -8,3 +8,22 @@
 .ohmymac-app-menu {
   -natural-hpadding: 10px;
 }
+
+/* Light mode: dark menu bar text over light wallpapers. (St has no :not(),
+   so the overview is reset by the rule after it.) */
+#panel .ohmymac-light .panel-button,
+#panel .ohmymac-light .panel-button StLabel,
+#panel .ohmymac-light .panel-button .system-status-icon,
+#panel .ohmymac-light .panel-button .clock {
+  color: rgba(0, 0, 0, 0.85);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  icon-shadow: none;
+}
+
+#panel:overview .ohmymac-light .panel-button,
+#panel:overview .ohmymac-light .panel-button StLabel,
+#panel:overview .ohmymac-light .panel-button .system-status-icon,
+#panel:overview .ohmymac-light .panel-button .clock {
+  color: #ffffff;
+  text-shadow: none;
+}

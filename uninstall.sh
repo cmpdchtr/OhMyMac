@@ -104,7 +104,7 @@ remove_manifest() {
 remove_system() {
   log_step "Removing system-wide files"
   local name
-  for name in OhMyMac-Light OhMyMac-Dark; do
+  for name in OhMyMac-Light OhMyMac-Dark MacTahoe-Light MacTahoe-Dark; do
     [[ -d "/usr/share/themes/${name}" ]] && run_root rm -rf "/usr/share/themes/${name}"
   done
   for name in MacTahoe MacTahoe-light MacTahoe-dark macOS macOS-White; do
@@ -117,7 +117,7 @@ reset_theme_names() {
   has gsettings || return 0
   local current
   current="$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null || true)"
-  if [[ "${current}" == "'OhMyMac-"* ]]; then
+  if [[ "${current}" == "'OhMyMac-"* || "${current}" == "'MacTahoe-"* ]]; then
     run gsettings reset org.gnome.desktop.interface gtk-theme
   fi
 }

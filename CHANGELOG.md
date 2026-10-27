@@ -4,6 +4,27 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] — 2026-10-27
+
+Head-to-head with MacTahoe on GNOME 51 showed its GTK 3 and Shell work is more
+faithful than OhMyMac's own, so the default install now builds on it.
+
+### Added
+- **Hybrid theme (default)**: MacTahoe (vinceliuice, MIT) as the GTK 3 / GTK 4 /
+  Shell base, from its prebuilt release archives at a pinned commit, verified
+  by SHA-256 — no upstream script is executed. `--theme ohmymac` keeps the
+  OhMyMac-only theme.
+- One libadwaita stylesheet for MacTahoe that follows light/dark on its own:
+  the dark sheet is folded into `@media (prefers-color-scheme: dark)` by
+  `lib/cssmerge.awk` (libadwaita ignores `gtk-dark.css`).
+- OhMyMac Tahoe layer over MacTahoe (`src/sass/gtk4/hybrid.scss`): floating
+  sidebar, accent sidebar symbols, macOS window shadows.
+- Dark menu bar text in light mode.
+
+### Fixed
+- The workspace indicator could reappear after another extension showed it.
+- `ohmymac-sync` now also switches MacTahoe between light and dark.
+
 ## [1.2.0] — 2026-10-27
 
 ### Added

@@ -88,6 +88,17 @@ no_match() { ! grep -rqE "$1" "$2"; }
 check "no sass leftovers"         no_match '\$[a-z-]+|#\{' "${OHM_BUILD}"
 check "no color keywords in vars" no_match ':[[:space:]]*(white|black);' "${OHM_BUILD}/libadwaita/gtk.css"
 
+echo "== cssmerge (dark sheet folded into prefers-color-scheme)"
+printf '@define-color a #111111;\n@define-color b alpha(@a, 0.5);\n.x { color: @b; background: url("p@2.png"); }\n@keyframes spin { from { opacity: 0; } to { opacity: 1; } }\n.y { color: @unknown; }\n' >"${WORK}/dark.css"
+merged="$(awk -f "${ROOT}/lib/cssmerge.awk" "${WORK}/dark.css" "${WORK}/dark.css")"
+check "wrapped in media query"     grep -q '^@media (prefers-color-scheme: dark) {' <<<"${merged}"
+check "named colours inlined"      grep -qF 'color: alpha(#111111, 0.5);' <<<"${merged}"
+check "no @define-color left"      not grep -q '@define-color' <<<"${merged}"
+check "keyframes dropped"          not grep -q '@keyframes' <<<"${merged}"
+check "urls with @ untouched"      grep -qF 'url("p@2.png")' <<<"${merged}"
+check "unknown names kept"         grep -qF '@unknown' <<<"${merged}"
+check "hybrid layer has no adw palette" not grep -q -- '--window-bg-color' "${OHM_BUILD}/libadwaita/hybrid.css"
+
 echo "== shell finalize"
 cp -a "${OHM_BUILD}/OhMyMac-Dark" "${WORK}/shell-test"
 OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=51 shell_finalize "${WORK}/shell-test" Dark
@@ -123,7 +134,7 @@ run_iso() {
   env -i HOME="${FAKE_HOME}" PATH="${PATH}" USER=tester TERM=dumb NO_COLOR=1 \
     OHM_BUILD="${OHM_BUILD}" OHM_REBUILD=0 OHM_ALLOW_ROOT=1 "$@"
 }
-inst_flags=(--no-deps --no-icons --no-cursors --no-fonts --no-extensions --no-flatpak --no-settings -y)
+inst_flags=(--no-deps --no-icons --no-cursors --no-fonts --no-extensions --no-flatpak --no-settings --theme ohmymac -y)
 
 check "dry run changes nothing" bash -c "$(declare -f run_iso); FAKE_HOME='${FAKE_HOME}' OHM_BUILD='${OHM_BUILD}' PATH='${PATH}';
   run_iso '${ROOT}/install.sh' --dry-run ${inst_flags[*]} >/dev/null && [[ ! -e '${FAKE_HOME}/.local/share/themes' ]]"

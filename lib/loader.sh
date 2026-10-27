@@ -19,3 +19,5 @@ set -Eeuo pipefail
 . "${OHM_ROOT}/lib/extensions.sh"
 # shellcheck source=lib/settings.sh
 . "${OHM_ROOT}/lib/settings.sh"
+# shellcheck source=lib/mactahoe.sh
+. "${OHM_ROOT}/lib/mactahoe.sh"

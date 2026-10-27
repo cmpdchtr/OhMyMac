@@ -24,6 +24,8 @@ OHM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "${OHM_ROOT}/lib/settings.sh"
 # shellcheck source=lib/gdm.sh
 . "${OHM_ROOT}/lib/gdm.sh"
+# shellcheck source=lib/mactahoe.sh
+. "${OHM_ROOT}/lib/mactahoe.sh"
 
 usage() {
   cat <<EOF
@@ -48,6 +50,8 @@ Components:
   --gdm                 Also style the login screen (needs root)
 
 Appearance:
+  --theme THEME         hybrid (default: MacTahoe base + OhMyMac Tahoe layer)
+                        | ohmymac (OhMyMac's own GTK/Shell theme only)
   --variant VARIANT     auto (default, follow system) | light | dark
   --accent COLOR        blue (default) | teal | green | yellow | orange |
                         red | pink | purple | slate
@@ -81,6 +85,7 @@ EOF
 WANT_ICONS=1 WANT_CURSORS=1 WANT_FONTS=1 WANT_WALLPAPER=1
 WANT_EXTENSIONS=1 WANT_SETTINGS=1 WANT_FLATPAK=1 WANT_GDM=0
 EXT_PROFILE="recommended"
+THEME_MODE="hybrid"
 VARIANT="auto"
 OHM_ACCENT="blue"
 INTERACTIVE=1
@@ -104,6 +109,8 @@ parse_args() {
       --variant)            VARIANT="${2:?--variant needs a value}"; shift ;;
       --variant=*)          VARIANT="${1#*=}" ;;
       --accent)             OHM_ACCENT="${2:?--accent needs a value}"; shift ;;
+      --theme)              THEME_MODE="${2:?--theme needs a value}"; shift ;;
+      --theme=*)            THEME_MODE="${1#*=}" ;;
       --accent=*)           OHM_ACCENT="${1#*=}" ;;
       --system)             OHM_SYSTEM=1 ;;
       --dest)               OHM_DEST="${2:?--dest needs a directory}"; shift ;;
@@ -122,6 +129,7 @@ parse_args() {
   done
 
   case "${VARIANT}" in auto|light|dark) ;; *) die "--variant must be auto, light or dark" ;; esac
+  case "${THEME_MODE}" in hybrid|ohmymac) ;; *) die "--theme must be hybrid or ohmymac" ;; esac
   case "${OHM_ACCENT}" in
     blue|teal|green|yellow|orange|red|pink|purple|slate) ;;
     *) die "Unknown accent: ${OHM_ACCENT}" ;;
@@ -259,9 +267,21 @@ main() {
 
   resolve_variant
 
+  # OhMyMac's own themes are always installed: they are the fallback, the
+  # --theme ohmymac option and the source of the login-screen styling.
   install_themes
+  local base="OhMyMac"
+  if [[ "${THEME_MODE}" == hybrid ]] && install_mactahoe; then
+    base="MacTahoe"
+  fi
+  OHM_GTK_THEME="${base}-${OHM_GTK_THEME#*-}"
+  export OHM_GTK_THEME
   if [[ -z "${OHM_DEST:-}" && "${OHM_SYSTEM:-0}" != 1 ]]; then
-    install_libadwaita
+    if [[ "${base}" == MacTahoe ]]; then
+      install_mactahoe_libadwaita
+    else
+      install_libadwaita
+    fi
     install_sync_helper
   fi
   [[ "${WANT_FLATPAK}" == 1 ]]   && install_flatpak_integration

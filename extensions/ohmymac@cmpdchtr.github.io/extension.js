@@ -10,6 +10,7 @@
 // reverted in disable().
 
 import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -91,6 +92,11 @@ export default class OhMyMacExtension extends Extension {
     }
 
     _apply() {
+        // Dark menu bar text on light wallpapers, like macOS in light mode.
+        this._interface = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
+        this._interface.connectObject('changed::color-scheme', () => this._syncPanelScheme(), this);
+        this._syncPanelScheme();
+
         if (this._settings.get_boolean('app-menu')) {
             this._appMenu = new AppMenuButton();
             Main.panel.addToStatusArea('ohmymac-app-menu', this._appMenu,
@@ -107,12 +113,35 @@ export default class OhMyMacExtension extends Extension {
 
         const activities = Main.panel.statusArea.activities;
         if (this._settings.get_boolean('hide-activities') && activities) {
+            // Other extensions and session-mode changes show it again;
+            // keep it hidden for as long as we are enabled.
             activities.container.hide();
+            activities.container.connectObject('show', c => c.hide(), this);
             this._activitiesHidden = true;
         }
     }
 
+    // The class goes on the panel's boxes: other extensions reset the
+    // style classes of #panel itself.
+    _panelBoxes() {
+        return [Main.panel._leftBox, Main.panel._centerBox, Main.panel._rightBox];
+    }
+
+    _syncPanelScheme() {
+        const light = this._interface.get_string('color-scheme') !== 'prefer-dark';
+        for (const box of this._panelBoxes()) {
+            if (light)
+                box.add_style_class_name('ohmymac-light');
+            else
+                box.remove_style_class_name('ohmymac-light');
+        }
+    }
+
     _revert() {
+        this._interface?.disconnectObject(this);
+        this._interface = null;
+        for (const box of this._panelBoxes())
+            box.remove_style_class_name('ohmymac-light');
         this._appMenu?.destroy();
         this._appMenu = null;
 
@@ -127,6 +156,7 @@ export default class OhMyMacExtension extends Extension {
         }
 
         if (this._activitiesHidden) {
+            Main.panel.statusArea.activities?.container.disconnectObject(this);
             Main.panel.statusArea.activities?.container.show();
             this._activitiesHidden = false;
         }

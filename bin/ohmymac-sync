@@ -34,22 +34,26 @@ icon_theme_exists() {
 }
 
 apply() {
-  local scheme variant current icons dir
+  local scheme variant current family icons dir
   scheme="$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)"
   if [[ "${scheme}" == "'prefer-dark'" ]]; then variant=Dark; else variant=Light; fi
 
   current="$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)"
-  # Only manage the theme while the user is on OhMyMac.
-  [[ "${current}" == "'OhMyMac-"* ]] || return 0
+  current="${current//\'/}"
+  # Only manage themes OhMyMac installed: its own, or the MacTahoe base.
+  case "${current}" in
+    OhMyMac-*|MacTahoe-*) family="${current%%-*}" ;;
+    *) return 0 ;;
+  esac
 
-  [[ "${current}" == "'OhMyMac-${variant}'" ]] ||
-    gsettings set org.gnome.desktop.interface gtk-theme "OhMyMac-${variant}"
+  [[ "${current}" == "${family}-${variant}" ]] ||
+    gsettings set org.gnome.desktop.interface gtk-theme "${family}-${variant}"
 
   if dir="$(schemadir_for org.gnome.shell.extensions.user-theme)"; then
     if [[ -n "${dir}" ]]; then
-      gsettings --schemadir "${dir}" set org.gnome.shell.extensions.user-theme name "OhMyMac-${variant}"
+      gsettings --schemadir "${dir}" set org.gnome.shell.extensions.user-theme name "${family}-${variant}"
     else
-      gsettings set org.gnome.shell.extensions.user-theme name "OhMyMac-${variant}"
+      gsettings set org.gnome.shell.extensions.user-theme name "${family}-${variant}"
     fi
   fi
 
