@@ -57,6 +57,8 @@ flowboxchild:selected {
   color: $accent-fg;
 }
 
+// GTK 3 cannot clip window content, so only the top corners are rounded;
+// rounding the bottom would leave square content inside a round shadow.
 decoration {
   border-radius: $radius-window $radius-window 0 0;
   box-shadow: $window-shadow;
@@ -69,17 +71,39 @@ decoration {
 // --- Header bars -----------------------------------------------------------
 headerbar,
 .titlebar:not(headerbar) {
-  min-height: 40px;
-  padding: 0 8px;
-  background: $headerbar-bg;
+  min-height: 46px;
+  padding: 0 10px;
+  background: $window-bg;
   color: $fg;
-  border-color: $border;
+  border-color: transparent;
   box-shadow: inset 0 -1px $border;
 
-  &:backdrop { background: $headerbar-bg; color: $fg-dim; }
+  &:backdrop { background: $window-bg; color: $fg-dim; }
 
-  .title { font-weight: $font-weight-title; }
+  .title { font-weight: 700; }
   .subtitle { color: $fg-dim; }
+
+  // Toolbar buttons as Tahoe glass capsules.
+  button:not(.titlebutton):not(.suggested-action):not(.destructive-action) {
+    min-height: 28px;
+    min-width: 28px;
+    padding: 0 9px;
+    border-radius: $radius-pill;
+    border-color: transparent;
+    background-image: none;
+    background-color: $capsule-bg;
+    box-shadow: inset 0 1px $capsule-highlight, 0 0 0 1px $capsule-edge, 0 1px 3px $capsule-shadow;
+
+    &:hover { background-color: $capsule-bg-hover; }
+    &:active, &:checked { background-color: $capsule-bg-active; }
+  }
+
+  .linked:not(.vertical) > button:not(.titlebutton) {
+    border-radius: 0;
+    &:first-child { border-radius: $radius-pill 0 0 $radius-pill; }
+    &:last-child { border-radius: 0 $radius-pill $radius-pill 0; }
+    &:only-child { border-radius: $radius-pill; }
+  }
 }
 
 window.csd > .titlebar,
@@ -177,8 +201,9 @@ spinbutton:not(.vertical) {
 
 // --- Switch, check, radio, scale -------------------------------------------
 switch {
-  min-width: 36px;
-  min-height: 20px;
+  min-width: 40px;
+  min-height: 22px;
+  padding: 1px;
   border-radius: $radius-pill;
   border: none;
   background-image: none;
@@ -189,13 +214,13 @@ switch {
   &:checked { background-color: $accent; }
 
   slider {
-    min-width: 20px;
+    min-width: 24px;
     min-height: 20px;
     border: none;
     border-radius: $radius-pill;
     background-image: none;
-    background-color: $knob;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
   }
 }
 
@@ -236,14 +261,20 @@ scale {
   }
 
   slider {
-    min-width: 20px;
-    min-height: 20px;
-    margin: -9px;
+    min-width: 24px;
+    min-height: 16px;
+    margin: -7px -10px;
     border: none;
     border-radius: $radius-pill;
     background-image: none;
-    background-color: $knob;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.30), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  &.vertical slider {
+    min-width: 16px;
+    min-height: 24px;
+    margin: -10px -7px;
   }
 }
 

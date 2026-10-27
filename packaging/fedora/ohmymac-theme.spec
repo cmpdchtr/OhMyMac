@@ -1,5 +1,5 @@
 Name:           ohmymac-theme
-Version:        1.0.0
+Version:        1.2.0
 Release:        1%{?dist}
 Summary:        macOS-inspired GTK 3, GTK 4/libadwaita and GNOME Shell theme
 License:        GPL-3.0-or-later
@@ -37,7 +37,11 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 %{_datadir}/ohmymac
 %{_datadir}/backgrounds/ohmymac
 %{_datadir}/gnome-background-properties/ohmymac.xml
+%{_datadir}/gnome-shell/extensions/ohmymac@cmpdchtr.github.io
+%{_datadir}/glib-2.0/schemas/org.gnome.shell.extensions.ohmymac.gschema.xml
 
 %changelog
-* Tue Oct 27 2026 cmpdchtr <cmpdchtr@gmail.com> - 1.0.0-1
+* Tue Oct 27 2026 cmpdchtr <cmpdchtr@gmail.com> - 1.2.0-1
+- Tahoe redesign, Liquid Glass, macOS menu bar extension
+* Tue Oct 27 2026 cmpdchtr <cmpdchtr@gmail.com> - 1.2.0-1
 - Initial package

@@ -179,10 +179,27 @@ git_install_extension() {
   log_ok "${uuid} (${url##*/} @ ${ref:0:7})"
 }
 
+# local_install_extension <uuid> <dir> — OhMyMac's own extensions, shipped in
+# this repository and always refreshed together with the theme.
+local_install_extension() {
+  local uuid="$1" src="${OHM_ROOT}/$2" dest="${OHM_USER_EXT_DIR}/$1"
+  [[ -f "${src}/metadata.json" ]] || { log_warn "${uuid}: ${2} not found — skipped"; return 0; }
+  run rm -rf "${dest}"
+  run mkdir -p "${OHM_USER_EXT_DIR}"
+  run cp -a "${src}" "${dest}"
+  if [[ -d "${src}/schemas" ]] && has glib-compile-schemas; then
+    run glib-compile-schemas "${dest}/schemas"
+  fi
+  manifest_add "extension:${uuid}"
+  log_ok "${uuid} (bundled)"
+}
+
 install_extension() {
   local uuid="$1" source="${2:-}" major="${OHM_GNOME_MAJOR}" path url zip rc
 
-  if path="$(extension_path "${uuid}")" && [[ "${OHM_EXT_UPDATE:-0}" != 1 ]]; then
+  if [[ "${source}" == local:* ]]; then
+    local_install_extension "${uuid}" "${source#local:}"
+  elif path="$(extension_path "${uuid}")" && [[ "${OHM_EXT_UPDATE:-0}" != 1 ]]; then
     log_ok "${uuid} (already installed)"
   elif [[ "${source}" == git:* ]]; then
     git_install_extension "${uuid}" "${source#git:}"

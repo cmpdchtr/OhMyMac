@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] — 2026-10-27
+
+### Added
+- Bundled **OhMyMac** Shell extension (GNOME 47–51) for a real Mac menu bar:
+  the focused app's name in bold with New Window / Hide / Quit, the clock on
+  the right edge, notification banners at the top right, no workspace pill.
+- Spotlight on Super+Space (Liquid Glass launcher); input sources move to
+  Ctrl+Space like macOS.
+- GTK 3 brought to the Tahoe style: capsule toolbar buttons and tab groups,
+  capsule switch and slider knobs.
+- Extension lists accept `local:<dir>` for extensions shipped in this repo.
+
+### Changed
+- The MacTahoe icon theme is fetched at a pinned commit (its installer runs
+  locally), no longer from a moving branch.
+
+### Verified on GNOME 51.0
+- Install, uninstall (settings restored, nothing left behind) and the login
+  screen bundle (restored byte-for-byte) on Fedora 45.
+
 ## [1.1.0] — 2026-10-27
 
 Tahoe redesign, verified on a real GNOME Shell 51.0 / GTK 4.24 / libadwaita 1.10
@@ -26,8 +46,8 @@ Tahoe redesign, verified on a real GNOME Shell 51.0 / GTK 4.24 / libadwaita 1.10
 - Traffic lights are drawn on the button icon, so libadwaita 1.10 can no
   longer stretch them into pills.
 - Menu bar is fully transparent with a soft text shadow.
-- On GNOME 49+ the Shell theme always layers over `gnome-shell-dark.css`,
-  because those releases ship no light stock stylesheet.
+- If the stock Shell bundle has no light stylesheet, the light variant now
+  falls back to `gnome-shell-dark.css` instead of importing a missing file.
 
 ### Fixed
 - The installer aborted on Fedora: `/etc/os-release` defines `VARIANT`, which

@@ -18,6 +18,11 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends shellcheck sassc libglib2.0-bin
       - name: shellcheck
         run: shellcheck -x install.sh uninstall.sh bin/ohmymac-sync lib/*.sh tests/*.sh
+      - name: Extension syntax and schema
+        run: |
+          cp extensions/ohmymac@cmpdchtr.github.io/extension.js /tmp/extension.mjs
+          node --check /tmp/extension.mjs
+          glib-compile-schemas --strict --dry-run extensions/ohmymac@cmpdchtr.github.io/schemas
       - name: Test suite (sassc)
         run: bash tests/run.sh
 

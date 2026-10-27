@@ -1,0 +1,10 @@
+{
+  "uuid": "ohmymac@cmpdchtr.github.io",
+  "name": "OhMyMac",
+  "description": "macOS menu bar layout for the OhMyMac theme: the focused app's name in bold with its own menu, the clock on the far right, and no workspace pill.",
+  "shell-version": ["47", "48", "49", "50", "51"],
+  "url": "https://github.com/cmpdchtr/OhMyMac",
+  "settings-schema": "org.gnome.shell.extensions.ohmymac",
+  "gettext-domain": "ohmymac",
+  "version-name": "1.2.0"
+}

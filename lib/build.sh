@@ -117,9 +117,9 @@ build_themes() {
 # --- Shell base stylesheet ---------------------------------------------------
 
 # Prints the resource path of the stock Shell stylesheet for a variant.
-# GNOME 47–48 ship gnome-shell-{light,dark}.css; GNOME 49+ (incl. 51) ship
-# only gnome-shell-dark.css, and releases before 47 a single gnome-shell.css.
-# OhMyMac's light variant then layers its light colours over the dark base.
+# GNOME 47+ (verified on 51) ship gnome-shell-{light,dark}.css; releases
+# before 47 a single gnome-shell.css. Builds without a light stylesheet fall
+# back to the dark one, which OhMyMac's light variant then recolours.
 shell_base_resource() {
   local variant="${1,,}" gresource="${OHM_SHELL_GRESOURCE:-/usr/share/gnome-shell/gnome-shell-theme.gresource}"
   local list="" candidate prefix="/org/gnome/shell/theme"
@@ -138,8 +138,6 @@ shell_base_resource() {
   # No gresource tool: decide by version.
   if (( OHM_GNOME_MAJOR > 0 && OHM_GNOME_MAJOR < 47 )); then
     echo "resource://${prefix}/gnome-shell.css"
-  elif (( OHM_GNOME_MAJOR >= 49 || OHM_GNOME_MAJOR == 0 )); then
-    echo "resource://${prefix}/gnome-shell-dark.css"
   else
     echo "resource://${prefix}/gnome-shell-${variant}.css"
   fi

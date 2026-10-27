@@ -99,7 +99,16 @@ OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=46 shell_finalize "${WORK}/shel
 check "legacy base import" grep -q 'theme/gnome-shell.css' "${WORK}/shell-old/gnome-shell/gnome-shell.css"
 cp -a "${OHM_BUILD}/OhMyMac-Light" "${WORK}/shell-51-light"
 OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=51 shell_finalize "${WORK}/shell-51-light" Light
-check "GNOME 51 light uses the dark base (no light stylesheet in 51)" grep -q 'theme/gnome-shell-dark.css' "${WORK}/shell-51-light/gnome-shell/gnome-shell.css"
+check "GNOME 51 light uses the light base" grep -q 'theme/gnome-shell-light.css' "${WORK}/shell-51-light/gnome-shell/gnome-shell.css"
+# A bundle without a light stylesheet falls back to the dark one.
+fake_gresource_dir="${WORK}/fake-gres"
+mkdir -p "${fake_gresource_dir}/src"
+echo '#panel{}' >"${fake_gresource_dir}/src/gnome-shell-dark.css"
+printf '<gresources><gresource prefix="/org/gnome/shell/theme"><file>gnome-shell-dark.css</file></gresource></gresources>' >"${fake_gresource_dir}/t.xml"
+if has glib-compile-resources && has gresource &&
+   glib-compile-resources --sourcedir="${fake_gresource_dir}/src" --target="${fake_gresource_dir}/t.gresource" "${fake_gresource_dir}/t.xml"; then
+  check "missing light stylesheet falls back to dark" eq "$(OHM_SHELL_GRESOURCE="${fake_gresource_dir}/t.gresource" shell_base_resource Light)" "resource:///org/gnome/shell/theme/gnome-shell-dark.css"
+fi
 
 echo "== set -e safety (regression: failing enable aborted the installer)"
 # shellcheck disable=SC2329  # the stubs are called indirectly by extension_enable

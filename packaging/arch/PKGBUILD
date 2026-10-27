@@ -1,6 +1,6 @@
 # Maintainer: cmpdchtr <cmpdchtr@gmail.com>
 pkgname=ohmymac-theme
-pkgver=1.0.0
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="macOS-inspired GTK 3, GTK 4/libadwaita and GNOME Shell theme"
 arch=('any')

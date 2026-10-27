@@ -28,6 +28,10 @@ install: build
 	    "$(DESTDIR)$(PREFIX)/share/themes/OhMyMac-$$v" "$$v"; \
 	done
 	install -Dm755 bin/ohmymac-sync "$(DESTDIR)$(PREFIX)/bin/ohmymac-sync"
+	install -d "$(DESTDIR)$(PREFIX)/share/gnome-shell/extensions"
+	cp -a extensions/ohmymac@cmpdchtr.github.io "$(DESTDIR)$(PREFIX)/share/gnome-shell/extensions/"
+	install -Dm644 extensions/ohmymac@cmpdchtr.github.io/schemas/org.gnome.shell.extensions.ohmymac.gschema.xml \
+	  "$(DESTDIR)$(PREFIX)/share/glib-2.0/schemas/org.gnome.shell.extensions.ohmymac.gschema.xml"
 	install -Dm644 "$(BUILD)/libadwaita/gtk.css" "$(DESTDIR)$(PREFIX)/share/ohmymac/libadwaita/gtk.css"
 	install -Dm644 -t "$(DESTDIR)$(PREFIX)/share/backgrounds/ohmymac" src/wallpapers/*.svg
 	sed "s|@DIR@|$(PREFIX)/share/backgrounds/ohmymac|g" src/wallpapers/ohmymac.xml.in | \

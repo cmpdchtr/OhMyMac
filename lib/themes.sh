@@ -152,7 +152,8 @@ install_fonts() {
 # --- Icons & cursors (fetched from their upstream projects) -------------------
 
 OHM_ICONS_REPO="${OHM_ICONS_REPO:-https://github.com/vinceliuice/MacTahoe-icon-theme.git}"
-OHM_ICONS_REF="${OHM_ICONS_REF:-main}"
+# Pinned to a reviewed commit: the icon theme's own install.sh is executed.
+OHM_ICONS_REF="${OHM_ICONS_REF:-839848b9a8a38a92a6936e30c4abe35cc6f2546d}"
 OHM_CURSORS_URL="${OHM_CURSORS_URL:-https://github.com/ful1e5/apple_cursor/releases/latest/download/macOS.tar.xz}"
 
 # icon_theme_present <name> — true when an icon or cursor theme is installed.
@@ -176,8 +177,13 @@ install_icons() {
   has git || { log_warn "git is missing; skipping icons."; return 0; }
 
   src="${OHM_TMP}/MacTahoe-icon-theme"
-  run git clone --quiet --depth 1 --branch "${OHM_ICONS_REF}" "${OHM_ICONS_REPO}" "${src}" ||
-    { log_warn "Could not fetch the icon theme; skipping."; return 0; }
+  if [[ "${OHM_DRY_RUN}" != 1 ]] &&
+     ! { git init -q "${src}" &&
+         git -C "${src}" fetch -q --depth 1 "${OHM_ICONS_REPO}" "${OHM_ICONS_REF}" &&
+         git -C "${src}" checkout -q FETCH_HEAD; } 2>/dev/null; then
+    log_warn "Could not fetch the icon theme; skipping."
+    return 0
+  fi
 
   if [[ "${OHM_SYSTEM:-0}" == 1 ]]; then
     run_root bash "${src}/install.sh" -d "${dest}"

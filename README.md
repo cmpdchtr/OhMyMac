@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/cmpdchtr/OhMyMac/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/cmpdchtr/OhMyMac/ci.yml?branch=main&style=for-the-badge&label=CI&logo=githubactions&logoColor=white"></a>
+  <a href="https://github.com/cmpdchtr/OhMyMac/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/cmpdchtr/OhMyMac/actions/workflows/ci.yml/badge.svg?branch=main" height="28"></a>
   <img alt="GNOME 47–51" src="https://img.shields.io/badge/GNOME-47%E2%80%9351-4A86CF?style=for-the-badge&logo=gnome&logoColor=white">
   <img alt="Wayland" src="https://img.shields.io/badge/Wayland-ready-FFBC00?style=for-the-badge&logo=wayland&logoColor=black">
   <a href="LICENSE"><img alt="GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-A42E2B?style=for-the-badge&logo=gnu&logoColor=white"></a>
@@ -64,6 +64,12 @@ Then **log out and back in**. That's it.
 <td align="center"><sub><b>Notification Center</b> — real refraction, not a flat blur</sub></td>
 <td align="center"><sub><b>Launchpad</b> — app grid over the blurred wallpaper</sub></td>
 </tr>
+<tr>
+<td colspan="2"><img alt="Spotlight on Super+Space" src="docs/screenshots/spotlight.jpg"></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><sub><b>Spotlight</b> on <kbd>Super</kbd>+<kbd>Space</kbd> — apps, settings, files and maths, on glass</sub></td>
+</tr>
 </table>
 
 <br>
@@ -99,14 +105,23 @@ Shell theme and icons together with the system switch — no manual theme hoppin
 </td>
 <td valign="top">
 
+### 🍎 A real Mac menu bar
+The bundled **OhMyMac** extension puts the focused app's name in bold next to
+the logo (with New Window, Hide and Quit), moves the clock to the right edge,
+slides notifications in at the top right and drops the workspace pill.
+<kbd>Super</kbd>+<kbd>Space</kbd> opens Spotlight; layouts move to <kbd>Ctrl</kbd>+<kbd>Space</kbd>.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
 ### 🧩 Extensions that actually load
 Dock, glass, tray icons, logo menu and the genie effect are fetched for **your
 exact GNOME version** (extensions.gnome.org, or a pinned upstream commit).
 Anything incompatible is skipped instead of breaking your session.
 
 </td>
-</tr>
-<tr>
 <td valign="top">
 
 ### 🛡️ Survives GNOME updates
@@ -114,11 +129,21 @@ OhMyMac never ships a frozen copy of GNOME's CSS. It layers on top of the stock
 stylesheet that is *on your system*, so upgrades keep working.
 
 </td>
+</tr>
+<tr>
 <td valign="top">
 
 ### ↩️ Fully reversible
 Every file goes into a manifest and every setting is backed up before it
 changes. `./uninstall.sh` restores your previous desktop — fonts, dock, all of it.
+
+</td>
+<td valign="top">
+
+### 🐧 Any distribution
+apt, dnf, pacman, zypper, xbps, apk, emerge and eopkg — plus Silverblue-style
+immutable systems and NixOS. Tested on real GNOME 51 (Fedora 45) before every
+release.
 
 </td>
 </tr>
@@ -280,7 +305,7 @@ flowchart LR
 
 - **GTK 3** imports the Adwaita stylesheet compiled into libgtk-3 and restyles only what makes it look like a Mac.
 - **GTK 4 / libadwaita** is themed through libadwaita's public CSS variables, with `prefers-color-scheme` for dark mode.
-- **GNOME Shell** gets an `@import` of the stock stylesheet *found on your machine* at install time — `gnome-shell-dark.css` on GNOME 49–51 (which ship no light stylesheet; OhMyMac's light variant layers over it), `gnome-shell-{light,dark}.css` on 47–48, `gnome-shell.css` before.
+- **GNOME Shell** gets an `@import` of the stock stylesheet *found on your machine* at install time — `gnome-shell-{light,dark}.css` on GNOME 47–51, `gnome-shell.css` before.
 - **Glass** comes from Liquid Glass shaders in the compositor; OhMyMac's Shell theme keeps those surfaces transparent and supplies geometry and typography.
 
 <details>

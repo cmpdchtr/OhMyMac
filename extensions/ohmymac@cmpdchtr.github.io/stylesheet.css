@@ -1,0 +1,10 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+
+/* The focused app's name, bold like the macOS menu bar. */
+.ohmymac-app-name {
+  font-weight: 800;
+}
+
+.ohmymac-app-menu {
+  -natural-hpadding: 10px;
+}

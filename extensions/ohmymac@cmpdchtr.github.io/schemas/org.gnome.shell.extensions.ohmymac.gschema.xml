@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.ohmymac" path="/org/gnome/shell/extensions/ohmymac/">
+    <key name="app-menu" type="b">
+      <default>true</default>
+      <summary>Show the focused application in the menu bar</summary>
+      <description>Bold application name next to the logo, with New Window, Hide and Quit.</description>
+    </key>
+    <key name="clock-right" type="b">
+      <default>true</default>
+      <summary>Move the clock to the right end of the menu bar</summary>
+    </key>
+    <key name="notifications-right" type="b">
+      <default>true</default>
+      <summary>Show notification banners in the top-right corner</summary>
+    </key>
+    <key name="hide-activities" type="b">
+      <default>true</default>
+      <summary>Hide the workspace indicator in the menu bar</summary>
+    </key>
+  </schema>
+</schemalist>
