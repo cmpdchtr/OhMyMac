@@ -4,6 +4,41 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] — 2026-10-27
+
+Tahoe redesign, verified on a real GNOME Shell 51.0 / GTK 4.24 / libadwaita 1.10
+(Fedora 45).
+
+### Added
+- Liquid Glass (ryohsuke1231/liquid-glass, MIT) in the recommended profile:
+  real refracting glass for the dock, menus, Control Center, Notification
+  Center and OSDs. Fetched from a pinned upstream commit.
+- Extension lists accept `git:<url>@<commit>[:<dir>]` sources for extensions
+  that are not on extensions.gnome.org.
+- Blur my Shell back in the recommended profile, limited to the Launchpad and
+  overview backdrop.
+- Real GNOME 51 screenshots in the README.
+
+### Changed
+- GTK 4 / libadwaita layer redesigned after macOS 26 Tahoe: unified toolbar
+  with glass capsule buttons, floating rounded sidebar, 20 px window corners,
+  capsule switches and slider knobs, pill search fields and toasts.
+- Traffic lights are drawn on the button icon, so libadwaita 1.10 can no
+  longer stretch them into pills.
+- Menu bar is fully transparent with a soft text shadow.
+- On GNOME 49+ the Shell theme always layers over `gnome-shell-dark.css`,
+  because those releases ship no light stock stylesheet.
+
+### Fixed
+- The installer aborted on Fedora: `/etc/os-release` defines `VARIANT`, which
+  overwrote `--variant`. os-release is now read in an isolated subshell.
+- The installer stopped silently after the first freshly downloaded extension
+  (`gnome-extensions enable` fails until the Shell reloads, and `set -e`
+  turned that into an exit).
+- `cmd | grep -q` checks under `pipefail` could fail spuriously, so GSettings
+  presets were skipped and the Inter font was not detected.
+- Icon and cursor themes are no longer applied when their download failed.
+
 ## [1.0.0] — 2026-10-27
 
 Complete rewrite, inspired by [macW1Y](https://github.com/w1nyear/macW1Y-GTK-Theme).

@@ -196,8 +196,13 @@ apply_settings() {
   log_step "GNOME settings"
   apply_preset desktop
   [[ "${WANT_FONTS}" == 1 && -n "${OHM_UI_FONT:-}" ]] && apply_preset fonts
-  [[ "${WANT_ICONS}" == 1 ]] && apply_preset icons
-  [[ "${WANT_CURSORS}" == 1 ]] && apply_preset cursors
+  # Never point GNOME at an icon or cursor theme that failed to download.
+  if [[ "${WANT_ICONS}" == 1 ]] && { [[ "${OHM_DRY_RUN}" == 1 ]] || icon_theme_present "${OHM_ICON_THEME}"; }; then
+    apply_preset icons
+  fi
+  if [[ "${WANT_CURSORS}" == 1 ]] && { [[ "${OHM_DRY_RUN}" == 1 ]] || icon_theme_present macOS; }; then
+    apply_preset cursors
+  fi
   [[ "${WANT_WALLPAPER}" == 1 && -n "${OHM_WALLPAPER_LIGHT:-}" ]] && apply_preset wallpaper
   [[ "${WANT_EXTENSIONS}" == 1 ]] && apply_preset extensions
   return 0

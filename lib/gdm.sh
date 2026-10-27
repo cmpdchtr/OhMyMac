@@ -23,7 +23,7 @@ _gdm_uses_alternatives() {
 }
 
 _gdm_is_ours() {
-  gresource list "$1" 2>/dev/null | grep -q -- '-stock\.css$'
+  grep -q -- '-stock\.css$' <<<"$(gresource list "$1" 2>/dev/null)"
 }
 
 _gdm_source_resource() {

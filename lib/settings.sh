@@ -19,18 +19,21 @@ _gs() {
   if [[ -n "${dir}" ]]; then gsettings --schemadir "${dir}" "$@"; else gsettings "$@"; fi
 }
 
+# Note: matches use here-strings, not pipes — with pipefail, "cmd | grep -q"
+# can fail when grep exits early and cmd dies of SIGPIPE.
+#
 # Locates the schema directory for a schema: "" when globally installed,
 # an extension's schemas/ directory otherwise. Fails when unknown.
 schema_dir_for() {
   local schema="$1" dir base
-  if gsettings list-schemas 2>/dev/null | grep -qxF "${schema}"; then
+  if grep -qxF "${schema}" <<<"$(gsettings list-schemas 2>/dev/null)"; then
     echo ""
     return 0
   fi
   for base in "${OHM_USER_EXT_DIR}" "${OHM_SYSTEM_EXT_DIRS[@]}"; do
     for dir in "${base}"/*/schemas; do
       [[ -f "${dir}/gschemas.compiled" ]] || continue
-      if gsettings --schemadir "${dir}" list-schemas 2>/dev/null | grep -qxF "${schema}"; then
+      if grep -qxF "${schema}" <<<"$(gsettings --schemadir "${dir}" list-schemas 2>/dev/null)"; then
         echo "${dir}"
         return 0
       fi
@@ -52,7 +55,7 @@ _backup_setting() {
 set_setting() {
   local schema="$1" key="$2" value="$3" dir
   dir="$(schema_dir_for "${schema}")" || { log_debug "skip ${schema} (not installed)"; return 0; }
-  if ! _gs "${dir}" list-keys "${schema}" 2>/dev/null | grep -qxF "${key}"; then
+  if ! grep -qxF "${key}" <<<"$(_gs "${dir}" list-keys "${schema}" 2>/dev/null)"; then
     log_debug "skip ${schema} ${key} (unknown key)"
     return 0
   fi

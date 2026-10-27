@@ -14,10 +14,10 @@ set -uo pipefail
 
 schemadir_for() {
   local schema="$1" dir
-  if gsettings list-schemas 2>/dev/null | grep -qxF "${schema}"; then return 0; fi
+  if grep -qxF "${schema}" <<<"$(gsettings list-schemas 2>/dev/null)"; then return 0; fi
   for dir in "${XDG_DATA_HOME}"/gnome-shell/extensions/*/schemas /usr/share/gnome-shell/extensions/*/schemas; do
     [[ -f "${dir}/gschemas.compiled" ]] || continue
-    if gsettings --schemadir "${dir}" list-schemas 2>/dev/null | grep -qxF "${schema}"; then
+    if grep -qxF "${schema}" <<<"$(gsettings --schemadir "${dir}" list-schemas 2>/dev/null)"; then
       echo "${dir}"
       return 0
     fi

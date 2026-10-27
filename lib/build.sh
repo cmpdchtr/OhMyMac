@@ -19,7 +19,7 @@ OHM_BUILD="${OHM_BUILD:-${OHM_ROOT}/build}"
 OHM_VARIANTS=(Light Dark)
 
 _sass_compiler() {
-  if has sass && sass --version 2>/dev/null | grep -qE '^1\.'; then
+  if has sass && grep -qE '^1\.' <<<"$(sass --version 2>/dev/null)"; then
     echo dart
   elif has sassc; then
     echo sassc
@@ -117,26 +117,31 @@ build_themes() {
 # --- Shell base stylesheet ---------------------------------------------------
 
 # Prints the resource path of the stock Shell stylesheet for a variant.
-# GNOME 47+ ships gnome-shell-{light,dark}.css; older releases one file.
+# GNOME 47–48 ship gnome-shell-{light,dark}.css; GNOME 49+ (incl. 51) ship
+# only gnome-shell-dark.css, and releases before 47 a single gnome-shell.css.
+# OhMyMac's light variant then layers its light colours over the dark base.
 shell_base_resource() {
   local variant="${1,,}" gresource="${OHM_SHELL_GRESOURCE:-/usr/share/gnome-shell/gnome-shell-theme.gresource}"
-  local list=""
+  local list="" candidate prefix="/org/gnome/shell/theme"
   if [[ -r "${gresource}" ]] && has gresource; then
     list="$(gresource list "${gresource}" 2>/dev/null || true)"
   fi
 
   if [[ -n "${list}" ]]; then
-    if grep -qx "/org/gnome/shell/theme/gnome-shell-${variant}.css" <<<"${list}"; then
-      echo "resource:///org/gnome/shell/theme/gnome-shell-${variant}.css"
-    elif grep -qx "/org/gnome/shell/theme/gnome-shell.css" <<<"${list}"; then
-      echo "resource:///org/gnome/shell/theme/gnome-shell.css"
-    else
-      echo "resource:///org/gnome/shell/theme/gnome-shell-${variant}.css"
-    fi
-  elif (( OHM_GNOME_MAJOR > 0 && OHM_GNOME_MAJOR < 47 )); then
-    echo "resource:///org/gnome/shell/theme/gnome-shell.css"
+    for candidate in "gnome-shell-${variant}.css" gnome-shell-dark.css gnome-shell.css; do
+      if grep -qx "${prefix}/${candidate}" <<<"${list}"; then
+        echo "resource://${prefix}/${candidate}"
+        return 0
+      fi
+    done
+  fi
+  # No gresource tool: decide by version.
+  if (( OHM_GNOME_MAJOR > 0 && OHM_GNOME_MAJOR < 47 )); then
+    echo "resource://${prefix}/gnome-shell.css"
+  elif (( OHM_GNOME_MAJOR >= 49 || OHM_GNOME_MAJOR == 0 )); then
+    echo "resource://${prefix}/gnome-shell-dark.css"
   else
-    echo "resource:///org/gnome/shell/theme/gnome-shell-${variant}.css"
+    echo "resource://${prefix}/gnome-shell-${variant}.css"
   fi
 }
 

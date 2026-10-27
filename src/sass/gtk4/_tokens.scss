@@ -76,4 +76,11 @@
   --ohm-titlebutton-backdrop: #{css($titlebutton-backdrop)};
   --ohm-popover-shadow:    #{css($popover-shadow)};
   --ohm-window-shadow:     #{css($window-shadow)};
+  --ohm-capsule-bg:        #{css($capsule-bg)};
+  --ohm-capsule-bg-hover:  #{css($capsule-bg-hover)};
+  --ohm-capsule-bg-active: #{css($capsule-bg-active)};
+  --ohm-capsule-edge:      #{css($capsule-edge)};
+  --ohm-capsule-highlight: #{css($capsule-highlight)};
+  --ohm-capsule-shadow:    #{css($capsule-shadow)};
+  --ohm-sidebar-float-bg:  #{css($sidebar-float-bg)};
 }

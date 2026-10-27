@@ -34,6 +34,15 @@ check "solus"                  eq "$(_family_from_ids solus)" solus
 check "nixos"                  eq "$(_family_from_ids nixos)" nixos
 check "unknown"                eq "$(_family_from_ids plan9)" unknown
 
+echo "== os-release isolation (regression: Fedora's VARIANT clobbered --variant)"
+FAKE_OS="$(mktemp)"
+printf 'NAME="Fedora Linux"\nID=fedora\nVARIANT="Workstation Edition"\nVERSION="45"\nPRETTY_NAME="Fedora Linux 45"\n' >"${FAKE_OS}"
+VARIANT=auto
+os_release_test() { detect_distro_from "${FAKE_OS}"; [[ "${VARIANT}" == auto && "${OHM_DISTRO_FAMILY}" == fedora && "${OHM_DISTRO_NAME}" == "Fedora Linux 45" ]]; }
+detect_distro_from() { local f="$1"; eval "$(declare -f detect_distro | sed "s|/etc/os-release|${f}|")"; detect_distro; }
+check "os-release does not leak variables" os_release_test
+rm -f "${FAKE_OS}"
+
 echo "== package names"
 for fam in debian fedora arch suse void alpine gentoo solus; do
   OHM_DISTRO_FAMILY="${fam}"
@@ -55,8 +64,11 @@ OHM_TEST_NAME="Inter"
 check "placeholder"  eq "$(_expand_placeholders "x '@TEST_NAME@ 11'")" "x 'Inter 11'"
 
 echo "== extension profiles"
-check "minimal has user-theme" bash -c ". '${ROOT}/lib/loader.sh'; extension_list minimal | grep -qx user-theme@gnome-shell-extensions.gcampax.github.com"
-full_count="$(extension_list full | awk '!seen[$0]++' | wc -l)"
+has_line() { grep -qxF "$1" <<<"$2"; }
+check "minimal has user-theme" has_line $'user-theme@gnome-shell-extensions.gcampax.github.com\t' "$(extension_list minimal)"
+lg_line="$(extension_list recommended | grep '^liquid-glass@')"
+check "liquid glass has a pinned git source" grep -qE $'\tgit:https://[^@]+\\.git@[0-9a-f]{40}$' <<<"${lg_line}"
+full_count="$(extension_list full | awk -F '\t' '!seen[$1]++' | wc -l)"
 check "full includes recommended+minimal (${full_count})" test "${full_count}" -ge 10
 
 echo "== sass build"
@@ -85,6 +97,14 @@ check "import is first rule" first_rule "${WORK}/shell-test/gnome-shell/gnome-sh
 cp -a "${OHM_BUILD}/OhMyMac-Dark" "${WORK}/shell-old"
 OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=46 shell_finalize "${WORK}/shell-old" Dark
 check "legacy base import" grep -q 'theme/gnome-shell.css' "${WORK}/shell-old/gnome-shell/gnome-shell.css"
+cp -a "${OHM_BUILD}/OhMyMac-Light" "${WORK}/shell-51-light"
+OHM_SHELL_GRESOURCE=/nonexistent OHM_GNOME_MAJOR=51 shell_finalize "${WORK}/shell-51-light" Light
+check "GNOME 51 light uses the dark base (no light stylesheet in 51)" grep -q 'theme/gnome-shell-dark.css' "${WORK}/shell-51-light/gnome-shell/gnome-shell.css"
+
+echo "== set -e safety (regression: failing enable aborted the installer)"
+# shellcheck disable=SC2329  # the stubs are called indirectly by extension_enable
+enable_test() { ( set -e; has() { [[ "$1" == gnome-extensions ]]; }; gnome-extensions() { return 2; }; gsettings() { return 1; }; extension_enable foo@bar; echo survived ); }
+check "extension_enable survives a failing gnome-extensions" has_line survived "$(enable_test 2>/dev/null)"
 
 echo "== install / uninstall round-trip (isolated HOME)"
 FAKE_HOME="${WORK}/home"

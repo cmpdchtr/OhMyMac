@@ -38,10 +38,21 @@ detect_distro() {
   local os_release=/etc/os-release
   [[ -r "${os_release}" ]] || os_release=/usr/lib/os-release
 
+  # os-release defines generic names (VARIANT, VERSION, NAME…) that would
+  # clobber the installer's own variables, so read it in a subshell and
+  # import only the fields we need.
   local ID="" ID_LIKE="" PRETTY_NAME="" NAME=""
   if [[ -r "${os_release}" ]]; then
-    # shellcheck disable=SC1090
-    . "${os_release}"
+    {
+      IFS= read -r ID
+      IFS= read -r ID_LIKE
+      IFS= read -r PRETTY_NAME
+      IFS= read -r NAME
+    } < <(
+      # shellcheck disable=SC1090
+      . "${os_release}" >/dev/null 2>&1
+      printf '%s\n' "${ID:-}" "${ID_LIKE:-}" "${PRETTY_NAME:-}" "${NAME:-}"
+    )
   fi
   OHM_DISTRO_ID="${OHM_FORCE_DISTRO:-${ID:-unknown}}"
   OHM_DISTRO_NAME="${PRETTY_NAME:-${NAME:-${OHM_DISTRO_ID}}}"

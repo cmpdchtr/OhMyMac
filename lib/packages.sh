@@ -51,7 +51,7 @@ dep_satisfied() {
     git)        has git ;;
     xz)         has xz ;;
     dconf)      has dconf ;;
-    font-inter) has fc-list && fc-list 2>/dev/null | grep -qi 'Inter' ;;
+    font-inter) has fc-list && grep -qi 'Inter' <<<"$(fc-list : family 2>/dev/null)" ;;
     tweaks)     has gnome-tweaks ;;
     *)          return 1 ;;
   esac

@@ -50,6 +50,15 @@ $switch-off:          pick(rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.20));
 $knob:                pick(#ffffff, #e9e9ea);
 
 $titlebutton-backdrop: pick(#d1d0d2, #4e4e50);
+
+// Tahoe "glass" capsules for toolbar buttons and segmented controls.
+$capsule-bg:          pick(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.08));
+$capsule-bg-hover:    pick(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.14));
+$capsule-bg-active:   pick(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.20));
+$capsule-edge:        pick(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.10));
+$capsule-highlight:   pick(rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.10));
+$capsule-shadow:      pick(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.45));
+$sidebar-float-bg:    pick(rgba(228, 228, 234, 0.94), rgba(52, 52, 57, 0.94));
 $window-shadow:        pick(
   (0 22px 50px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.18)),
   (0 22px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.70))
@@ -67,7 +76,10 @@ $glass-bg-strong:   pick(rgba(250, 250, 252, 0.92), rgba(40, 40, 42, 0.90));
 $glass-border:      pick(rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
 $glass-tile:        pick(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.10));
 $glass-tile-hover:  pick(rgba(0, 0, 0, 0.10), rgba(255, 255, 255, 0.16));
-$panel-bg:          pick(rgba(255, 255, 255, 0.42), rgba(0, 0, 0, 0.28));
+// Tahoe's menu bar is fully transparent; text keeps a soft shadow so it
+// stays readable on busy wallpapers.
+$panel-bg:          transparent;
+$panel-text-shadow: pick(0 0 6px rgba(255, 255, 255, 0.55), 0 1px 3px rgba(0, 0, 0, 0.45));
 $panel-fg:          pick(rgba(0, 0, 0, 0.88), #ffffff);
 
 // Colours interpolated into custom properties / @define-color must be

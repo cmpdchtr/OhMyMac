@@ -16,19 +16,22 @@ OHM_EXT_CONFLICTS=(
   "appindicatorsupport@rgcjonas.gmail.com=ubuntu-appindicators@ubuntu.com"
 )
 
-# Reads data/extensions/<profile>.list (comments and blank lines ignored).
-# Profiles include their parents through "@include <profile>" lines.
+# Reads data/extensions/<profile>.list (comments and blank lines ignored)
+# and prints "uuid<TAB>source" lines. The source is empty for
+# extensions.gnome.org, or "git:<url>@<commit>:<dir>" for extensions that
+# are not published there. Profiles include their parents through
+# "@include <profile>" lines.
 extension_list() {
-  local profile="$1" file="${OHM_ROOT}/data/extensions/$1.list" line
+  local profile="$1" file="${OHM_ROOT}/data/extensions/$1.list" line uuid source
   [[ -r "${file}" ]] || die "Unknown extension profile: ${profile}"
   while IFS= read -r line || [[ -n "${line}" ]]; do
     line="${line%%#*}"
-    line="${line//[[:space:]]/}"
-    [[ -z "${line}" ]] && continue
-    if [[ "${line}" == @include* ]]; then
-      extension_list "${line#@include}"
+    read -r uuid source _ <<<"${line}" || true
+    [[ -z "${uuid:-}" ]] && continue
+    if [[ "${uuid}" == @include ]]; then
+      extension_list "${source}"
     else
-      printf '%s\n' "${line}"
+      printf '%s\t%s\n' "${uuid}" "${source:-}"
     fi
   done <"${file}"
 }
@@ -88,14 +91,19 @@ extension_enable() {
   shell_list_set enabled-extensions add "${uuid}"
   # Takes effect immediately when the Shell already knows the extension;
   # freshly installed ones load at next login (Wayland cannot restart).
-  has gnome-extensions && run gnome-extensions enable "${uuid}" >/dev/null 2>&1
+  # Fails for extensions the running Shell has not loaded yet; that is fine.
+  if has gnome-extensions; then
+    run gnome-extensions enable "${uuid}" >/dev/null 2>&1 || true
+  fi
   return 0
 }
 
 extension_disable() {
   local uuid="$1"
   shell_list_set enabled-extensions remove "${uuid}"
-  has gnome-extensions && run gnome-extensions disable "${uuid}" >/dev/null 2>&1
+  if has gnome-extensions; then
+    run gnome-extensions disable "${uuid}" >/dev/null 2>&1 || true
+  fi
   return 0
 }
 
@@ -129,11 +137,55 @@ extension_install_zip() {
   fi
 }
 
+# git_install_extension <uuid> <url@commit:dir> — for extensions that are
+# not on extensions.gnome.org. Always pinned to a reviewed commit.
+git_install_extension() {
+  local uuid="$1" spec="$2" url rest ref dir src dest
+  # <url>@<commit>[:<dir>] — URLs carry no "@", directories (UUIDs) may.
+  url="${spec%%@*}"
+  rest="${spec#*@}"
+  ref="${rest%%:*}"
+  dir="${uuid}"
+  [[ "${rest}" == *:* ]] && dir="${rest#*:}"
+  install_deps git
+  has git || { log_warn "${uuid}: git is missing — skipped"; return 0; }
+
+  src="${OHM_TMP}/git-${uuid}"
+  if [[ "${OHM_DRY_RUN}" == 1 ]]; then
+    log_info "[dry-run] would fetch ${url} at ${ref:0:12}"
+    return 0
+  fi
+  if ! { git init -q "${src}" &&
+         git -C "${src}" fetch -q --depth 1 "${url}" "${ref}" &&
+         git -C "${src}" checkout -q FETCH_HEAD; } 2>/dev/null; then
+    log_warn "${uuid}: could not fetch ${url} — skipped"
+    return 0
+  fi
+  [[ -f "${src}/${dir}/metadata.json" ]] || { log_warn "${uuid}: no metadata.json — skipped"; return 0; }
+  if [[ "${OHM_EXT_ALLOW_INCOMPATIBLE:-0}" != 1 ]] &&
+     ! grep -qE "\"${OHM_GNOME_MAJOR}(\.[0-9a-z]+)?\"" "${src}/${dir}/metadata.json"; then
+    log_warn "${uuid}: not marked for GNOME ${OHM_GNOME_MAJOR} — skipped (use --allow-incompatible to force)"
+    return 0
+  fi
+
+  dest="${OHM_USER_EXT_DIR}/${uuid}"
+  rm -rf "${dest}"
+  mkdir -p "${OHM_USER_EXT_DIR}"
+  cp -a "${src}/${dir}" "${dest}"
+  if [[ -d "${dest}/schemas" ]] && has glib-compile-schemas; then
+    glib-compile-schemas "${dest}/schemas"
+  fi
+  manifest_add "extension:${uuid}"
+  log_ok "${uuid} (${url##*/} @ ${ref:0:7})"
+}
+
 install_extension() {
-  local uuid="$1" major="${OHM_GNOME_MAJOR}" path url zip rc
+  local uuid="$1" source="${2:-}" major="${OHM_GNOME_MAJOR}" path url zip rc
 
   if path="$(extension_path "${uuid}")" && [[ "${OHM_EXT_UPDATE:-0}" != 1 ]]; then
     log_ok "${uuid} (already installed)"
+  elif [[ "${source}" == git:* ]]; then
+    git_install_extension "${uuid}" "${source#git:}"
   else
     rc=0
     url="$(ego_download_path "${uuid}" "${major}")" || rc=$?
@@ -173,9 +225,10 @@ install_extensions() {
     _backup_setting "" org.gnome.shell enabled-extensions
     _backup_setting "" org.gnome.shell disabled-extensions
   fi
-  while IFS= read -r uuid; do
-    install_extension "${uuid}"
-  done < <(extension_list "${profile}" | awk '!seen[$0]++')
+  local source
+  while IFS=$'\t' read -r uuid source; do
+    install_extension "${uuid}" "${source}"
+  done < <(extension_list "${profile}" | awk -F '\t' '!seen[$1]++')
 
   # Shell must allow user extensions at all.
   set_setting org.gnome.shell disable-user-extensions false

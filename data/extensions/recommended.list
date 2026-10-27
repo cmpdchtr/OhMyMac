@@ -1,7 +1,12 @@
-# OhMyMac — recommended profile: the macOS look and feel.
+# OhMyMac — recommended profile: the macOS Tahoe look and feel.
+#
+# Format: <uuid> [git:<url>@<commit>[:<dir>]]   (dir defaults to the uuid)
+# Entries without a source come from extensions.gnome.org, matched to the
+# running GNOME version. Git sources are pinned to a reviewed commit.
 @include minimal
 dash-to-dock@micxgx.gmail.com                              # Dock
-blur-my-shell@aunetx                                       # Vibrancy: blurred menu bar, dock, overview
+liquid-glass@thinkingcoding1231.gmail.com  git:https://github.com/ryohsuke1231/liquid-glass.git@a3fb66f7cfd9eb1a77cb3def03ec0dff0bf193c9  # Liquid Glass (MIT) — not on EGO yet
+blur-my-shell@aunetx                                       # Blurred wallpaper behind Launchpad/overview
 appindicatorsupport@rgcjonas.gmail.com                     # Menu bar extras (tray icons)
 logomenu@aryan_k                                           # Logo menu in the top-left corner
 compiz-alike-magic-lamp-effect@hermes83.github.com         # Genie minimize effect

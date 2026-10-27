@@ -1,11 +1,24 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
-// OhMyMac — GTK 4 / libadwaita widget overrides.
+// OhMyMac — GTK 4 / libadwaita widget layer in the macOS 26 "Tahoe" style.
 //
-// Only `var(--…)` references live here, so a single stylesheet serves light
-// and dark: tokens are swapped with `prefers-color-scheme` (GTK >= 4.16).
+// Only `var(--…)` references live here, so one stylesheet serves light and
+// dark: tokens are swapped with `prefers-color-scheme` (GTK >= 4.16).
+// Verified against GTK 4.24 / libadwaita 1.10 (GNOME 51).
 
 @import "../tokens";
+
+@mixin capsule {
+  min-height: $capsule-height;
+  min-width: $capsule-height;
+  padding: 0 10px;
+  border-radius: $radius-pill;
+  background-color: var(--ohm-capsule-bg);
+  box-shadow:
+    inset 0 1px var(--ohm-capsule-highlight),
+    0 0 0 0.5px var(--ohm-capsule-edge),
+    0 1px 3px var(--ohm-capsule-shadow);
+}
 
 // --- Windows ---------------------------------------------------------------
 window.csd:not(.maximized):not(.fullscreen):not(.tiled):not(.tiled-top):not(.tiled-bottom):not(.tiled-left):not(.tiled-right) {
@@ -18,177 +31,282 @@ window.csd > headerbar {
   border-top-right-radius: $radius-window;
 }
 
-// --- Header bars -----------------------------------------------------------
+// --- Unified toolbar -------------------------------------------------------
+// Tahoe merges the title bar into the content: no separator, taller bar.
 headerbar {
-  min-height: 42px;
-  padding: 0 8px;
-  box-shadow: inset 0 -1px var(--ohm-border);
+  min-height: $toolbar-height;
+  padding: 0 10px;
+  background-color: transparent;
+  box-shadow: none;
 
   .title,
   windowtitle .title {
-    font-weight: $font-weight-title;
+    font-weight: 700;
   }
 
   windowtitle .subtitle {
     color: var(--ohm-fg-dim);
   }
+}
 
-  &.flat,
-  .toolbar-view & {
-    box-shadow: none;
+toolbarview > .top-bar,
+toolbarview > .top-bar.raised,
+toolbarview > .bottom-bar,
+toolbarview > .bottom-bar.raised {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+// Toolbar buttons become glass capsules; linked groups share one capsule.
+headerbar button:not(.suggested-action):not(.destructive-action):not(.close):not(.minimize):not(.maximize):not(.flat-titlebutton),
+headerbar menubutton > button,
+headerbar splitbutton > button,
+headerbar splitbutton > menubutton > button {
+  @include capsule;
+
+  &:hover { background-color: var(--ohm-capsule-bg-hover); }
+  &:active,
+  &:checked { background-color: var(--ohm-capsule-bg-active); }
+  &:disabled { box-shadow: 0 0 0 0.5px var(--ohm-capsule-edge); opacity: 0.6; }
+}
+
+headerbar .linked:not(.vertical) > button,
+headerbar .linked:not(.vertical) > menubutton > button {
+  border-radius: 0;
+  box-shadow:
+    inset 0 1px var(--ohm-capsule-highlight),
+    0 0.5px 0 0 var(--ohm-capsule-edge),
+    0 -0.5px 0 0 var(--ohm-capsule-edge);
+
+  &:first-child { border-radius: $radius-pill 0 0 $radius-pill; }
+  &:last-child  { border-radius: 0 $radius-pill $radius-pill 0; }
+  &:only-child  { border-radius: $radius-pill; }
+}
+
+// --- Traffic lights --------------------------------------------------------
+// The circle is drawn on the icon, not the button, so its size never
+// depends on how tall the header bar is.
+@mixin traffic-light($bg, $border) {
+  > image {
+    background-color: $bg;
+    box-shadow: inset 0 0 0 0.5px $border;
   }
 }
 
-toolbarview > .top-bar.raised headerbar,
-toolbarview > .top-bar.raised {
-  box-shadow: 0 1px var(--ohm-border);
-}
-
-// --- Window controls: traffic lights ---------------------------------------
-@mixin traffic-light($bg, $border) {
-  background-color: $bg;
-  box-shadow: inset 0 0 0 0.5px $border;
-}
-
 windowcontrols {
-  margin: 0 2px;
+  margin: 0 4px;
+  border-spacing: 0;
 
   > button {
-    min-width: $titlebutton-size;
-    min-height: $titlebutton-size;
-    padding: 0;
-    margin: 0 ($titlebutton-spacing * 0.5);
-    border-radius: $radius-pill;
-    background-image: none;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0 ($titlebutton-spacing * 0.5);
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
     color: transparent;
-    transition: background-color $duration-fast ease-out;
 
     > image {
-      padding: 0;
-      -gtk-icon-size: 8px;
+      min-width: $titlebutton-glyph;
+      min-height: $titlebutton-glyph;
+      padding: ($titlebutton-size - $titlebutton-glyph) * 0.5;
+      border-radius: $radius-pill;
+      -gtk-icon-size: $titlebutton-glyph;
       color: transparent;
-      transition: color $duration-fast ease-out;
+      transition: color $duration-fast ease-out, background-color $duration-fast ease-out;
     }
+
+    &:hover,
+    &:active { background: none; box-shadow: none; }
 
     &.close    { @include traffic-light($tl-close, $tl-close-border); }
     &.minimize { @include traffic-light($tl-minimize, $tl-minimize-border); }
     &.maximize { @include traffic-light($tl-maximize, $tl-maximize-border); }
 
-    &:active { filter: brightness(0.82); }
+    &:active > image { filter: brightness(0.8); }
   }
 
   &:hover > button > image { color: $tl-glyph; }
 
-  &:backdrop:not(:hover) > button {
+  &:backdrop:not(:hover) > button > image {
     background-color: var(--ohm-titlebutton-backdrop);
     box-shadow: none;
   }
 }
 
+// --- Floating sidebar ------------------------------------------------------
+// Tahoe sidebars float inside the window as a rounded sheet of glass.
+.sidebar-pane {
+  margin: $sidebar-inset;
+  border-radius: $radius-sidebar;
+  background-color: var(--ohm-sidebar-float-bg);
+  box-shadow:
+    inset 0 1px var(--ohm-capsule-highlight),
+    0 0 0 0.5px var(--ohm-capsule-edge),
+    0 2px 10px var(--ohm-capsule-shadow);
+
+  > toolbarview > .top-bar headerbar { padding-left: 6px; }
+
+  &:dir(ltr) { border-right: none; }
+  &:dir(rtl) { border-left: none; }
+}
+
+navigation-split-view > .sidebar-pane,
+overlay-split-view > .sidebar-pane {
+  border: none;
+}
+
+.navigation-sidebar,
+placessidebar list {
+  padding: 4px 8px;
+  background: none;
+
+  > row {
+    min-height: 30px;
+    margin: 1px 0;
+    padding: 0 8px;
+    border-radius: $radius-control;
+
+    &:hover { background-color: var(--ohm-row-hover); }
+    &:selected { background-color: var(--ohm-row-selected); color: inherit; }
+    &:selected:focus-within {
+      background-color: color-mix(in srgb, var(--accent-bg-color) 24%, transparent);
+    }
+  }
+}
+
+.navigation-sidebar .heading,
+.navigation-sidebar label.heading {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ohm-fg-dim);
+}
+
 // --- Buttons ---------------------------------------------------------------
 button {
   border-radius: $radius-control;
-  min-height: 24px;
-  padding: 3px 12px;
-  font-weight: normal;
+  min-height: 26px;
+  padding: 3px 14px;
 
-  &.pill { border-radius: $radius-pill; padding: 7px 28px; }
+  &.pill { border-radius: $radius-pill; padding: 8px 30px; }
   &.circular { border-radius: $radius-pill; }
 
-  &.suggested-action {
-    font-weight: 500;
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.20), 0 0.5px 1.5px rgba(0, 0, 0, 0.25);
-  }
-
+  &.suggested-action,
   &.destructive-action {
-    font-weight: 500;
+    font-weight: 600;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.18);
   }
 }
 
-.linked:not(.vertical) > button:not(:first-child),
-.linked:not(.vertical) > menubutton:not(:first-child) > button {
-  border-left: 1px solid var(--ohm-border);
-}
+// Segmented controls (AdwToggleGroup / linked toggles): a capsule track
+// with a raised selector, like Tahoe.
+toggle-group {
+  padding: 2px;
+  border-radius: $radius-pill;
+  background-color: var(--ohm-trough);
 
-// Popover / menu buttons in header bars stay flat like macOS toolbars.
-headerbar button:not(.suggested-action):not(.destructive-action) {
-  border-radius: $radius-control;
+  > toggle {
+    border-radius: $radius-pill;
+    padding: 4px 14px;
+
+    &:checked {
+      background-color: var(--ohm-knob);
+      color: var(--window-fg-color);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+    }
+  }
 }
 
 // --- Entries ---------------------------------------------------------------
 entry,
 spinbutton,
-passwordentry,
-searchbar > revealer > box entry {
+passwordentry {
   border-radius: $radius-control;
-  min-height: 26px;
+  min-height: 28px;
   background-color: var(--ohm-entry-bg);
-  box-shadow: inset 0 0 0 1px var(--ohm-control-border);
+  box-shadow: inset 0 0 0 0.5px var(--ohm-control-border);
 
   &:focus-within {
     box-shadow: inset 0 0 0 1px var(--accent-bg-color);
-    outline: 3px solid color-mix(in srgb, var(--accent-bg-color) 45%, transparent);
+    outline: 3.5px solid color-mix(in srgb, var(--accent-bg-color) 45%, transparent);
     outline-offset: 0;
   }
 }
 
-// --- Switches --------------------------------------------------------------
+// Search fields are capsules in Tahoe.
+entry.search,
+searchbar > revealer > box entry {
+  border-radius: $radius-pill;
+  min-height: 32px;
+  padding: 0 12px;
+}
+
+// --- Switches: wider track, capsule knob -----------------------------------
 switch {
-  min-width: 38px;
-  min-height: 22px;
-  padding: 1px;
+  min-width: 42px;
+  min-height: 24px;
+  padding: 2px;
   border-radius: $radius-pill;
   background-color: var(--ohm-switch-off);
+  box-shadow: inset 0 0 0 0.5px var(--ohm-control-border);
 
-  &:checked { background-color: var(--accent-bg-color); }
+  &:checked { background-color: var(--accent-bg-color); box-shadow: none; }
 
   > slider {
-    min-width: 20px;
+    min-width: 26px;
     min-height: 20px;
+    margin: 0;
     border-radius: $radius-pill;
-    background-color: var(--ohm-knob);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
   }
 }
 
 // --- Check & radio ---------------------------------------------------------
 check,
 radio {
-  min-width: 14px;
-  min-height: 14px;
+  min-width: 15px;
+  min-height: 15px;
   margin: 0 2px;
   padding: 1px;
   background-color: var(--ohm-control-bg);
-  box-shadow: inset 0 0 0 1px var(--ohm-control-border), var(--ohm-control-shadow);
+  box-shadow: inset 0 0 0 0.5px var(--ohm-control-border), var(--ohm-control-shadow);
 
   &:checked,
   &:indeterminate {
     background-color: var(--accent-bg-color);
     color: var(--accent-fg-color);
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.18);
   }
 }
 
-check { border-radius: 4px; }
+check { border-radius: 5px; }
 radio { border-radius: $radius-pill; }
 
-// --- Scales ----------------------------------------------------------------
+// --- Sliders: capsule knob -------------------------------------------------
 scale {
   > trough {
-    min-height: 4px;
+    min-height: 5px;
     border-radius: $radius-pill;
     background-color: var(--ohm-trough);
 
     > highlight { border-radius: $radius-pill; }
 
     > slider {
-      min-width: 20px;
-      min-height: 20px;
-      margin: -9px;
+      min-width: 26px;
+      min-height: 18px;
+      margin: -7px -10px;
       border-radius: $radius-pill;
-      background-color: var(--ohm-knob);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28), 0 0 0 0.5px rgba(0, 0, 0, 0.10);
+      background-color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.30), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
     }
+  }
+
+  &.vertical > trough > slider {
+    min-width: 18px;
+    min-height: 26px;
+    margin: -10px -7px;
   }
 }
 
@@ -199,24 +317,22 @@ levelbar > trough {
   background-color: var(--ohm-trough);
 }
 
-progressbar > trough > progress {
-  border-radius: $radius-pill;
-}
+progressbar > trough > progress { border-radius: $radius-pill; }
 
 // --- Popovers & menus ------------------------------------------------------
 popover > contents,
 popover.background > contents {
   border-radius: $radius-popover;
-  padding: 5px;
+  padding: 6px;
   box-shadow: var(--ohm-popover-shadow);
 }
 
 popover.menu {
-  > contents { padding: 5px; }
+  > contents { padding: 5px; border-radius: $radius-menu; }
 
   modelbutton,
   menuitem {
-    min-height: 24px;
+    min-height: 26px;
     padding: 2px 10px;
     border-radius: $radius-small;
 
@@ -234,37 +350,13 @@ popover.menu {
 }
 
 tooltip {
-  border-radius: $radius-small;
-  padding: 4px 8px;
+  border-radius: $radius-control;
+  padding: 5px 9px;
 
   &.background { background-color: var(--popover-bg-color); color: var(--popover-fg-color); }
-  > box { border-spacing: 6px; }
 }
 
-// --- Lists & sidebars ------------------------------------------------------
-.navigation-sidebar,
-placessidebar list {
-  padding: 6px 10px;
-  background: none;
-
-  > row {
-    min-height: 28px;
-    margin: 1px 0;
-    padding: 0 8px;
-    border-radius: $radius-control;
-
-    &:hover { background-color: var(--ohm-row-hover); }
-    &:selected { background-color: var(--ohm-row-selected); color: inherit; }
-    &:selected:focus-within { background-color: color-mix(in srgb, var(--accent-bg-color) 22%, transparent); }
-  }
-}
-
-.sidebar-pane,
-.navigation-sidebar,
-.sidebar {
-  font-weight: 500;
-}
-
+// --- Lists & cards ---------------------------------------------------------
 list.boxed-list,
 .boxed-list,
 .card {
@@ -274,10 +366,6 @@ list.boxed-list,
 list.boxed-list > row:first-child { border-top-left-radius: $radius-card; border-top-right-radius: $radius-card; }
 list.boxed-list > row:last-child  { border-bottom-left-radius: $radius-card; border-bottom-right-radius: $radius-card; }
 
-list:not(.navigation-sidebar) > row:selected:not(.activatable) {
-  background-color: color-mix(in srgb, var(--accent-bg-color) 20%, transparent);
-}
-
 columnview > listview > row:selected,
 gridview > child:selected {
   background-color: var(--accent-bg-color);
@@ -285,7 +373,9 @@ gridview > child:selected {
   border-radius: $radius-small;
 }
 
-// --- Scrollbars: thin, overlay, macOS-like ---------------------------------
+gridview > child { border-radius: $radius-control; }
+
+// --- Scrollbars: thin overlay ----------------------------------------------
 scrollbar {
   > range > trough { background: none; }
 
@@ -293,23 +383,23 @@ scrollbar {
     min-width: 7px;
     min-height: 7px;
     border-radius: $radius-pill;
-    background-color: color-mix(in srgb, var(--window-fg-color) 40%, transparent);
+    background-color: color-mix(in srgb, var(--window-fg-color) 38%, transparent);
   }
 
   &:hover > range > trough > slider { min-width: 9px; min-height: 9px; }
 }
 
 // --- Tabs ------------------------------------------------------------------
-tabbar .box { padding: 4px; }
+tabbar .box { padding: 4px 8px; }
 
 tabbar tab {
-  border-radius: $radius-control;
-  min-height: 26px;
+  border-radius: $radius-pill;
+  min-height: 28px;
 
-  &:selected { background-color: var(--ohm-control-bg); box-shadow: var(--ohm-control-shadow); }
+  &:selected { background-color: var(--ohm-capsule-bg); box-shadow: 0 0 0 0.5px var(--ohm-capsule-edge), 0 1px 3px var(--ohm-capsule-shadow); }
 }
 
-// --- Dialogs ---------------------------------------------------------------
+// --- Dialogs, sheets, toasts -----------------------------------------------
 floating-sheet > sheet,
 dialog.floating sheet,
 window.dialog.message,
@@ -317,28 +407,25 @@ window.messagedialog {
   border-radius: $radius-dialog;
 }
 
-dialog.alert,
-window.messagedialog {
-  .message-area .title,
-  .heading { font-weight: 700; }
-
-  .response-area > button {
-    border-radius: $radius-control;
-    margin: 0 4px 4px;
-  }
+headerbar button.suggested-action,
+headerbar button.destructive-action,
+dialog.alert .response-area > button,
+window.messagedialog .response-area > button {
+  border-radius: $radius-pill;
+  margin: 0 4px 4px;
 }
 
-// --- Toasts, banners, OSD --------------------------------------------------
+dialog.alert .message-area .title,
+dialog.alert .heading { font-weight: 700; }
+
 toast {
-  border-radius: $radius-card;
-  padding: 6px 10px;
+  border-radius: $radius-pill;
+  padding: 6px 12px;
   box-shadow: var(--ohm-popover-shadow);
 }
 
 .osd.toolbar,
-.app-notification {
-  border-radius: $radius-card;
-}
+.app-notification { border-radius: $radius-card; }
 
 // --- Misc ------------------------------------------------------------------
 .title-1, .title-2, .title-3, .title-4 { font-weight: 700; }

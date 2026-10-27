@@ -44,24 +44,48 @@ Then **log out and back in**. That's it.
 
 <br>
 
+## 📸 Screenshots
+
+<sub>Real screenshots of GNOME Shell 51.0 on Fedora 45 with the recommended profile — no mock-ups.</sub>
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.jpg">
+    <img alt="OhMyMac on GNOME 51 — Files and Calculator with a floating sidebar, glass toolbar capsules and a Liquid Glass dock" src="docs/screenshots/desktop-light.jpg" width="100%">
+  </picture>
+</p>
+
+<table>
+<tr>
+<td width="50%"><img alt="Notification Center made of Liquid Glass" src="docs/screenshots/notification-center.jpg"></td>
+<td width="50%"><img alt="Launchpad over the blurred wallpaper" src="docs/screenshots/launchpad.jpg"></td>
+</tr>
+<tr>
+<td align="center"><sub><b>Notification Center</b> — real refraction, not a flat blur</sub></td>
+<td align="center"><sub><b>Launchpad</b> — app grid over the blurred wallpaper</sub></td>
+</tr>
+</table>
+
+<br>
+
 ## ✨ Features
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
-### 🚦 Windows that feel like a Mac
-Traffic-light controls on the left with glyphs on hover, 14&nbsp;px corners,
-macOS switches, checkboxes and sliders, accent-highlighted menus and thin
-overlay scrollbars — in **every** GTK&nbsp;3 and GTK&nbsp;4 app.
+### 🚦 Windows that feel like Tahoe
+Traffic lights with glyphs on hover, a unified toolbar of **glass capsule**
+buttons, a **floating sidebar**, 20&nbsp;px concentric corners, capsule switches
+and slider knobs — in **every** GTK&nbsp;3 and GTK&nbsp;4 app.
 
 </td>
 <td width="50%" valign="top">
 
-### 🪟 A Shell that looks the part
-Translucent menu bar, Quick Settings as **Control Center**, the calendar as
-**Notification Center**, a glass **Dock**, rounded OSDs, switchers, dialogs and
-a big-clock lock screen.
+### 💧 Real Liquid Glass
+The Dock, menus, Control Center, Notification Center and OSDs are rendered by
+[Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) shaders — blur,
+refraction and edge lighting — over a fully transparent, Tahoe-style menu bar.
 
 </td>
 </tr>
@@ -76,9 +100,9 @@ Shell theme and icons together with the system switch — no manual theme hoppin
 <td valign="top">
 
 ### 🧩 Extensions that actually load
-Dock, blur, tray icons, logo menu and the genie effect are fetched from
-extensions.gnome.org **for your exact GNOME version**. Anything incompatible is
-skipped instead of breaking your session.
+Dock, glass, tray icons, logo menu and the genie effect are fetched for **your
+exact GNOME version** (extensions.gnome.org, or a pinned upstream commit).
+Anything incompatible is skipped instead of breaking your session.
 
 </td>
 </tr>
@@ -196,10 +220,12 @@ sudo ./install.sh --system --themes-only  # themes for every user on the machine
 | Profile | Adds |
 | :-- | :-- |
 | `minimal` | User Themes |
-| `recommended` *(default)* | Dash to Dock · Blur my Shell · AppIndicator · Logo Menu · Magic Lamp |
+| `recommended` *(default)* | Dash to Dock · **Liquid Glass** · Blur my Shell (Launchpad only) · AppIndicator · Logo Menu · Magic Lamp |
 | `full` | Kiwi · Just Perfection · Rounded Window Corners · Top Bar Organizer |
 
 Profiles are plain lists in [`data/extensions/`](data/extensions) — edit them to taste.
+Liquid Glass isn't on extensions.gnome.org yet, so it is fetched from its GitHub
+repository at a **pinned, reviewed commit** (MIT licence).
 
 </details>
 
@@ -254,7 +280,8 @@ flowchart LR
 
 - **GTK 3** imports the Adwaita stylesheet compiled into libgtk-3 and restyles only what makes it look like a Mac.
 - **GTK 4 / libadwaita** is themed through libadwaita's public CSS variables, with `prefers-color-scheme` for dark mode.
-- **GNOME Shell** gets an `@import` of the stock stylesheet *found on your machine* at install time — `gnome-shell-{light,dark}.css` on 47+, `gnome-shell.css` before.
+- **GNOME Shell** gets an `@import` of the stock stylesheet *found on your machine* at install time — `gnome-shell-dark.css` on GNOME 49–51 (which ship no light stylesheet; OhMyMac's light variant layers over it), `gnome-shell-{light,dark}.css` on 47–48, `gnome-shell.css` before.
+- **Glass** comes from Liquid Glass shaders in the compositor; OhMyMac's Shell theme keeps those surfaces transparent and supplies geometry and typography.
 
 <details>
 <summary><b>Repository layout</b></summary>
@@ -339,6 +366,7 @@ No. macOS is a trademark of Apple Inc. OhMyMac is an independent project.
 
 Inspired by **[w1nyear/macW1Y](https://github.com/w1nyear/macW1Y-GTK-Theme)**.
 Built on the shoulders of
+[Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) by Ryosuke Watanabe,
 [MacTahoe icons](https://github.com/vinceliuice/MacTahoe-icon-theme) by vinceliuice,
 [apple_cursor](https://github.com/ful1e5/apple_cursor) by ful1e5,
 [Inter](https://github.com/rsms/inter) by Rasmus Andersson,

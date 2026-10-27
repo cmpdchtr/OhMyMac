@@ -123,7 +123,7 @@ _inter_family() {
 
 install_fonts() {
   log_step "Fonts"
-  if has fc-list && fc-list 2>/dev/null | grep -qiE 'SF Pro (Text|Display)'; then
+  if has fc-list && grep -qiE 'SF Pro (Text|Display)' <<<"$(fc-list : family 2>/dev/null)"; then
     OHM_UI_FONT="SF Pro Text"
     log_ok "Using SF Pro (found on the system)"
     return 0
@@ -138,7 +138,7 @@ install_fonts() {
       unzip -qo "${zip}" -d "${OHM_TMP}/inter"
       find "${OHM_TMP}/inter" \( -name 'InterVariable*.ttf' -o -name 'Inter-*.otf' \) -exec cp -f {} "${fontdir}/" \;
       manifest_add "${fontdir}"
-      has fc-cache && fc-cache -f "${fontdir}" >/dev/null 2>&1
+      if has fc-cache; then fc-cache -f "${fontdir}" >/dev/null 2>&1 || true; fi
     else
       log_warn "Could not download Inter; keeping the current UI font."
       return 0
@@ -154,6 +154,15 @@ install_fonts() {
 OHM_ICONS_REPO="${OHM_ICONS_REPO:-https://github.com/vinceliuice/MacTahoe-icon-theme.git}"
 OHM_ICONS_REF="${OHM_ICONS_REF:-main}"
 OHM_CURSORS_URL="${OHM_CURSORS_URL:-https://github.com/ful1e5/apple_cursor/releases/latest/download/macOS.tar.xz}"
+
+# icon_theme_present <name> — true when an icon or cursor theme is installed.
+icon_theme_present() {
+  local dir
+  for dir in "${XDG_DATA_HOME}/icons" "${HOME}/.icons" /usr/share/icons /usr/local/share/icons; do
+    [[ -f "${dir}/$1/index.theme" ]] && return 0
+  done
+  return 1
+}
 
 icons_dir() {
   if [[ "${OHM_SYSTEM:-0}" == 1 ]]; then echo /usr/share/icons; else echo "${XDG_DATA_HOME}/icons"; fi
