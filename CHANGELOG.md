@@ -7,6 +7,13 @@ All notable changes to this project are documented here. The format follows
 ## [1.2.0] — 2026-10-27
 
 ### Added
+- New "Tahoe Glass" wallpapers (original artwork, `tools/gen-wallpaper.py`):
+  deep blue silk bands with glossy crests.
+- A full macOS-order Dock (Finder, browser, Mail, Maps, Photos, Calendar,
+  Music, Weather, Notes, App Store, Terminal, System Settings) built from the
+  apps actually installed; 56 px icons.
+- Large soft macOS window shadows, accent-tinted Finder sidebar symbols, a
+  cool sidebar tint in place of vibrancy, no title inside sidebars.
 - Bundled **OhMyMac** Shell extension (GNOME 47–51) for a real Mac menu bar:
   the focused app's name in bold with New Window / Hide / Quit, the clock on
   the right edge, notification banners at the top right, no workspace pill.

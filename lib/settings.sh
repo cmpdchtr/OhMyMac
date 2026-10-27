@@ -102,3 +102,54 @@ restore_settings() {
   done <"${OHM_SETTINGS_BACKUP}"
   log_ok "Previous GNOME settings restored"
 }
+
+# --- Dock --------------------------------------------------------------------
+
+# macOS Dock order; each slot takes the first application found on this
+# system (native packages or Flatpak exports), so the Dock is never empty and
+# never points at missing apps.
+OHM_DOCK_SLOTS=(
+  "org.gnome.Nautilus nemo thunar org.kde.dolphin"                                        # Finder
+  "firefox org.mozilla.firefox google-chrome chromium com.brave.Browser brave-browser org.gnome.Epiphany"  # Safari
+  "org.mozilla.Thunderbird thunderbird org.gnome.Geary org.gnome.Evolution"                # Mail
+  "org.gnome.Maps"                                                                        # Maps
+  "org.gnome.Loupe org.gnome.Shotwell shotwell org.gnome.eog"                              # Photos
+  "org.gnome.Calendar"                                                                    # Calendar
+  "org.gnome.Music rhythmbox org.gnome.Rhythmbox3 io.bassi.Amberol"                        # Music
+  "org.gnome.Weather"                                                                     # Weather
+  "org.gnome.TextEditor org.gnome.gedit"                                                  # Notes / TextEdit
+  "org.gnome.Software io.missioncenter.MissionCenter"                                     # App Store
+  "org.gnome.Ptyxis org.gnome.Console org.gnome.Terminal kitty"                            # Terminal
+  "org.gnome.Settings gnome-control-center"                                               # System Settings
+)
+
+desktop_file_present() {
+  local id="$1" dir
+  for dir in "${XDG_DATA_HOME}/applications" "${XDG_DATA_HOME}/flatpak/exports/share/applications" \
+             /var/lib/flatpak/exports/share/applications /usr/local/share/applications /usr/share/applications; do
+    [[ -f "${dir}/${id}.desktop" ]] && return 0
+  done
+  return 1
+}
+
+dock_favorites() {
+  local slot id out=()
+  for slot in "${OHM_DOCK_SLOTS[@]}"; do
+    for id in ${slot}; do
+      if desktop_file_present "${id}"; then
+        out+=("'${id}.desktop'")
+        break
+      fi
+    done
+  done
+  local IFS=','
+  printf '[%s]\n' "${out[*]}"
+}
+
+apply_dock_favorites() {
+  local favorites
+  favorites="$(dock_favorites)"
+  [[ "${favorites}" != "[]" ]] || return 0
+  set_setting org.gnome.shell favorite-apps "${favorites}"
+  log_ok "Dock: $(grep -o "'" <<<"${favorites}" | wc -l | awk '{print $1/2}') apps in macOS order"
+}

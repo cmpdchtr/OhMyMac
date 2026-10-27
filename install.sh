@@ -204,7 +204,10 @@ apply_settings() {
     apply_preset cursors
   fi
   [[ "${WANT_WALLPAPER}" == 1 && -n "${OHM_WALLPAPER_LIGHT:-}" ]] && apply_preset wallpaper
-  [[ "${WANT_EXTENSIONS}" == 1 ]] && apply_preset extensions
+  if [[ "${WANT_EXTENSIONS}" == 1 ]]; then
+    apply_preset extensions
+    apply_dock_favorites
+  fi
   return 0
 }
 

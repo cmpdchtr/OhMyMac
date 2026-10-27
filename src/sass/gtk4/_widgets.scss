@@ -23,6 +23,9 @@
 // --- Windows ---------------------------------------------------------------
 window.csd:not(.maximized):not(.fullscreen):not(.tiled):not(.tiled-top):not(.tiled-bottom):not(.tiled-left):not(.tiled-right) {
   border-radius: $radius-window;
+  box-shadow: var(--ohm-window-shadow);
+
+  &:backdrop { box-shadow: var(--ohm-window-shadow-backdrop); }
 }
 
 window.csd > .titlebar,
@@ -148,6 +151,9 @@ windowcontrols {
 
   > toolbarview > .top-bar headerbar { padding-left: 6px; }
 
+  // Finder shows no window title inside the sidebar.
+  > toolbarview > .top-bar headerbar windowtitle { opacity: 0; }
+
   &:dir(ltr) { border-right: none; }
   &:dir(rtl) { border-left: none; }
 }
@@ -174,6 +180,12 @@ placessidebar list {
       background-color: color-mix(in srgb, var(--accent-bg-color) 24%, transparent);
     }
   }
+}
+
+// Finder tints sidebar symbols with the accent colour.
+.navigation-sidebar > row image,
+placessidebar row image {
+  color: var(--accent-color);
 }
 
 .navigation-sidebar .heading,

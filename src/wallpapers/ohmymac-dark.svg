@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- OhMyMac wallpaper "Lake Dark" — original artwork, CC BY-SA 4.0 -->
+<!-- OhMyMac "Tahoe Glass" — original artwork, CC BY-SA 4.0 -->
 <svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2160" viewBox="0 0 3840 2160">
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1226"/><stop offset="0.6" stop-color="#151a3a"/><stop offset="1" stop-color="#24163a"/></linearGradient>
-    <radialGradient id="glow" cx="0.72" cy="0.28" r="0.55"><stop offset="0" stop-color="#6b8cff" stop-opacity="0.35"/><stop offset="1" stop-color="#6b8cff" stop-opacity="0"/></radialGradient>
-    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="18"/></filter>
-    <linearGradient id="l0" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d2f66"/><stop offset="1" stop-color="#3a2a6e"/></linearGradient>
-    <linearGradient id="l1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a3a8a"/><stop offset="1" stop-color="#4b2f8a"/></linearGradient>
-    <linearGradient id="l2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f4fb8"/><stop offset="1" stop-color="#5a35a8"/></linearGradient>
-    <linearGradient id="l3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a66e0"/><stop offset="1" stop-color="#6a3fd0"/></linearGradient>
-  </defs>
-  <rect width="3840" height="2160" fill="url(#sky)"/>
-  <rect width="3840" height="2160" fill="url(#glow)"/>
-  <path d="M-100 1180 C 520 940 1080 1010 1620 1180 S 2860 1320 3940 980 L 3940 2260 L -100 2260 Z" fill="url(#l0)" filter="url(#soft)"/>
-  <path d="M-100 1440 C 640 1240 1300 1330 1900 1500 S 3080 1640 3940 1340 L 3940 2260 L -100 2260 Z" fill="url(#l1)" filter="url(#soft)"/>
-  <path d="M-100 1700 C 760 1560 1500 1640 2180 1780 S 3300 1900 3940 1700 L 3940 2260 L -100 2260 Z" fill="url(#l2)" filter="url(#soft)"/>
-  <path d="M-100 1950 C 900 1860 1700 1910 2400 2000 S 3500 2080 3940 1960 L 3940 2260 L -100 2260 Z" fill="url(#l3)" filter="url(#soft)"/>
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#01030f"/><stop offset="0.55" stop-color="#061a52"/><stop offset="1" stop-color="#0b3bb8"/></linearGradient>
+<radialGradient id="glow" cx="0.72" cy="0.38" r="0.5"><stop offset="0" stop-color="#2f6bff" stop-opacity="0.45"/><stop offset="1" stop-color="#2f6bff" stop-opacity="0"/></radialGradient>
+<filter id="b3" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+<filter id="b10" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+<filter id="b30" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="30"/></filter>
+<filter id="b70" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="70"/></filter>
+<linearGradient id="s0" x1="0" y1="1" x2="0.15" y2="0"><stop offset="0" stop-color="#0b2a8f"/><stop offset="0.6" stop-color="#1e5bff"/><stop offset="1" stop-color="#9cc3ff"/></linearGradient>
+<linearGradient id="s1" x1="0" y1="1" x2="0.15" y2="0"><stop offset="0" stop-color="#06135a"/><stop offset="0.6" stop-color="#1747d6"/><stop offset="1" stop-color="#5f9bff"/></linearGradient>
+<linearGradient id="s2" x1="0" y1="1" x2="0.15" y2="0"><stop offset="0" stop-color="#0a1f73"/><stop offset="0.6" stop-color="#2f6bff"/><stop offset="1" stop-color="#c7dcff"/></linearGradient>
+</defs>
+<rect width="100%" height="100%" fill="url(#sky)"/>
+<rect width="100%" height="100%" fill="url(#glow)"/>
+<path d="M-200 1850 C 800 1350 1700 1700 2500 1300 S 3500 700 4100 760 L 4100 2300 L -200 2300 Z" fill="#000214" opacity="0.55" filter="url(#b70)" transform="translate(0,-60)"/>
+<path d="M-200 1500 C 700 1050 1500 1350 2250 1000 S 3400 250 4100 380 L 4100 2300 L -200 2300 Z" fill="url(#s0)" opacity="0.95" filter="url(#b3)"/>
+<path d="M-200 1500 C 700 1050 1500 1350 2250 1000 S 3400 250 4100 380" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.75" filter="url(#b3)"/>
+<path d="M-200 2150 C 900 1750 1900 2050 2750 1650 S 3700 1150 4100 1180 L 4100 2300 L -200 2300 Z" fill="#000214" opacity="0.5" filter="url(#b70)" transform="translate(0,-70)"/>
+<path d="M-200 1850 C 800 1350 1700 1700 2500 1300 S 3500 700 4100 760 L 4100 2300 L -200 2300 Z" fill="url(#s1)" opacity="0.97" filter="url(#b3)"/>
+<path d="M-200 1850 C 800 1350 1700 1700 2500 1300 S 3500 700 4100 760" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.6375" filter="url(#b3)"/>
+<path d="M-200 2300 L 4100 2300 L 4100 1500 C 3500 1600 2600 2200 -200 2300 Z" fill="#000214" opacity="0.35" filter="url(#b70)"/>
+<path d="M-200 2150 C 900 1750 1900 2050 2750 1650 S 3700 1150 4100 1180 L 4100 2300 L -200 2300 Z" fill="url(#s2)" opacity="0.98" filter="url(#b3)"/>
+<path d="M-200 2150 C 900 1750 1900 2050 2750 1650 S 3700 1150 4100 1180" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.5249999999999999" filter="url(#b3)"/>
 </svg>
