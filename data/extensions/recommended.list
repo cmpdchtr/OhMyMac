@@ -5,6 +5,7 @@
 # running GNOME version. Git sources are pinned to a reviewed commit.
 @include minimal
 ohmymac@cmpdchtr.github.io  local:extensions/ohmymac@cmpdchtr.github.io  # macOS menu bar layout (bundled)
+ohmymac-lockscreen@cmpdchtr.github.io  local:extensions/ohmymac-lockscreen@cmpdchtr.github.io  # macOS lock screen layout (bundled)
 dash-to-dock@micxgx.gmail.com                              # Dock
 liquid-glass@thinkingcoding1231.gmail.com  git:https://github.com/ryohsuke1231/liquid-glass.git@a3fb66f7cfd9eb1a77cb3def03ec0dff0bf193c9  # Liquid Glass (MIT) — not on EGO yet
 blur-my-shell@aunetx                                       # Blurred wallpaper behind Launchpad/overview

@@ -135,15 +135,16 @@ Launchpad icon.
 </tr>
 <tr>
 <td valign="top">
-<img alt="Login screen: avatar, name and a glass password field over the blurred wallpaper" src="docs/media/login.webp">
+<img alt="Login screen: large clock at the top, the user and a glass password field in the lower third" src="docs/media/login.webp">
 <h3>Login screen</h3>
-With <code>--gdm</code>: the wallpaper, blurred, behind a centred avatar and a
-frosted-glass password pill.
+With <code>--gdm</code>: the clock at the top with the date above it, the user and
+a glass password pill below, the wallpaper behind. No distribution logo.
 </td>
 <td valign="top">
-<img alt="Lock screen with a large clock and the date" src="docs/media/lock.webp">
+<img alt="Lock screen: large clock at the top, the user and an Enter Password pill below" src="docs/media/lock.webp">
 <h3>Lock screen</h3>
-A big rounded clock over your own wallpaper, blurred by GNOME Shell.
+The same layout over your own wallpaper, kept sharp. Notifications
+appear under the clock. Start typing and the pill turns into the field.
 </td>
 </tr>
 </table>
@@ -176,6 +177,7 @@ pieces, pins them, fixes the gaps between them and installs the lot in one go.
 | **Tahoe layer** | Floating sidebar, accent sidebar symbols, macOS shadows, one stylesheet for light *and* dark | OhMyMac ([`src/sass`](src/sass), [`lib/cssmerge.awk`](lib/cssmerge.awk)) |
 | **Glass** | Dock, menus, Control Center, Notification Center, OSDs, Spotlight | [Liquid Glass](https://github.com/ryohsuke1231/liquid-glass) — pinned commit |
 | **Menu bar** | App name & menu, clock on the right, banners top-right | OhMyMac extension ([`extensions/`](extensions)) |
+| **Lock & login** | Clock at the top, user and password at the bottom, in the session and in GDM | OhMyMac Lock Screen extension ([`extensions/`](extensions)) |
 | **Dock** | macOS order, Launchpad, genie effect | Dash to Dock · Magic Lamp — extensions.gnome.org |
 | **Icons & cursors** | MacTahoe icons, macOS cursors | [vinceliuice](https://github.com/vinceliuice/MacTahoe-icon-theme) · [ful1e5](https://github.com/ful1e5/apple_cursor) |
 | **Look & feel** | Inter (or your SF Pro), wallpapers, gestures, shortcuts | OhMyMac ([`data/settings`](data/settings)) |
@@ -227,7 +229,7 @@ sudo ./install.sh --system --themes-only    # themes for every user
 | `--no-extensions` | No extensions (User Themes is still added for the Shell theme) |
 | `--no-settings` | Leave every GNOME setting alone |
 | `--no-flatpak` | Skip Flatpak integration |
-| `--gdm` | Style the login screen like macOS too: blurred wallpaper, glass password field (needs root) |
+| `--gdm` | Give the login screen the macOS layout too (needs root): installs the Lock Screen extension for GDM and the wallpaper into its theme |
 | `--system` | Install themes and icons for all users |
 | `--dest DIR` | Stage files under `DIR` for packaging |
 | `--no-deps` | Never call the package manager |
@@ -281,8 +283,9 @@ is saved to `~/.local/state/ohmymac/gsettings.backup` before it is first changed
 ./uninstall.sh --keep-settings  # remove files, keep the current settings
 ```
 
-Verified on GNOME 51: after `uninstall.sh` the desktop is back to stock, and the
-login screen bundle is restored byte for byte.
+Verified on GNOME 51: after `uninstall.sh` the desktop is back to stock. The
+login screen bundle is restored byte for byte, and the GDM extension and its
+dconf entry are removed.
 
 <br>
 
@@ -329,7 +332,7 @@ flowchart LR
     L{{"cssmerge.awk<br/><sub>light + dark → one sheet</sub>"}} --> G4["libadwaita<br/><sub>~/.config/gtk-4.0/gtk.css</sub>"]
     MT --> G3["GTK 3 + Shell themes"]
     LG[("Liquid Glass<br/><sub>pinned commit</sub>")] --> SH["GNOME Shell"]
-    EXT["OhMyMac extension<br/><sub>menu bar</sub>"] --> SH
+    EXT["OhMyMac extensions<br/><sub>menu bar · lock screen</sub>"] --> SH
     G3 --> SH
 ```
 
@@ -360,7 +363,7 @@ lib/                        installer modules
   gdm.sh                      login screen bundle
 extensions/                 the OhMyMac Shell extension (menu bar)
 src/sass/                   OhMyMac's own theme and the Tahoe layer
-src/gdm/                    blurred login screen background
+src/gdm/                    login screen background
 data/                       extension profiles, settings presets
 bin/ohmymac-sync            light/dark switching for GTK 3 and the Shell
 packaging/                  PKGBUILD (Arch) · RPM spec (Fedora)

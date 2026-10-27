@@ -19,6 +19,16 @@ OHM_GDM_OURS="${OHM_GDM_DIR}/ohmymac-gdm.gresource"
 OHM_GDM_BACKUP="${OHM_GDM_RESOURCE}.ohmymac-backup"
 OHM_GDM_ALT="gdm-theme.gresource"   # Debian/Ubuntu alternatives name
 
+# The layout (clock at the top, user at the bottom) comes from the OhMyMac
+# Lock Screen extension, installed system-wide and enabled for the greeter
+# through GDM's dconf database.
+OHM_GDM_EXT_UUID="ohmymac-lockscreen@cmpdchtr.github.io"
+OHM_GDM_EXT_DIR="/usr/share/gnome-shell/extensions/${OHM_GDM_EXT_UUID}"
+OHM_GDM_DCONF_DB="/etc/dconf/db/gdm.d"
+OHM_GDM_DCONF_FILE="${OHM_GDM_DCONF_DB}/90-ohmymac"
+OHM_GDM_PROFILE="/etc/dconf/profile/gdm"
+OHM_GDM_PROFILE_MARK="/etc/dconf/profile/.gdm-created-by-ohmymac"
+
 _gdm_uses_alternatives() {
   has update-alternatives && update-alternatives --query "${OHM_GDM_ALT}" >/dev/null 2>&1
 }
@@ -99,6 +109,54 @@ _gdm_build() {
   glib-compile-resources --sourcedir="${work}" --target="${out}" "${work}/ohmymac.gresource.xml"
 }
 
+# The greeter's dconf profile must read the "gdm" system database.
+_gdm_profile_ok() {
+  local profile
+  for profile in "${OHM_GDM_PROFILE}" /usr/share/dconf/profile/gdm; do
+    [[ -r "${profile}" ]] || continue
+    grep -qx 'system-db:gdm' "${profile}" && return 0
+    return 1
+  done
+  return 2
+}
+
+_gdm_install_extension() {
+  has dconf || { log_warn "dconf is missing: the login screen keeps the stock layout."; return 0; }
+  local rc=0
+  _gdm_profile_ok || rc=$?
+  if ((rc == 2)); then
+    run_root install -Dm644 /dev/stdin "${OHM_GDM_PROFILE}" \
+      <<<$'user-db:user\nsystem-db:gdm\nfile-db:/usr/share/gdm/greeter-dconf-defaults'
+    run_root touch "${OHM_GDM_PROFILE_MARK}"
+  elif ((rc == 1)); then
+    log_warn "GDM's dconf profile has no system-db:gdm: the login screen keeps the stock layout."
+    return 0
+  fi
+  run_root rm -rf "${OHM_GDM_EXT_DIR}"
+  run_root mkdir -p "$(dirname "${OHM_GDM_EXT_DIR}")"
+  run_root cp -r "${OHM_ROOT}/extensions/${OHM_GDM_EXT_UUID}" "${OHM_GDM_EXT_DIR}"
+  run_root chmod -R a+rX "${OHM_GDM_EXT_DIR}"
+  run_root install -Dm644 /dev/stdin "${OHM_GDM_DCONF_FILE}" \
+    <<<$'# OhMyMac: macOS layout for the login screen\n[org/gnome/shell]\nenabled-extensions=[\''"${OHM_GDM_EXT_UUID}"$'\']'
+  run_root dconf update
+  log_ok "Login screen layout (clock at the top, user at the bottom)"
+}
+
+_gdm_uninstall_extension() {
+  local changed=0
+  [[ -d "${OHM_GDM_EXT_DIR}" ]] && { run_root rm -rf "${OHM_GDM_EXT_DIR}"; changed=1; }
+  [[ -f "${OHM_GDM_DCONF_FILE}" ]] && { run_root rm -f "${OHM_GDM_DCONF_FILE}"; changed=1; }
+  if [[ -f "${OHM_GDM_PROFILE_MARK}" ]]; then
+    run_root rm -f "${OHM_GDM_PROFILE}" "${OHM_GDM_PROFILE_MARK}"
+    changed=1
+  fi
+  if ((changed)); then
+    has dconf && run_root dconf update
+    log_ok "Login screen layout removed"
+  fi
+  return 0
+}
+
 install_gdm() {
   log_step "Login screen (GDM)"
   if [[ "${OHM_IMMUTABLE}" == 1 ]]; then
@@ -129,6 +187,7 @@ install_gdm() {
     run_root install -Dm644 "${built}" "${OHM_GDM_RESOURCE}"
   fi
   log_ok "Login screen styled (visible after logout or reboot)"
+  _gdm_install_extension
 }
 
 uninstall_gdm() {
@@ -143,4 +202,5 @@ uninstall_gdm() {
   else
     log_info "OhMyMac login theme is not installed."
   fi
+  _gdm_uninstall_extension
 }

@@ -1,0 +1,9 @@
+{
+  "uuid": "ohmymac-lockscreen@cmpdchtr.github.io",
+  "name": "OhMyMac Lock Screen",
+  "description": "macOS-style lock and login screens: a large clock at the top, and the avatar, name and password field at the bottom.",
+  "shell-version": ["47", "48", "49", "50", "51"],
+  "session-modes": ["user", "unlock-dialog", "gdm"],
+  "url": "https://github.com/cmpdchtr/OhMyMac",
+  "version-name": "1.4.0"
+}

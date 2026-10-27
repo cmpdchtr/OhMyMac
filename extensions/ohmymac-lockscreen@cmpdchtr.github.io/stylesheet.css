@@ -1,0 +1,181 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+
+/* Always white over the wallpaper, whatever the colour scheme. */
+
+/* --- Clock: date above a large time, near the top ------------------------ */
+.ohmymac-lock-clock {
+  margin-top: 64px;
+  color: #ffffff;
+}
+
+.ohmymac-lock-date {
+  font-size: 19pt;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.90);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+.ohmymac-lock-time {
+  font-size: 120pt;
+  font-weight: 700;
+  font-feature-settings: "tnum";
+  color: rgba(255, 255, 255, 0.86);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* --- User block: avatar, name, password pill ------------------------------ */
+/* The idle page (.ohmymac-lock-idle) and the real prompt share every size, so
+   pressing a key turns the pill into the entry without anything moving. */
+.unlock-dialog .unlock-dialog-clock.ohmymac-lock-idle {
+  margin-top: 0;
+  spacing: 0;
+}
+
+.login-dialog .login-dialog-prompt-layout,
+.unlock-dialog .login-dialog-prompt-layout {
+  width: 24em;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.login-dialog .user-widget.vertical,
+.unlock-dialog .user-widget.vertical {
+  spacing: 10px;
+}
+
+.login-dialog .user-widget .user-icon,
+.unlock-dialog .user-widget .user-icon {
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.login-dialog .user-widget.vertical .user-icon,
+.unlock-dialog .user-widget.vertical .user-icon {
+  icon-size: 72px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.login-dialog .user-widget.vertical .user-icon StIcon,
+.unlock-dialog .user-widget.vertical .user-icon StIcon {
+  padding: 16px;
+}
+
+.login-dialog .user-widget .user-widget-label,
+.unlock-dialog .user-widget .user-widget-label {
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.30);
+}
+
+.login-dialog .user-widget.vertical .user-widget-label,
+.unlock-dialog .user-widget.vertical .user-widget-label {
+  font-size: 13pt;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.login-dialog .login-dialog-prompt-entry-area,
+.unlock-dialog .login-dialog-prompt-entry-area {
+  margin: 6px 8px;
+}
+
+.login-dialog .login-dialog-prompt-entry,
+.unlock-dialog .login-dialog-prompt-entry,
+.ohmymac-lock-pill {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 11pt;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: none;
+}
+
+.login-dialog .login-dialog-prompt-entry:hover,
+.unlock-dialog .login-dialog-prompt-entry:hover,
+.login-dialog .login-dialog-prompt-entry:focus,
+.unlock-dialog .login-dialog-prompt-entry:focus {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.26);
+  box-shadow: none !important;
+}
+
+.login-dialog .login-dialog-prompt-entry StLabel.hint-text,
+.unlock-dialog .login-dialog-prompt-entry StLabel.hint-text,
+.ohmymac-lock-pill {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+/* As wide as the real entry, which sits between the back button and its
+   spacer inside a 24em prompt. */
+.ohmymac-lock-pill {
+  width: 15.5em;
+  margin-top: 6px;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.login-dialog .login-dialog-message,
+.unlock-dialog .login-dialog-message,
+.login-dialog .login-dialog-message-hint,
+.unlock-dialog .login-dialog-message-hint {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 10pt;
+}
+
+/* Back, next and the bottom corner buttons: small glass discs. */
+.login-dialog .login-dialog-button,
+.unlock-dialog .login-dialog-button,
+.login-dialog-bottom-button-group .login-dialog-button {
+  padding: 8px;
+  border-radius: 999px;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.login-dialog .login-dialog-button:hover,
+.unlock-dialog .login-dialog-button:hover,
+.login-dialog .login-dialog-button:focus,
+.unlock-dialog .login-dialog-button:focus {
+  background-color: rgba(255, 255, 255, 0.26);
+}
+
+/* The entry's own next arrow and spinner: no disc inside the pill. */
+.login-dialog .login-dialog-button.next-button,
+.unlock-dialog .login-dialog-button.next-button {
+  padding: 0 4px;
+  background-color: transparent;
+  border: none;
+}
+
+/* --- Login screen: users side by side ------------------------------------- */
+.login-dialog-user-list-view .login-dialog-user-list {
+  spacing: 24px;
+}
+
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item {
+  padding: 12px 16px;
+  border-radius: 18px;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item:hover,
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item:focus,
+.login-dialog-user-list-view .login-dialog-user-list .login-dialog-user-list-item:selected {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.login-dialog .login-dialog-not-listed-button {
+  color: rgba(255, 255, 255, 0.80);
+}
+
+/* --- Lock screen notifications, under the clock --------------------------- */
+.unlock-dialog-notifications-container .message,
+.unlock-dialog-notifications-container .unlock-dialog-notification-source {
+  border-radius: 18px;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}

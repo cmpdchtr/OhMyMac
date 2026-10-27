@@ -68,6 +68,10 @@ has_line() { grep -qxF "$1" <<<"$2"; }
 check "minimal has user-theme" has_line $'user-theme@gnome-shell-extensions.gcampax.github.com\t' "$(extension_list minimal)"
 lg_line="$(extension_list recommended | grep '^liquid-glass@')"
 check "liquid glass has a pinned git source" grep -qE $'\tgit:https://[^@]+\\.git@[0-9a-f]{40}$' <<<"${lg_line}"
+ls_line="$(extension_list recommended | grep '^ohmymac-lockscreen@')"
+check "lock screen extension is bundled" grep -qE $'\tlocal:extensions/ohmymac-lockscreen@' <<<"${ls_line}"
+check "lock screen runs in GDM and on the lock screen" \
+  grep -q '"session-modes": \["user", "unlock-dialog", "gdm"\]' "${ROOT}/extensions/ohmymac-lockscreen@cmpdchtr.github.io/metadata.json"
 full_count="$(extension_list full | awk -F '\t' '!seen[$1]++' | wc -l)"
 check "full includes recommended+minimal (${full_count})" test "${full_count}" -ge 10
 
